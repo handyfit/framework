@@ -1,0 +1,45 @@
+<?php
+
+namespace {{ namespace }};
+
+use KanekiYuto\Handy\Trace\EloquentTrace;
+
+/**
+ * 追踪类 （帮助 IDE 更好地发现）
+ *
+ * @author KanekiYuto
+ */
+class {{ class }} extends EloquentTrace
+{
+
+    /**
+     * 表名称
+     *
+     * @var string
+     */
+	const TABLE = '{{ table }}';
+
+    /**
+     * 主键
+     *
+     * @var string
+     */
+	const PRIMARY_KEY = {{ primaryKey }};
+
+    {{ columns }}
+
+    /**
+     * 隐藏列
+     *
+     * @var array<int, string>
+     */
+    const HIDDEN = [{{ hidden }}];
+
+    /**
+     * 可填充的列
+     *
+     * @var array<int, string>
+     */
+    const FILLABLE = [{{ fillable }}];
+
+}

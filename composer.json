@@ -1,0 +1,28 @@
+{
+    "name": "handy-fp/framework",
+    "description": "Based on laravel derived development framework.",
+    "license": "mit",
+    "autoload": {
+        "psr-4": {
+            "KanekiYuto\\Handy\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "KanekiYuto",
+            "email": "kaneki.yuto.404@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.9"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
