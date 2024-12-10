@@ -1,5 +1,5 @@
 {
-    "name": "handy-fp/framework",
+    "name": "handyfit/framework",
     "description": "Based on laravel derived development framework.",
     "license": "mit",
     "autoload": {
