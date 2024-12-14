@@ -1,8 +1,8 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Params;
+namespace Handyfit\Framework\Cascade\Params;
 
-use KanekiYuto\Handy\Cascade\Params\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\Params\Migration as MigrationParams;
 
 class Column
 {

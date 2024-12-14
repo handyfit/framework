@@ -1,17 +1,18 @@
 <?php
 
-namespace Handyfit\Framework\Contracts\Activity;
+namespace Handyfit\Framework\Hook;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Handyfit\Framework\Trace\EloquentTrace;
+use Handyfit\Framework\Contracts\Activity\Eloquent as ActivityContractEloquent;
 
 /**
- * [Eloquent] activity interface
+ * [Eloquent] hook abstract class
  *
  * @author KanekiYuto
  */
-interface Eloquent
+abstract class Eloquent implements ActivityContractEloquent
 {
 
     /**
@@ -23,7 +24,7 @@ interface Eloquent
      *
      * @return bool
      */
-    public function performInsert(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool;
+    abstract public function performInsert(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool;
 
     /**
      * 模型更新前的操作
@@ -34,6 +35,6 @@ interface Eloquent
      *
      * @return bool
      */
-    public function performUpdate(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool;
+    abstract public function performUpdate(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool;
 
 }

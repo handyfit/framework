@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade;
+namespace Handyfit\Framework\Cascade;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\Filesystem;

@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Trace;
+namespace Handyfit\Framework\Trace;
 
 /**
  * Trace [laravel Eloquent ORM]

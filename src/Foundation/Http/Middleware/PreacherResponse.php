@@ -1,15 +1,15 @@
 <?php
 
-namespace KanekiYuto\Handy\Foundation\Http\Middleware;
+namespace Handyfit\Framework\Foundation\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteAction;
-use KanekiYuto\Handy\Preacher\Export;
+use Handyfit\Framework\Preacher\Export;
 use Symfony\Component\HttpFoundation\Response;
 use Laravel\SerializableClosure\SerializableClosure;
-use KanekiYuto\Handy\Preacher\PreacherResponse as PResponse;
+use Handyfit\Framework\Preacher\PreacherResponse as PResponse;
 
 /**
  * 响应处理中间件

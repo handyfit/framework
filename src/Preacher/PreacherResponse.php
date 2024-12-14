@@ -1,9 +1,9 @@
 <?php
 
-namespace KanekiYuto\Handy\Preacher;
+namespace Handyfit\Framework\Preacher;
 
 use Closure;
-use KanekiYuto\Handy\Preacher\Trait\DefaultConst;
+use Handyfit\Framework\Preacher\Trait\DefaultConst;
 
 /**
  * Preacher

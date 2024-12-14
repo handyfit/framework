@@ -1,10 +1,10 @@
 <?php
 
-namespace KanekiYuto\Handy\Support\Facades;
+namespace Handyfit\Framework\Support\Facades;
 
 use Closure;
 use Illuminate\Support\Facades\Facade;
-use KanekiYuto\Handy\Preacher\PreacherResponse;
+use Handyfit\Framework\Preacher\PreacherResponse;
 
 /**
  * Preacher Facade
@@ -19,7 +19,7 @@ use KanekiYuto\Handy\Preacher\PreacherResponse;
  * @method static PreacherResponse rows(array $data)
  * @method static PreacherResponse allow(bool $allow, mixed $pass, mixed $noPass, callable $handle = null)
  *
- * @see \KanekiYuto\Handy\Preacher\Builder
+ * @see \Handyfit\Framework\Preacher\Builder
  *
  * @author KanekiTuto
  */

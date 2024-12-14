@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Preacher\Trait;
+namespace Handyfit\Framework\Preacher\Trait;
 
 /**
  * 默认常量

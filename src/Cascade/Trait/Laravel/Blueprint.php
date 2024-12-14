@@ -1,12 +1,12 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Trait\Laravel;
+namespace Handyfit\Framework\Cascade\Trait\Laravel;
 
 use stdClass;
-use KanekiYuto\Handy\Cascade\ColumnDefinition;
-use KanekiYuto\Handy\Cascade\Params\Column as ColumnParams;
-use KanekiYuto\Handy\Cascade\Blueprint as CascadeBlueprint;
-use KanekiYuto\Handy\Cascade\Params\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\ColumnDefinition;
+use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
+use Handyfit\Framework\Cascade\Blueprint as CascadeBlueprint;
+use Handyfit\Framework\Cascade\Params\Migration as MigrationParams;
 
 trait Blueprint
 {

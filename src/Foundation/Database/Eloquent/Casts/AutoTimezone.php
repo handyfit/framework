@@ -1,13 +1,13 @@
 <?php
 
-namespace KanekiYuto\Handy\Foundation\Database\Eloquent\Casts;
+namespace Handyfit\Framework\Foundation\Database\Eloquent\Casts;
 
 use Exception;
 use DateTimeZone;
 use DateTimeImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
-use KanekiYuto\Handy\Support\IdeIgnore;
+use Handyfit\Framework\Support\IdeIgnore;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 /**

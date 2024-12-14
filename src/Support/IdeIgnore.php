@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Support;
+namespace Handyfit\Framework\Support;
 
 /**
  * Ignore unnecessary warnings from the IDE

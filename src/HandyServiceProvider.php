@@ -1,12 +1,12 @@
 <?php
 
-namespace KanekiYuto\Handy;
+namespace Handyfit\Framework;
 
 use Closure;
-use KanekiYuto\Handy\Preacher\Builder;
+use Handyfit\Framework\Preacher\Builder;
 use Illuminate\Support\ServiceProvider;
-use KanekiYuto\Handy\Support\Facades\Preacher;
-use KanekiYuto\Handy\Cascade\Console\CascadeCommand;
+use Handyfit\Framework\Support\Facades\Preacher;
+use Handyfit\Framework\Cascade\Console\CascadeCommand;
 
 /**
  * Handy service provider

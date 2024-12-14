@@ -4,7 +4,7 @@
     "license": "mit",
     "autoload": {
         "psr-4": {
-            "KanekiYuto\\Handy\\": "src/"
+            "Handyfit\\Framework\\": "src/"
         }
     },
     "authors": [

@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Console;
+namespace Handyfit\Framework\Cascade\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;

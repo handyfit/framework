@@ -1,6 +1,6 @@
 <?php
 
-namespace Handyfit\Framework\Foundation\Activity\Eloquent;
+namespace Handyfit\Framework\Foundation\Hook;
 
 use Handyfit\Framework\Support\Timestamp;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Handyfit\Framework\Activity\Eloquent\Activity as EloquentActivity;
 
 /**
- * 基础的模型生命周期
+ * 基础的模型钩子
  *
  * @author KanekiYuto
  */
-class Activity extends EloquentActivity
+class Eloquent extends EloquentActivity
 {
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Params\Configure;
+namespace Handyfit\Framework\Cascade\Params\Configure;
 
 class Migration
 {
@@ -62,7 +62,7 @@ class Migration
             'morphs',
         ];
     }
-    
+
     public function getSupport(): array
     {
         return $this->support;

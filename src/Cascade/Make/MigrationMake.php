@@ -1,11 +1,11 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Make;
+namespace Handyfit\Framework\Cascade\Make;
 
 use stdClass;
 use Illuminate\Support\Str;
-use KanekiYuto\Handy\Cascade\DiskManager;
-use KanekiYuto\Handy\Cascade\Params\Column as ColumnParams;
+use Handyfit\Framework\Cascade\DiskManager;
+use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\error;
 

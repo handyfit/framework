@@ -1,11 +1,11 @@
 <?php
 
-namespace KanekiYuto\Handy\Activity\Eloquent;
+namespace Handyfit\Framework\Activity\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use KanekiYuto\Handy\Trace\EloquentTrace;
-use KanekiYuto\Handy\Contracts\Activity\Eloquent as ActivityContractEloquent;
+use Handyfit\Framework\Trace\EloquentTrace;
+use Handyfit\Framework\Contracts\Activity\Eloquent as ActivityContractEloquent;
 
 /**
  * [Eloquent] activity abstract class

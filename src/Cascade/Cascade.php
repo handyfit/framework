@@ -1,18 +1,18 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade;
+namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use KanekiYuto\Handy\Cascade\Make\ModelMake;
-use KanekiYuto\Handy\Cascade\Make\MigrationMake;
-use KanekiYuto\Handy\Cascade\Make\EloquentTraceMake;
-use KanekiYuto\Handy\Cascade\Params\Make\Model as ModelParams;
-use KanekiYuto\Handy\Cascade\Params\Make\Table as TableParams;
+use Handyfit\Framework\Cascade\Make\ModelMake;
+use Handyfit\Framework\Cascade\Make\MigrationMake;
+use Handyfit\Framework\Cascade\Make\EloquentTraceMake;
+use Handyfit\Framework\Cascade\Params\Make\Model as ModelParams;
+use Handyfit\Framework\Cascade\Params\Make\Table as TableParams;
 use Illuminate\Database\Eloquent\Model as LaravelEloquentModel;
-use KanekiYuto\Handy\Cascade\Params\Blueprint as BlueprintParams;
-use KanekiYuto\Handy\Cascade\Params\Configure as ConfigureParams;
-use KanekiYuto\Handy\Cascade\Params\Make\Migration as MigrationParams;
-use KanekiYuto\Handy\Foundation\Activity\Eloquent\Activity as FoundationEloquentActivity;
+use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Make\Migration as MigrationParams;
+use Handyfit\Framework\Foundation\Activity\Eloquent\Activity as FoundationEloquentActivity;
 
 /**
  * Cascade
