@@ -1,10 +1,10 @@
 {
-    "name": "handy-fp/framework",
+    "name": "handyfit/framework",
     "description": "Based on laravel derived development framework.",
     "license": "mit",
     "autoload": {
         "psr-4": {
-            "KanekiYuto\\Handy\\": "src/"
+            "Handyfit\\Framework\\": "src/"
         }
     },
     "authors": [
@@ -24,7 +24,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": {
-    }
+    "prefer-stable": true
 }
