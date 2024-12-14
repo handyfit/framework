@@ -1,12 +1,12 @@
 <?php
 
-namespace KanekiYuto\Handy\Foundation\Activity\Eloquent;
+namespace Handyfit\Framework\Foundation\Activity\Eloquent;
 
-use KanekiYuto\Handy\Support\Timestamp;
+use Handyfit\Framework\Support\Timestamp;
 use Illuminate\Database\Eloquent\Builder;
-use KanekiYuto\Handy\Trace\EloquentTrace;
+use Handyfit\Framework\Trace\EloquentTrace;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
-use KanekiYuto\Handy\Activity\Eloquent\Activity as EloquentActivity;
+use Handyfit\Framework\Activity\Eloquent\Activity as EloquentActivity;
 
 /**
  * 基础的模型生命周期

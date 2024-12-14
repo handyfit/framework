@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Preacher;
+namespace Handyfit\Framework\Preacher;
 
 use Closure;
 

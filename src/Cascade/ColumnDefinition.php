@@ -1,11 +1,11 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade;
+namespace Handyfit\Framework\Cascade;
 
 use Closure;
 use Illuminate\Contracts\Database\Query\Expression;
-use KanekiYuto\Handy\Cascade\Params\Column as ColumnParams;
-use KanekiYuto\Handy\Cascade\Trait\Laravel\ColumnDefinition as LaravelColumnDefinition;
+use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
+use Handyfit\Framework\Cascade\Trait\Laravel\ColumnDefinition as LaravelColumnDefinition;
 
 class ColumnDefinition
 {

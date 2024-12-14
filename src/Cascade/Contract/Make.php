@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Contract;
+namespace Handyfit\Framework\Cascade\Contract;
 
 interface Make
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Make;
+namespace Handyfit\Framework\Cascade\Make;
 
 use Closure;
-use KanekiYuto\Handy\Cascade\DiskManager;
-use KanekiYuto\Handy\Cascade\Params\Make\Model as ModelParams;
-use KanekiYuto\Handy\Cascade\Params\Make\Table as TableParams;
-use KanekiYuto\Handy\Cascade\Params\Configure as ConfigureParams;
-use KanekiYuto\Handy\Cascade\Params\Blueprint as BlueprintParams;
-use KanekiYuto\Handy\Cascade\Params\Make\Migration as MigrationParams;
-use KanekiYuto\Handy\Cascade\Contract\Make as MakeContract;
+use Handyfit\Framework\Cascade\DiskManager;
+use Handyfit\Framework\Cascade\Params\Make\Model as ModelParams;
+use Handyfit\Framework\Cascade\Params\Make\Table as TableParams;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
+use Handyfit\Framework\Cascade\Params\Make\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\Contract\Make as MakeContract;
 use function Laravel\Prompts\note;
 use function Laravel\Prompts\error;
 

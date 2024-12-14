@@ -1,9 +1,9 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Make;
+namespace Handyfit\Framework\Cascade\Make;
 
 use Illuminate\Support\Str;
-use KanekiYuto\Handy\Cascade\Params\Column as ColumnParams;
+use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
 
 /**
  * EloquentTrace

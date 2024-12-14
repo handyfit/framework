@@ -1,10 +1,10 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Trait\Laravel;
+namespace Handyfit\Framework\Cascade\Trait\Laravel;
 
 use stdClass;
-use KanekiYuto\Handy\Cascade\Params\Migration as MigrationParams;
-use KanekiYuto\Handy\Cascade\ColumnDefinition as CascadeColumnDefinition;
+use Handyfit\Framework\Cascade\Params\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\ColumnDefinition as CascadeColumnDefinition;
 
 trait ColumnDefinition
 {

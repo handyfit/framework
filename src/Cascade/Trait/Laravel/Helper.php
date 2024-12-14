@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Trait\Laravel;
+namespace Handyfit\Framework\Cascade\Trait\Laravel;
 
 use stdClass;
 use Exception;

@@ -1,9 +1,9 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade;
+namespace Handyfit\Framework\Cascade;
 
-use KanekiYuto\Handy\Cascade\Params\Blueprint as BlueprintParams;
-use KanekiYuto\Handy\Cascade\Trait\Laravel\Blueprint as LaravelBlueprint;
+use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
+use Handyfit\Framework\Cascade\Trait\Laravel\Blueprint as LaravelBlueprint;
 
 class Blueprint
 {

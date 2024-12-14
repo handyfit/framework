@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Make;
+namespace Handyfit\Framework\Cascade\Make;
 
 use Illuminate\Support\Str;
 

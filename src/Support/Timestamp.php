@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Support;
+namespace Handyfit\Framework\Support;
 
 use DateTimeImmutable;
 

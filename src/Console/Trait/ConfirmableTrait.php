@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Console\Trait;
+namespace Handyfit\Framework\Console\Trait;
 
 use Closure;
 use function Laravel\Prompts\confirm;

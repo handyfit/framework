@@ -1,9 +1,9 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Params;
+namespace Handyfit\Framework\Cascade\Params;
 
 use Closure;
-use KanekiYuto\Handy\Cascade\Params\Column as ColumnParams;
+use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
 
 class Blueprint
 {

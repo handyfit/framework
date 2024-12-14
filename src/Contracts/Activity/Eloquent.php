@@ -1,10 +1,10 @@
 <?php
 
-namespace KanekiYuto\Handy\Contracts\Activity;
+namespace Handyfit\Framework\Contracts\Activity;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use KanekiYuto\Handy\Trace\EloquentTrace;
+use Handyfit\Framework\Trace\EloquentTrace;
 
 /**
  * [Eloquent] activity interface

@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Foundation\Database\Eloquent\Casts;
+namespace Handyfit\Framework\Foundation\Database\Eloquent\Casts;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;

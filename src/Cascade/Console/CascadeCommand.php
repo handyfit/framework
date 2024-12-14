@@ -1,11 +1,11 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Console;
+namespace Handyfit\Framework\Cascade\Console;
 
 use Illuminate\Filesystem\Filesystem;
-use KanekiYuto\Handy\Cascade\Cascade;
+use Handyfit\Framework\Cascade\Cascade;
 use Symfony\Component\Console\Attribute\AsCommand;
-use KanekiYuto\Handy\Console\Trait\ConfirmableTrait;
+use Handyfit\Framework\Console\Trait\ConfirmableTrait;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;

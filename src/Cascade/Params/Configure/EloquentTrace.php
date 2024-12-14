@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Params\Configure;
+namespace Handyfit\Framework\Cascade\Params\Configure;
 
 use Illuminate\Support\Str;
 

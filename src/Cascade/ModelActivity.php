@@ -1,10 +1,10 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade;
+namespace Handyfit\Framework\Cascade;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use KanekiYuto\Handy\Trace\EloquentTrace;
+use Handyfit\Framework\Trace\EloquentTrace;
 
 /**
  * 模型生命周期

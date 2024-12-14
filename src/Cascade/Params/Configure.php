@@ -1,10 +1,10 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Params;
+namespace Handyfit\Framework\Cascade\Params;
 
-use KanekiYuto\Handy\Cascade\Params\Configure\Model;
-use KanekiYuto\Handy\Cascade\Params\Configure\Migration;
-use KanekiYuto\Handy\Cascade\Params\Configure\EloquentTrace;
+use Handyfit\Framework\Cascade\Params\Configure\Model;
+use Handyfit\Framework\Cascade\Params\Configure\Migration;
+use Handyfit\Framework\Cascade\Params\Configure\EloquentTrace;
 
 class Configure
 {

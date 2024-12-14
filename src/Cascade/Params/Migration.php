@@ -1,6 +1,6 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Params;
+namespace Handyfit\Framework\Cascade\Params;
 
 use stdClass;
 

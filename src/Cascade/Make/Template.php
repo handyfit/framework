@@ -1,9 +1,9 @@
 <?php
 
-namespace KanekiYuto\Handy\Cascade\Make;
+namespace Handyfit\Framework\Cascade\Make;
 
 use Illuminate\Support\Str;
-use KanekiYuto\Handy\Cascade\DiskManager;
+use Handyfit\Framework\Cascade\DiskManager;
 
 /**
  * 存根模板
