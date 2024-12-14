@@ -783,11 +783,11 @@ class Blueprint
      * @param  string  $name
      * @param  null    $indexName
      *
-     * @return ColumnDefinition
+     * @return void
      */
-    public function morphs(string $name, $indexName = null): ColumnDefinition
+    public function morphs(string $name, $indexName = null): void
     {
-        return $this->autoParams(__FUNCTION__, $name, [
+        $this->autoParams(__FUNCTION__, $name, [
             '@quote$name' => $name,
             '$indexName' => $indexName,
         ], $this);

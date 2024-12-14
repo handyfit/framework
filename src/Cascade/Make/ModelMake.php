@@ -30,7 +30,7 @@ class ModelMake extends CascadeMake
     {
         $this->run('Model', 'model.base.stub', function () {
             $configureParams = $this->configureParams;
-            $getMakeParams = $configureParams->getModel();
+            $getMakeParams = $configureParams->getEloquentModel();
 
             $className = $this->getDefaultClassName($getMakeParams->getClassSuffix());
             $namespace = $this->getConfigureNamespace([
@@ -52,7 +52,7 @@ class ModelMake extends CascadeMake
             $this->stubParam('incrementing', $this->modelParams->getIncrementing());
 
             $this->stubParam('extends', $this->modelParams->getExtends());
-            $this->stubParam('activity', $this->modelParams->getActivity());
+            $this->stubParam('activity', $this->modelParams->getHook());
 
             $this->stubParam('casts', $this->makeCasts());
             $this->stubParam('usePackages', $this->makeUsePackages());

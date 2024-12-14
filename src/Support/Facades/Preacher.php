@@ -9,7 +9,7 @@ use Handyfit\Framework\Preacher\PreacherResponse;
 /**
  * Preacher Facade
  *
- * @method static void useMessageActivity(Closure $closure)
+ * @method static void useMsgHook(Closure $closure)
  * @method static PreacherResponse base()
  * @method static PreacherResponse msg(string $msg)
  * @method static PreacherResponse code(int $code)

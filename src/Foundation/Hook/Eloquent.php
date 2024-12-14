@@ -6,14 +6,14 @@ use Handyfit\Framework\Support\Timestamp;
 use Illuminate\Database\Eloquent\Builder;
 use Handyfit\Framework\Trace\EloquentTrace;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
-use Handyfit\Framework\Activity\Eloquent\Activity as EloquentActivity;
+use Handyfit\Framework\Hook\Eloquent as EloquentHook;
 
 /**
  * 基础的模型钩子
  *
  * @author KanekiYuto
  */
-class Eloquent extends EloquentActivity
+class Eloquent extends EloquentHook
 {
 
     /**

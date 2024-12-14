@@ -5,14 +5,14 @@ namespace Handyfit\Framework\Cascade;
 use Closure;
 use Handyfit\Framework\Cascade\Make\ModelMake;
 use Handyfit\Framework\Cascade\Make\MigrationMake;
-use Handyfit\Framework\Cascade\Make\EloquentTraceMake;
-use Handyfit\Framework\Cascade\Params\Make\Model as ModelParams;
-use Handyfit\Framework\Cascade\Params\Make\Table as TableParams;
 use Illuminate\Database\Eloquent\Model as LaravelEloquentModel;
+use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
+use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Params\Make\Migration as MigrationParams;
-use Handyfit\Framework\Foundation\Activity\Eloquent\Activity as FoundationEloquentActivity;
+use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
+use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\Builder\EloquentTrace as EloquentTraceBuilder;
 
 /**
  * Cascade
@@ -22,14 +22,39 @@ use Handyfit\Framework\Foundation\Activity\Eloquent\Activity as FoundationEloque
 class Cascade
 {
 
+    /**
+     * 配置参数对象
+     *
+     * @var ConfigureParams
+     */
     protected ConfigureParams $configureParams;
 
+    /**
+     * 表参数对象
+     *
+     * @var TableParams
+     */
     private TableParams $tableParams;
 
+    /**
+     * Migration 参数对象
+     *
+     * @var MigrationParams
+     */
     private MigrationParams $migrationParams;
 
+    /**
+     * 模型参数对象
+     *
+     * @var ModelParams
+     */
     private ModelParams $modelParams;
 
+    /**
+     * Blueprint 参数对象
+     *
+     * @var BlueprintParams
+     */
     private BlueprintParams $blueprintParams;
 
     /**
@@ -41,11 +66,11 @@ class Cascade
     {
         $this->configureParams = new ConfigureParams();
         $this->tableParams = new TableParams('default', '');
-        $this->migrationParams = new MigrationParams(null, '');
+        $this->migrationParams = new MigrationParams('', '');
 
         $this->modelParams = new ModelParams(
             LaravelEloquentModel::class,
-            FoundationEloquentActivity::class,
+            FoundationEloquentHook::class,
             false,
             false
         );
@@ -97,7 +122,7 @@ class Cascade
      * 设置 - [Model]
      *
      * @param  string  $extends
-     * @param  string  $activity
+     * @param  string  $hook
      * @param  bool    $incrementing
      * @param  bool    $timestamps
      *
@@ -105,11 +130,11 @@ class Cascade
      */
     public function withModel(
         string $extends,
-        string $activity,
+        string $hook,
         bool $incrementing = false,
         bool $timestamps = false
     ): static {
-        $this->modelParams = new ModelParams($extends, $activity, $incrementing, $timestamps);
+        $this->modelParams = new ModelParams($extends, $hook, $incrementing, $timestamps);
 
         return $this;
     }
@@ -136,13 +161,18 @@ class Cascade
         return $this;
     }
 
+    /**
+     * 创建 Cascade
+     *
+     * @return void
+     */
     public function create(): void
     {
         $blueprintCallable = $this->blueprintParams->getCallable();
 
         $blueprintCallable(new Blueprint($this->blueprintParams));
 
-        (new MigrationMake(
+        (new EloquentTraceBuilder(
             $this->configureParams,
             $this->blueprintParams,
             $this->tableParams,
@@ -150,7 +180,7 @@ class Cascade
             $this->migrationParams
         ))->boot();
 
-        (new EloquentTraceMake(
+        (new MigrationMake(
             $this->configureParams,
             $this->blueprintParams,
             $this->tableParams,
