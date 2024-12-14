@@ -54,9 +54,9 @@ trait Blueprint
 		CascadeBlueprint $blueprint
 	): ColumnDefinition {
 		$columnParams = (new ColumnParams($column))
-			->addMigrationParams(new MigrationParams($fn, $params));
+			->appendMigrationParams(new MigrationParams($fn, $params));
 
-		$blueprint->blueprintParams->addColumn($columnParams);
+		$blueprint->blueprintParams->appendColumn($columnParams);
 
 		return new ColumnDefinition($columnParams);
 	}

@@ -11,7 +11,7 @@ use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\warning;
 
-#[AsCommand(name: 'handy:cascade')]
+#[AsCommand(name: 'handyfit:cascade')]
 class CascadeCommand extends BaseCommand
 {
 
@@ -22,7 +22,7 @@ class CascadeCommand extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'handy:cascade';
+    protected $signature = 'handyfit:cascade';
 
     /**
      * 命令说明
@@ -59,14 +59,14 @@ class CascadeCommand extends BaseCommand
             return 0;
         }
 
-        if (!($cascade instanceof Cascade)){
+        if (!($cascade instanceof Cascade)) {
             warning('该 [Cascade] 不可用！');
             return 0;
         }
 
         info('开始执行...');
 
-		$cascade->create();
+        $cascade->create();
     }
 
 }

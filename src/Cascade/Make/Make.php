@@ -4,12 +4,13 @@ namespace Handyfit\Framework\Cascade\Make;
 
 use Closure;
 use Handyfit\Framework\Cascade\DiskManager;
-use Handyfit\Framework\Cascade\Params\Make\Model as ModelParams;
-use Handyfit\Framework\Cascade\Params\Make\Table as TableParams;
+use Handyfit\Framework\Cascade\Contract\Make as MakeContract;
+use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
+use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Params\Make\Migration as MigrationParams;
-use Handyfit\Framework\Cascade\Contract\Make as MakeContract;
+use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\Builder\EloquentTrace as EloquentTraceBuilder;
 use function Laravel\Prompts\note;
 use function Laravel\Prompts\error;
 
@@ -115,11 +116,11 @@ abstract class Make implements MakeContract
     /**
      * 获取 [TraceEloquentMake]
      *
-     * @return EloquentTraceMake
+     * @return EloquentTraceBuilder
      */
-    protected function getTraceEloquentMake(): EloquentTraceMake
+    protected function getTraceEloquentMake(): EloquentTraceBuilder
     {
-        return new EloquentTraceMake(
+        return new EloquentTraceBuilder(
             $this->configureParams,
             $this->blueprintParams,
             $this->tableParams,

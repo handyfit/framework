@@ -27,7 +27,7 @@ trait ColumnDefinition
 		stdClass $params,
 		CascadeColumnDefinition $columnDefinition
 	): CascadeColumnDefinition {
-		$columnDefinition->columnParams->addMigrationParams(
+		$columnDefinition->columnParams->appendMigrationParams(
 			new MigrationParams($fn, $params)
 		);
 

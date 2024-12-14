@@ -3,10 +3,10 @@
 namespace {{ namespace }};
 
 use Illuminate\Database\Eloquent\Builder;
-use KanekiYuto\Handy\Trace\EloquentTrace;
-use KanekiYuto\Handy\Activity\Eloquent\Activity as EloquentActivity;
+use Handyfit\Framework\Trace\EloquentTrace;
+use Handyfit\Framework\Hook\Eloquent as EloquentHook;
 use {{ traceEloquent }} as TheEloquentTrace;
-use {{ activity }} as TheActivity;
+use {{ activity }} as TheEloquentHook;
 use {{ extends }} as Model;
 
 {{ usePackages }}
@@ -27,11 +27,11 @@ class {{ class }} extends Model
     protected EloquentTrace $eloquentTrace;
 
     /**
-     * 模型生命周期
+     * 模型钩子
      *
-     * @var EloquentActivity
+     * @var EloquentHook
      */
-    protected EloquentActivity $modelActivity;
+    protected EloquentHook $eloquentHook;
 
     /**
      * 模型表名称
@@ -83,7 +83,7 @@ class {{ class }} extends Model
     public function __construct()
     {
         $this->eloquentTrace = new TheEloquentTrace();
-        $this->modelActivity = new TheActivity();
+        $this->eloquentHook = new TheEloquentHook();
 
         parent::__construct();
     }
@@ -107,7 +107,7 @@ class {{ class }} extends Model
      */
     protected function performInsert(Builder $query): bool
     {
-        if (!$this->modelActivity->performInsert($this, $query, $this->eloquentTrace)) {
+        if (!$this->eloquentHook->performInsert($this, $query, $this->eloquentTrace)) {
             return false;
         }
 
@@ -123,7 +123,7 @@ class {{ class }} extends Model
      */
     protected function performUpdate(Builder $query): bool
     {
-        if (!$this->modelActivity->performUpdate($this, $query, $this->eloquentTrace)) {
+        if (!$this->eloquentHook->performUpdate($this, $query, $this->eloquentTrace)) {
             return false;
         }
 
