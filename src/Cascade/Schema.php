@@ -8,6 +8,11 @@ use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
 
+/**
+ * Cascade schema
+ *
+ * @author KanekiYuto
+ */
 class Schema
 {
 
@@ -34,11 +39,26 @@ class Schema
         $callable(new static());
     }
 
+    /**
+     * 标记为 - create
+     *
+     * @param  Closure  $callable
+     *
+     * @return void
+     */
     public static function create(Closure $callable): void
     {
         static::build(__FUNCTION__, $callable);
     }
 
+    /**
+     * Build blueprint params
+     *
+     * @param  string   $fn
+     * @param  Closure  $callable
+     *
+     * @return void
+     */
     private static function build(string $fn, Closure $callable): void
     {
         $params = new BlueprintParams(
@@ -77,24 +97,16 @@ class Schema
         }
     }
 
+    /**
+     * 标记为 - table
+     *
+     * @param  Closure  $callable
+     *
+     * @return void
+     */
     public static function table(Closure $callable): void
     {
         static::build(__FUNCTION__, $callable);
-    }
-
-    public static function hasTable()
-    {
-
-    }
-
-    public static function hasColumn()
-    {
-
-    }
-
-    public static function hasIndex()
-    {
-
     }
 
 }

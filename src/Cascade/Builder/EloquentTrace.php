@@ -194,7 +194,7 @@ class EloquentTrace extends Builder
     }
 
     /**
-     * 构建常量值
+     * 构建所有常量值
      *
      * @param  array  $values
      *

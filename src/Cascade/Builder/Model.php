@@ -3,6 +3,7 @@
 namespace Handyfit\Framework\Cascade\Builder;
 
 
+use Illuminate\Support\Str;
 use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
@@ -11,6 +12,11 @@ use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
 use Handyfit\Framework\Cascade\Params\Configure\EloquentModel as BuilderParams;
 
+/**
+ * Model builder
+ *
+ * @author KanekiYuto
+ */
 class Model extends Builder
 {
 
@@ -105,6 +111,8 @@ class Model extends Builder
             return;
         }
 
+        $this->columnsMangerBuilder();
+
         // 文件夹路径
         $folderPath = $this->getCascadeFilepath([
             $this->builderParams->getFilepath(),
@@ -131,6 +139,30 @@ class Model extends Builder
         $this->put($this->builderUUid(__CLASS__), $this->classname, $folderPath);
     }
 
+    /**
+     * 构建所有列信息
+     *
+     * @return void
+     */
+    private function columnsMangerBuilder(): void
+    {
+        $columns = $this->schemaParams->getColumnsManger();
+
+        foreach ($columns as $column) {
+            $field = $column->getField();
+
+            if (!empty($column->getCast())) {
+                $key = Str::upper($field);
+                $this->casts["TheEloquentTrace::$key"] = $column->getCast();
+            }
+        }
+    }
+
+    /**
+     * Cats 信息构建
+     *
+     * @return string
+     */
     private function castsBuilder(): string
     {
         if (empty($this->casts)) {
@@ -140,12 +172,16 @@ class Model extends Builder
         $templates[] = 'return array_merge(parent::casts(), [';
 
         $casts = collect($this->casts)->map(function (string $value, string $key) {
-
             if (class_exists($value)) {
-                $namespace = explode('\\', $value);
-                $className = $namespace[count($namespace) - 1];
-                $value = "$className::class";
-                $this->appendPackage(implode('\\', $namespace));
+                // 使用类名加后缀的方式防止相同命名
+                $classname = explode('\\', $value);
+                $classname = $classname[count($classname) - 1];
+                $classname = "{$classname}CastPackage";
+
+                $namespace = "$value as $classname";
+                $value = "$classname::class";
+
+                $this->appendPackages($namespace);
             } else {
                 $value = "'$value'";
             }
@@ -159,13 +195,25 @@ class Model extends Builder
         return implode("\n\t\t", $templates);
     }
 
-    private function appendPackage(string $value): void
+    /**
+     * 加入到包中
+     *
+     * @param  string  $value
+     *
+     * @return void
+     */
+    private function appendPackages(string $value): void
     {
         if (!in_array($value, $this->packages)) {
             $this->packages[] = $value;
         }
     }
 
+    /**
+     * 使用包信息构建
+     *
+     * @return string
+     */
     private function usePackagesBuilder(): string
     {
         $packages = collect($this->packages)->map(function (string $value) {

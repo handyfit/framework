@@ -6,32 +6,35 @@ use stdClass;
 use Handyfit\Framework\Cascade\Params\Migration as MigrationParams;
 use Handyfit\Framework\Cascade\ColumnDefinition as CascadeColumnDefinition;
 
+/**
+ * @todo 需要重新整合
+ */
 trait ColumnDefinition
 {
 
-	use Helper;
+    use Helper;
 
-	protected function autoParams(
-		string $fn,
-		array $params,
-		CascadeColumnDefinition $columnDefinition
-	): CascadeColumnDefinition {
-		return $this->pushParams($fn,
-			$this->useParams(__CLASS__, $fn, $params),
-			$columnDefinition
-		);
-	}
+    protected function autoParams(
+        string $fn,
+        array $params,
+        CascadeColumnDefinition $columnDefinition
+    ): CascadeColumnDefinition {
+        return $this->pushParams($fn,
+            $this->useParams(__CLASS__, $fn, $params),
+            $columnDefinition
+        );
+    }
 
-	protected function pushParams(
-		string $fn,
-		stdClass $params,
-		CascadeColumnDefinition $columnDefinition
-	): CascadeColumnDefinition {
-		$columnDefinition->columnParams->appendMigrationParams(
-			new MigrationParams($fn, $params)
-		);
+    protected function pushParams(
+        string $fn,
+        stdClass $params,
+        CascadeColumnDefinition $columnDefinition
+    ): CascadeColumnDefinition {
+        $columnDefinition->columnParams->appendMigrationParams(
+            new MigrationParams($fn, $params)
+        );
 
-		return $columnDefinition;
-	}
+        return $columnDefinition;
+    }
 
 }

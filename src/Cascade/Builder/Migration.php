@@ -41,6 +41,13 @@ class Migration extends Builder
         $this->put($this->builderUUid(__CLASS__), $filename, $folderPath);
     }
 
+    /**
+     * Schema 构建
+     *
+     * @param  string  $action
+     *
+     * @return string
+     */
     private function schemaBuilder(string $action): string
     {
         $templates = [];
