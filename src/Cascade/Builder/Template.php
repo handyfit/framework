@@ -9,6 +9,8 @@ use Handyfit\Framework\Cascade\DiskManager;
  * 存根模板
  *
  * @author KanekiYuto
+ *
+ * @todo   需要简化重构
  */
 trait Template
 {

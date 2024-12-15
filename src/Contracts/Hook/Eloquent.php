@@ -1,13 +1,13 @@
 <?php
 
-namespace Handyfit\Framework\Contracts\Activity;
+namespace Handyfit\Framework\Contracts\Hook;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Handyfit\Framework\Trace\EloquentTrace;
 
 /**
- * [Eloquent] activity interface
+ * [Eloquent] hook interface
  *
  * @author KanekiYuto
  */

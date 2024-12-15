@@ -25,17 +25,26 @@ class Migration
     private string $comment;
 
     /**
+     * Hook 类
+     *
+     * @var string
+     */
+    private string $hook;
+
+    /**
      * 构建一个 Migration Builder 参数实例
      *
      * @param  string  $filename
      * @param  string  $comment
+     * @param  string  $hook
      *
      * @return void
      */
-    public function __construct(string $filename, string $comment)
+    public function __construct(string $filename, string $comment, string $hook)
     {
         $this->filename = $filename;
         $this->comment = $comment;
+        $this->hook = $hook;
     }
 
     /**
@@ -56,6 +65,16 @@ class Migration
     public function getComment(): string
     {
         return $this->comment;
+    }
+
+    /**
+     * 获取 Hook 类
+     *
+     * @return string
+     */
+    public function getHook(): string
+    {
+        return $this->hook;
     }
 
 }

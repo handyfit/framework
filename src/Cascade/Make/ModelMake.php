@@ -52,7 +52,7 @@ class ModelMake extends CascadeMake
             $this->stubParam('incrementing', $this->modelParams->getIncrementing());
 
             $this->stubParam('extends', $this->modelParams->getExtends());
-            $this->stubParam('activity', $this->modelParams->getHook());
+            $this->stubParam('hook', $this->modelParams->getHook());
 
             $this->stubParam('casts', $this->makeCasts());
             $this->stubParam('usePackages', $this->makeUsePackages());

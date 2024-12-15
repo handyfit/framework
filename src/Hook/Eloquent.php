@@ -5,14 +5,14 @@ namespace Handyfit\Framework\Hook;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Handyfit\Framework\Trace\EloquentTrace;
-use Handyfit\Framework\Contracts\Activity\Eloquent as ActivityContractEloquent;
+use Handyfit\Framework\Contracts\Hook\Eloquent as Contracts;
 
 /**
  * [Eloquent] hook abstract class
  *
  * @author KanekiYuto
  */
-abstract class Eloquent implements ActivityContractEloquent
+abstract class Eloquent implements Contracts
 {
 
     /**

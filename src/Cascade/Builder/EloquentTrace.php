@@ -3,7 +3,8 @@
 namespace Handyfit\Framework\Cascade\Builder;
 
 use Illuminate\Support\Str;
-use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
+use Handyfit\Framework\Cascade\Params\ColumnManger;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
@@ -62,6 +63,7 @@ class EloquentTrace extends Builder
      * @param  TableParams      $tableParams
      * @param  ModelParams      $modelParams
      * @param  MigrationParams  $migrationParams
+     * @param  SchemaParams     $schemaParams
      *
      * @return void
      */
@@ -70,9 +72,17 @@ class EloquentTrace extends Builder
         BlueprintParams $blueprintParams,
         TableParams $tableParams,
         ModelParams $modelParams,
-        MigrationParams $migrationParams
+        MigrationParams $migrationParams,
+        SchemaParams $schemaParams
     ) {
-        parent::__construct($configureParams, $blueprintParams, $tableParams, $modelParams, $migrationParams);
+        parent::__construct(
+            $configureParams,
+            $blueprintParams,
+            $tableParams,
+            $modelParams,
+            $migrationParams,
+            $schemaParams
+        );
 
         $this->builderParams = $configureParams->getEloquentTrace();
 
@@ -110,10 +120,7 @@ class EloquentTrace extends Builder
     public function boot(): void
     {
         // 初始化 - 载入存根
-        if (!$this->init(
-            $this->builderUUid(__CLASS__),
-            'eloquent-trace'
-        )) {
+        if (!$this->init(__CLASS__, 'eloquent-trace')) {
             return;
         }
 
@@ -137,11 +144,7 @@ class EloquentTrace extends Builder
         $this->stubParam('fillable', $this->constantValuesBuilder($this->fillable));
 
         // 写入磁盘
-        $this->put(
-            $this->builderUUid(__CLASS__),
-            $this->classname,
-            $folderPath
-        );
+        $this->put($this->builderUUid(__CLASS__), $this->classname, $folderPath);
     }
 
     /**
@@ -151,7 +154,7 @@ class EloquentTrace extends Builder
      */
     private function columnsBuilder(): string
     {
-        $columns = $this->blueprintParams->getColumns();
+        $columns = $this->schemaParams->getColumnsManger();
         $templates = [];
 
         foreach ($columns as $column) {
@@ -164,11 +167,11 @@ class EloquentTrace extends Builder
     /**
      * 构建列参数
      *
-     * @param  ColumnParams  $column
+     * @param  ColumnManger  $column
      *
      * @return string
      */
-    private function columnBuilder(ColumnParams $column): string
+    private function columnBuilder(ColumnManger $column): string
     {
         $template = [];
 

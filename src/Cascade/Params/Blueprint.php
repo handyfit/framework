@@ -21,13 +21,6 @@ class Blueprint
     private string $table;
 
     /**
-     * 备注
-     *
-     * @var string
-     */
-    private string $comment;
-
-    /**
      * 回调闭包
      *
      * @var Closure
@@ -45,15 +38,13 @@ class Blueprint
      * 构建一个 Blueprint 参数实例
      *
      * @param  string   $table
-     * @param  string   $comment
      * @param  Closure  $callable
      *
      * @return void
      */
-    public function __construct(string $table, string $comment, Closure $callable)
+    public function __construct(string $table, Closure $callable)
     {
         $this->table = $table;
-        $this->comment = $comment;
         $this->callable = $callable;
         $this->columns = [];
     }
@@ -69,19 +60,9 @@ class Blueprint
     }
 
     /**
-     * 获取备注
-     *
-     * @return string
-     */
-    public function getComment(): string
-    {
-        return $this->comment;
-    }
-
-    /**
      * 获取列信息集
      *
-     * @return array
+     * @return ColumnParams[]
      */
     public function getColumns(): array
     {

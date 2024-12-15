@@ -18,7 +18,7 @@ class Model
     private string $extends;
 
     /**
-     * 钩子类
+     * Hook 类
      *
      * @var string
      */

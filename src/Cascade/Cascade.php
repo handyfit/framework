@@ -3,15 +3,16 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Handyfit\Framework\Cascade\Make\ModelMake;
-use Handyfit\Framework\Cascade\Make\MigrationMake;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Illuminate\Database\Eloquent\Model as LaravelEloquentModel;
 use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Builder\Migration as MigrationBuilder;
 use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
 use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
+use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
 use Handyfit\Framework\Cascade\Builder\EloquentTrace as EloquentTraceBuilder;
 
 /**
@@ -58,6 +59,13 @@ class Cascade
     private BlueprintParams $blueprintParams;
 
     /**
+     * Scheme 参数对象
+     *
+     * @var SchemaParams
+     */
+    private SchemaParams $schemaParams;
+
+    /**
      * 创建一个 [Cascade] 实例
      *
      * @return void
@@ -66,7 +74,12 @@ class Cascade
     {
         $this->configureParams = new ConfigureParams();
         $this->tableParams = new TableParams('default', '');
-        $this->migrationParams = new MigrationParams('', '');
+
+        $this->migrationParams = new MigrationParams(
+            '',
+            '',
+            FoundationMigrationHook::class
+        );
 
         $this->modelParams = new ModelParams(
             LaravelEloquentModel::class,
@@ -75,7 +88,8 @@ class Cascade
             false
         );
 
-        $this->blueprintParams = new BlueprintParams('default', '', fn() => null);
+        $this->blueprintParams = new BlueprintParams('default', fn() => null);
+        $this->schemaParams = new SchemaParams('default', fn() => null);
     }
 
     /**
@@ -94,7 +108,7 @@ class Cascade
      * @param  string  $table
      * @param  string  $comment
      *
-     * @return Cascade
+     * @return static
      */
     public function withTable(string $table, string $comment = ''): static
     {
@@ -106,14 +120,19 @@ class Cascade
     /**
      * 设置 - 【Migration】
      *
-     * @param  string|null  $filename
+     * @param  string       $filename
      * @param  string       $comment
+     * @param  string|null  $hook
      *
-     * @return Cascade
+     * @return static
      */
-    public function withMigration(string $filename = null, string $comment = ''): static
+    public function withMigration(string $filename = '', string $comment = '', string $hook = null): static
     {
-        $this->migrationParams = new MigrationParams($filename, $comment);
+        if (empty($hook)) {
+            $hook = FoundationMigrationHook::class;
+        }
+
+        $this->migrationParams = new MigrationParams($filename, $comment, $hook);
 
         return $this;
     }
@@ -121,19 +140,23 @@ class Cascade
     /**
      * 设置 - [Model]
      *
-     * @param  string  $extends
-     * @param  string  $hook
-     * @param  bool    $incrementing
-     * @param  bool    $timestamps
+     * @param  string       $extends
+     * @param  string|null  $hook
+     * @param  bool         $incrementing
+     * @param  bool         $timestamps
      *
-     * @return Cascade
+     * @return static
      */
     public function withModel(
         string $extends,
-        string $hook,
+        string $hook = null,
         bool $incrementing = false,
         bool $timestamps = false
     ): static {
+        if (empty($hook)) {
+            $hook = FoundationEloquentHook::class;
+        }
+
         $this->modelParams = new ModelParams($extends, $hook, $incrementing, $timestamps);
 
         return $this;
@@ -144,7 +167,7 @@ class Cascade
      *
      * @param  Closure  $callable
      *
-     * @return Cascade
+     * @return static
      */
     public function withBlueprint(Closure $callable): static
     {
@@ -154,7 +177,27 @@ class Cascade
 
         $this->blueprintParams = new BlueprintParams(
             $this->tableParams->getTable(),
-            $this->tableParams->getComment(),
+            $callable,
+        );
+
+        return $this;
+    }
+
+    /**
+     * 设置 Schema
+     *
+     * @param  Closure  $callable
+     *
+     * @return static
+     */
+    public function withSchema(Closure $callable): static
+    {
+        if (!isset($this->tableParams)) {
+            return $this;
+        }
+
+        $this->schemaParams = new SchemaParams(
+            $this->tableParams->getTable(),
             $callable,
         );
 
@@ -168,33 +211,33 @@ class Cascade
      */
     public function create(): void
     {
-        $blueprintCallable = $this->blueprintParams->getCallable();
-
-        $blueprintCallable(new Blueprint($this->blueprintParams));
+        Schema::init($this->schemaParams);
 
         (new EloquentTraceBuilder(
             $this->configureParams,
             $this->blueprintParams,
             $this->tableParams,
             $this->modelParams,
-            $this->migrationParams
+            $this->migrationParams,
+            $this->schemaParams
         ))->boot();
 
-        (new MigrationMake(
+        (new MigrationBuilder(
             $this->configureParams,
             $this->blueprintParams,
             $this->tableParams,
             $this->modelParams,
-            $this->migrationParams
+            $this->migrationParams,
+            $this->schemaParams
         ))->boot();
 
-        (new ModelMake(
-            $this->configureParams,
-            $this->blueprintParams,
-            $this->tableParams,
-            $this->modelParams,
-            $this->migrationParams
-        ))->boot();
+//        (new ModelMake(
+//            $this->configureParams,
+//            $this->blueprintParams,
+//            $this->tableParams,
+//            $this->modelParams,
+//            $this->migrationParams
+//        ))->boot();
     }
 
 }

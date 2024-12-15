@@ -4,6 +4,7 @@ namespace Handyfit\Framework\Cascade\Builder;
 
 use Illuminate\Support\Str;
 use Handyfit\Framework\Cascade\DiskManager;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
@@ -68,6 +69,13 @@ abstract class Builder
     protected BlueprintParams $blueprintParams;
 
     /**
+     * Schema 参数对象
+     *
+     * @var SchemaParams
+     */
+    protected SchemaParams $schemaParams;
+
+    /**
      * 构建一个 Builder 实例
      *
      * @param  ConfigureParams  $configureParams
@@ -75,6 +83,7 @@ abstract class Builder
      * @param  TableParams      $tableParams
      * @param  ModelParams      $modelParams
      * @param  MigrationParams  $migrationParams
+     * @param  SchemaParams     $schemaParams
      *
      * @return void
      */
@@ -83,7 +92,8 @@ abstract class Builder
         BlueprintParams $blueprintParams,
         TableParams $tableParams,
         ModelParams $modelParams,
-        MigrationParams $migrationParams
+        MigrationParams $migrationParams,
+        SchemaParams $schemaParams
     ) {
         $this->stub = '';
         $this->configureParams = $configureParams;
@@ -91,6 +101,7 @@ abstract class Builder
         $this->migrationParams = $migrationParams;
         $this->tableParams = $tableParams;
         $this->modelParams = $modelParams;
+        $this->schemaParams = $schemaParams;
     }
 
     /**
@@ -142,7 +153,8 @@ abstract class Builder
      */
     protected final function init(string $classname, string $filename): bool
     {
-        note(Str::of('──')->repeat(50));
+        $classname = $this->builderUUid($classname);
+
         note("$classname: 开始构建...");
 
         $stubsDisk = DiskManager::stubDisk();
@@ -159,6 +171,20 @@ abstract class Builder
     }
 
     /**
+     * 构建器唯一标识
+     *
+     * @param  string  $classname
+     *
+     * @return string
+     */
+    protected final function builderUUid(string $classname): string
+    {
+        $classname = collect(explode('\\', $classname))->last();
+
+        return is_string($classname) ? $classname : '';
+    }
+
+    /**
      * 写入存根内容到磁盘
      *
      * @param  string  $classname
@@ -169,6 +195,8 @@ abstract class Builder
      */
     protected final function put(string $classname, string $filename, string $folderPath): void
     {
+        $classname = $this->builderUUid($classname);
+
         $filename = "$filename.php";
         $folderDisk = DiskManager::useDisk($folderPath);
 
@@ -242,17 +270,20 @@ abstract class Builder
     }
 
     /**
-     * 构建器唯一标识
+     * 获取 Eloquent Trace 实例
      *
-     * @param  string  $classname
-     *
-     * @return string
+     * @return EloquentTrace
      */
-    protected final function builderUUid(string $classname): string
+    protected function getEloquentTrace(): EloquentTrace
     {
-        $classname = collect(explode('\\', $classname))->last();
-
-        return is_string($classname) ? $classname : '';
+        return new EloquentTrace(
+            $this->configureParams,
+            $this->blueprintParams,
+            $this->tableParams,
+            $this->modelParams,
+            $this->migrationParams,
+            $this->schemaParams
+        );
     }
 
 }
