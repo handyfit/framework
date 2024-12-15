@@ -2,37 +2,37 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
+
 use Illuminate\Support\Str;
-use Handyfit\Framework\Cascade\Params\ColumnManger;
 use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
-use Handyfit\Framework\Cascade\Params\Configure\EloquentTrace as BuilderParams;
+use Handyfit\Framework\Cascade\Params\Configure\EloquentModel as BuilderParams;
 
 /**
- * Eloquent Trace builder
+ * Model builder
  *
  * @author KanekiYuto
  */
-class EloquentTrace extends Builder
+class Model extends Builder
 {
 
     /**
-     * property
+     * 模型强制转换类型
      *
      * @var array
      */
-    private array $hidden = [];
+    private array $casts = [];
 
     /**
-     * property
+     * 模型包
      *
      * @var array
      */
-    private array $fillable = [];
+    private array $packages = [];
 
     /**
      * 构建参数
@@ -84,7 +84,7 @@ class EloquentTrace extends Builder
             $schemaParams
         );
 
-        $this->builderParams = $configureParams->getEloquentTrace();
+        $this->builderParams = $configureParams->getEloquentModel();
 
         // 类名称由表名称决定
         $this->classname = implode('', [
@@ -100,19 +100,6 @@ class EloquentTrace extends Builder
     }
 
     /**
-     * 对外提供的引入包名称
-     *
-     * @return string
-     */
-    public function getPackage(): string
-    {
-        return implode('\\', [
-            $this->namespace,
-            $this->classname,
-        ]);
-    }
-
-    /**
      * 引导构建
      *
      * @return void
@@ -120,11 +107,11 @@ class EloquentTrace extends Builder
     public function boot(): void
     {
         // 初始化 - 载入存根
-        if (!$this->init(__CLASS__, 'eloquent-trace')) {
+        if (!$this->init(__CLASS__, 'model.base')) {
             return;
         }
 
-        $table = $this->tableParams->getTable();
+        $this->columnsMangerBuilder();
 
         // 文件夹路径
         $folderPath = $this->getCascadeFilepath([
@@ -132,16 +119,21 @@ class EloquentTrace extends Builder
             $this->tableParams->getNamespace(),
         ]);
 
-        // 设置参数到存根
         $this->stubParam('namespace', $this->namespace);
         $this->stubParam('class', $this->classname);
-        $this->stubParam('table', $table);
-        $this->stubParam('primaryKey', 'self::ID');
+        $this->stubParam('comment', '');
 
-        $this->stubParam('columns', $this->columnsBuilder());
+        $this->stubParam('traceEloquent', $this->getEloquentTrace()->getPackage());
 
-        $this->stubParam('hidden', $this->constantValuesBuilder($this->hidden));
-        $this->stubParam('fillable', $this->constantValuesBuilder($this->fillable));
+        $this->stubParam('timestamps', $this->modelParams->getTimestamps());
+        $this->stubParam('incrementing', $this->modelParams->getIncrementing());
+        $this->stubParam('extends', $this->modelParams->getExtends());
+        $this->stubParam('hook', $this->modelParams->getHook());
+
+        $this->stubParam('casts', $this->castsBuilder());
+        $this->stubParam('usePackages', $this->usePackagesBuilder());
+
+        $this->stub = $this->formattingStub($this->stub);
 
         // 写入磁盘
         $this->put($this->builderUUid(__CLASS__), $this->classname, $folderPath);
@@ -150,64 +142,85 @@ class EloquentTrace extends Builder
     /**
      * 构建所有列信息
      *
-     * @return string
+     * @return void
      */
-    private function columnsBuilder(): string
+    private function columnsMangerBuilder(): void
     {
         $columns = $this->schemaParams->getColumnsManger();
-        $templates = [];
 
         foreach ($columns as $column) {
-            $templates[] = $this->columnBuilder($column);
-        }
+            $field = $column->getField();
 
-        return $this->tab(implode("\n", $templates), 1);
+            if (!empty($column->getCast())) {
+                $key = Str::upper($field);
+                $this->casts["TheEloquentTrace::$key"] = $column->getCast();
+            }
+        }
     }
 
     /**
-     * 构建列参数
-     *
-     * @param  ColumnManger  $column
+     * Cats 信息构建
      *
      * @return string
      */
-    private function columnBuilder(ColumnManger $column): string
+    private function castsBuilder(): string
     {
-        $template = [];
-
-        $field = $column->getField();
-        $constantName = Str::of($field)->upper()->toString();
-
-        $template[] = $this->templatePropertyComment($column->getComment(), 'string');
-        $template[] = $this->templateConst($constantName, $field);
-        $template = implode('', $template);
-
-        if ($column->isHidden()) {
-            $this->hidden[] = $constantName;
+        if (empty($this->casts)) {
+            return 'return array_merge(parent::casts(), []);';
         }
 
-        if ($column->isFillable()) {
-            $this->fillable[] = $constantName;
-        }
+        $templates[] = 'return array_merge(parent::casts(), [';
 
-        return $template;
-    }
+        $casts = collect($this->casts)->map(function (string $value, string $key) {
+            if (class_exists($value)) {
+                // 使用类名加后缀的方式防止相同命名
+                $classname = explode('\\', $value);
+                $classname = $classname[count($classname) - 1];
+                $classname = "{$classname}CastPackage";
 
-    /**
-     * 构建所有常量值
-     *
-     * @param  array  $values
-     *
-     * @return string
-     */
-    private function constantValuesBuilder(array $values): string
-    {
-        $values = collect($values)->map(function (string $value) {
-            return "self::$value";
+                $namespace = "$value as $classname";
+                $value = "$classname::class";
+
+                $this->appendPackages($namespace);
+            } else {
+                $value = "'$value'";
+            }
+
+            return "\t$key => $value,";
         })->all();
 
-        return implode(', ', $values);
+        $templates = array_merge($templates, $casts);
+        $templates[] = ']);';
+
+        return implode("\n\t\t", $templates);
     }
 
+    /**
+     * 加入到包中
+     *
+     * @param  string  $value
+     *
+     * @return void
+     */
+    private function appendPackages(string $value): void
+    {
+        if (!in_array($value, $this->packages)) {
+            $this->packages[] = $value;
+        }
+    }
+
+    /**
+     * 使用包信息构建
+     *
+     * @return string
+     */
+    private function usePackagesBuilder(): string
+    {
+        $packages = collect($this->packages)->map(function (string $value) {
+            return "use $value;";
+        })->all();
+
+        return implode("\n", $packages);
+    }
 
 }

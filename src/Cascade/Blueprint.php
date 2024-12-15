@@ -5,13 +5,30 @@ namespace Handyfit\Framework\Cascade;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
 use Handyfit\Framework\Cascade\Trait\Laravel\Blueprint as LaravelBlueprint;
 
+/**
+ * Cascade with laravel blueprint
+ *
+ * @author KanekiYuto
+ */
 class Blueprint
 {
 
     use LaravelBlueprint;
 
+    /**
+     * Blueprint params
+     *
+     * @var BlueprintParams
+     */
     private BlueprintParams $blueprintParams;
 
+    /**
+     * 构建一个 Blueprint 实例
+     *
+     * @param  BlueprintParams  $blueprintParams
+     *
+     * @return void
+     */
     public function __construct(BlueprintParams $blueprintParams)
     {
         $this->blueprintParams = $blueprintParams;

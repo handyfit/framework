@@ -4,9 +4,9 @@ namespace {{ namespace }};
 
 use Illuminate\Database\Eloquent\Builder;
 use Handyfit\Framework\Trace\EloquentTrace;
-use Handyfit\Framework\Hook\Eloquent as EloquentHook;
+use Handyfit\Framework\Hook\Eloquent as Hook;
 use {{ traceEloquent }} as TheEloquentTrace;
-use {{ activity }} as TheEloquentHook;
+use {{ hook }} as TheHook;
 use {{ extends }} as Model;
 
 {{ usePackages }}
@@ -20,76 +20,76 @@ class {{ class }} extends Model
 {
 
     /**
-     * [Eloquent] 模型追踪类
+     * Eloquent model tracing class
      *
      * @var EloquentTrace
      */
     protected EloquentTrace $eloquentTrace;
 
     /**
-     * 模型钩子
+     * Hook class
      *
-     * @var EloquentHook
+     * @var Hook
      */
-    protected EloquentHook $eloquentHook;
+    protected Hook $hook;
 
     /**
-     * 模型表名称
+     * Table name
      *
      * @var string
      */
     protected $table = TheEloquentTrace::TABLE;
 
     /**
-     * 模型主键 - [ID]
+     * Primary key
      *
      * @var string
      */
     protected $primaryKey = TheEloquentTrace::PRIMARY_KEY;
 
     /**
-     * 主键是否自增
+     * The primary key increases automatically
      *
      * @var bool
      */
     public $incrementing = {{ incrementing }};
 
     /**
-     * 指示模型是否主动维护时间戳
+     * Indicates whether the model actively maintains a timestamp
      *
      * @var bool
      */
     public $timestamps = {{ timestamps }};
 
     /**
-     * 需要被隐藏的列属性
+     * Column properties that need to be hidden
      *
      * @var array<int, string>
      */
     protected $hidden = TheEloquentTrace::HIDDEN;
 
     /**
-     * 可大量分配的属性
+     * Attributes that can be filled
      *
      * @var array<string>
      */
     protected $fillable = TheEloquentTrace::FILLABLE;
 
     /**
-     * 创建一个 [Eloquent] 模型实例
+     * Create an Eloquent model instance
      *
      * @return void
      */
     public function __construct()
     {
         $this->eloquentTrace = new TheEloquentTrace();
-        $this->eloquentHook = new TheEloquentHook();
+        $this->hook = new TheHook();
 
         parent::__construct();
     }
 
     /**
-     * 获取应该强制转换的属性
+     * Gets the property that should be cast
      *
      * @return array
      */
@@ -99,7 +99,7 @@ class {{ class }} extends Model
     }
 
     /**
-     * 创建前执行的操作
+     * Operations performed before creation
      *
      * @param  Builder  $query
      *
@@ -107,7 +107,7 @@ class {{ class }} extends Model
      */
     protected function performInsert(Builder $query): bool
     {
-        if (!$this->eloquentHook->performInsert($this, $query, $this->eloquentTrace)) {
+        if (!$this->hook->performInsert($this, $query, $this->eloquentTrace)) {
             return false;
         }
 
@@ -115,7 +115,7 @@ class {{ class }} extends Model
     }
 
     /**
-     * 执行一个模型更新操作
+     * The operation performed before the update
      *
      * @param  Builder  $query
      *
@@ -123,7 +123,7 @@ class {{ class }} extends Model
      */
     protected function performUpdate(Builder $query): bool
     {
-        if (!$this->eloquentHook->performUpdate($this, $query, $this->eloquentTrace)) {
+        if (!$this->hook->performUpdate($this, $query, $this->eloquentTrace)) {
             return false;
         }
 
