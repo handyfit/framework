@@ -33,11 +33,8 @@ class Migration extends Builder
 
         $this->stubParam('traceEloquent', $this->getEloquentTrace()->getPackage());
         $this->stubParam('comment', $this->migrationParams->getComment());
-
         $this->stubParam('upSchema', $this->schemaBuilder('up'));
-
-        $this->schemaBuilder('up');
-
+        $this->stubParam('downSchema', $this->schemaBuilder('down'));
         $this->stubParam('hook', $this->migrationParams->getHook());
 
         // 写入磁盘

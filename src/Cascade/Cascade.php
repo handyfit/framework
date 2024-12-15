@@ -4,6 +4,7 @@ namespace Handyfit\Framework\Cascade;
 
 use Closure;
 use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Handyfit\Framework\Cascade\Builder\Model as ModelBuilder;
 use Illuminate\Database\Eloquent\Model as LaravelEloquentModel;
 use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
@@ -213,31 +214,22 @@ class Cascade
     {
         Schema::init($this->schemaParams);
 
-        (new EloquentTraceBuilder(
-            $this->configureParams,
-            $this->blueprintParams,
-            $this->tableParams,
-            $this->modelParams,
-            $this->migrationParams,
-            $this->schemaParams
-        ))->boot();
+        $registers = [
+            EloquentTraceBuilder::class,
+            MigrationBuilder::class,
+            ModelBuilder::class,
+        ];
 
-        (new MigrationBuilder(
-            $this->configureParams,
-            $this->blueprintParams,
-            $this->tableParams,
-            $this->modelParams,
-            $this->migrationParams,
-            $this->schemaParams
-        ))->boot();
-
-//        (new ModelMake(
-//            $this->configureParams,
-//            $this->blueprintParams,
-//            $this->tableParams,
-//            $this->modelParams,
-//            $this->migrationParams
-//        ))->boot();
+        foreach ($registers as $register) {
+            (new $register(
+                $this->configureParams,
+                $this->blueprintParams,
+                $this->tableParams,
+                $this->modelParams,
+                $this->migrationParams,
+                $this->schemaParams
+            ))->boot();
+        }
     }
 
 }
