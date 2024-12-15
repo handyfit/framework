@@ -13,6 +13,10 @@
             "email": "kaneki.yuto.404@gmail.com"
         }
     ],
+    "support": {
+        "issues": "https://github.com/handyfit/framework/issues",
+        "source": "https://github.com/handyfit/framework"
+    },
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.9"
@@ -22,6 +26,9 @@
         "allow-plugins": {
             "composer/package-versions-deprecated": true
         }
+    },
+    "branch-alias": {
+        "dev-master": "0.x-alpha-dev"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
