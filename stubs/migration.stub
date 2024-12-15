@@ -76,7 +76,7 @@ return new class extends Migration {
         // Perform the operations before the migration rollback
         $this->hook->downBefore($this->eloquentTrace);
 
-        Schema::dropIfExists(TheEloquentTrace::TABLE);
+        {{ downSchema }}
 
         // Perform operations after the migration rollback
         $this->hook->downAfter($this->eloquentTrace);

@@ -22,9 +22,9 @@ class Schema
     /**
      * 回调闭包
      *
-     * @var Closure
+     * @var Closure[]
      */
-    private Closure $callable;
+    private array $callable;
 
     /**
      * 蓝图集
@@ -41,14 +41,21 @@ class Schema
     private array $columnsManger;
 
     /**
+     * 代码集
+     *
+     * @var string[][]
+     */
+    private array $codes;
+
+    /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param  string   $table
-     * @param  Closure  $callable
+     * @param  string     $table
+     * @param  Closure[]  $callable
      *
      * @return void
      */
-    public function __construct(string $table, Closure $callable)
+    public function __construct(string $table, array $callable)
     {
         $this->table = $table;
         $this->callable = $callable;
@@ -68,11 +75,13 @@ class Schema
     /**
      * 获取回调闭包
      *
+     * @param  string  $action
+     *
      * @return Closure
      */
-    public function getCallable(): Closure
+    public function getCallable(string $action): Closure
     {
-        return $this->callable;
+        return $this->callable[$action] ?? fn() => null;
     }
 
     /**
@@ -105,16 +114,55 @@ class Schema
         $this->blueprints[$action][$fn] = $blueprint;
     }
 
+    /**
+     * 获取列管理信息
+     *
+     * @return array
+     */
     public function getColumnsManger(): array
     {
         return $this->columnsManger;
     }
 
+    /**
+     * 新增列管理信息
+     *
+     * @param  ColumnManger  $columnManger
+     *
+     * @return void
+     */
     public function appendColumnsManger(ColumnManger $columnManger): void
     {
         $key = $columnManger->getField();
 
         $this->columnsManger[$key] = $columnManger;
+    }
+
+    /**
+     * 获取代码集
+     *
+     * @return string[]
+     */
+    public function getCodes(string $action): array
+    {
+        return $this->codes[$action] ?? [];
+    }
+
+    /**
+     * 新增代码
+     *
+     * @param  string  $action
+     * @param  string  $value
+     *
+     * @return void
+     */
+    public function appendCodes(string $action, string $value): void
+    {
+        if (!isset($this->codes[$action])) {
+            $this->codes[$action] = [];
+        }
+
+        $this->codes[$action][] = $value;
     }
 
 }

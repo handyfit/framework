@@ -23,6 +23,20 @@ class Schema
      */
     private static SchemaParams $schemaParams;
 
+    private static string $action;
+
+    /**
+     * Schema 实例
+     *
+     * @param  string  $action
+     *
+     * @return void
+     */
+    public function __construct(string $action)
+    {
+        static::$action = $action;
+    }
+
     /**
      * 初始化
      *
@@ -34,9 +48,11 @@ class Schema
     {
         static::$schemaParams = $schemaParams;
 
-        $callable = static::$schemaParams->getCallable();
+        $upCallable = static::$schemaParams->getCallable('up');
+        $downCallable = static::$schemaParams->getCallable('down');
 
-        $callable(new static());
+        $upCallable(new static('up'));
+        $downCallable(new static('down'));
     }
 
     /**
@@ -71,7 +87,7 @@ class Schema
 
         static::cloneToManger($params->getColumns());
 
-        static::$schemaParams->setBlueprints('up', $fn, $params);
+        static::$schemaParams->setBlueprints(static::$action, $fn, $params);
     }
 
 
@@ -107,6 +123,19 @@ class Schema
     public static function table(Closure $callable): void
     {
         static::build(__FUNCTION__, $callable);
+    }
+
+    /**
+     * 使用 dropIfExists
+     *
+     * @return void
+     */
+    public static function dropIfExists(): void
+    {
+        static::$schemaParams->appendCodes(
+            self::$action,
+            "Schema::dropIfExists(TheEloquentTrace::TABLE);"
+        );
     }
 
 }

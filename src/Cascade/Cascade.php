@@ -90,7 +90,10 @@ class Cascade
         );
 
         $this->blueprintParams = new BlueprintParams('default', fn() => null);
-        $this->schemaParams = new SchemaParams('default', fn() => null);
+        $this->schemaParams = new SchemaParams('default', [
+            'up' => fn() => null,
+            'down' => fn() => null,
+        ]);
     }
 
     /**
@@ -187,11 +190,12 @@ class Cascade
     /**
      * 设置 Schema
      *
-     * @param  Closure  $callable
+     * @param  Closure  $up
+     * @param  Closure  $down
      *
      * @return static
      */
-    public function withSchema(Closure $callable): static
+    public function withSchema(Closure $up, Closure $down): static
     {
         if (!isset($this->tableParams)) {
             return $this;
@@ -199,7 +203,7 @@ class Cascade
 
         $this->schemaParams = new SchemaParams(
             $this->tableParams->getTable(),
-            $callable,
+            ['up' => $up, 'down' => $down],
         );
 
         return $this;

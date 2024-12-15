@@ -37,6 +37,8 @@ class Migration extends Builder
         $this->stubParam('downSchema', $this->schemaBuilder('down'));
         $this->stubParam('hook', $this->migrationParams->getHook());
 
+        $this->stub = $this->formattingStub($this->stub);
+
         // 写入磁盘
         $this->put($this->builderUUid(__CLASS__), $filename, $folderPath);
     }
@@ -52,7 +54,9 @@ class Migration extends Builder
     {
         $templates = [];
         $blueprints = $this->schemaParams->getBlueprints($action);
+        $codes = $this->schemaParams->getCodes($action);
 
+        // 生成 Blueprints 部分
         foreach ($blueprints as $fn => $blueprint) {
             $template = [];
 
@@ -64,6 +68,10 @@ class Migration extends Builder
             $template = Str::of($template)->replace('@', '$')->toString();
 
             $templates[] = $template;
+        }
+
+        foreach ($codes as $code) {
+            $templates[] = $code;
         }
 
         return $this->tab(implode("\n\n", $templates), 2);
