@@ -27,8 +27,18 @@
             "composer/package-versions-deprecated": true
         }
     },
-    "branch-alias": {
-        "dev-master": "0.x-alpha-dev"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.x-alpha-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Handyfit\\Framework\\HandyFitServiceProvider"
+            ],
+            "aliases": {
+                "Preacher": "Handyfit\\Framework\\Support\\Facades\\Preacher"
+            }
+        }
     },
     "minimum-stability": "stable",
     "prefer-stable": true

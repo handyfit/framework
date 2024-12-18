@@ -13,7 +13,7 @@ use Handyfit\Framework\Cascade\Console\CascadeCommand;
  *
  * @author KanekiYuto
  */
-class HandyServiceProvider extends ServiceProvider
+class HandyFitServiceProvider extends ServiceProvider
 {
 
 	/**

@@ -4,6 +4,7 @@ namespace Handyfit\Framework\Support\Facades;
 
 use Closure;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Database\Eloquent\Model;
 use Handyfit\Framework\Preacher\PreacherResponse;
 
 /**
@@ -18,10 +19,11 @@ use Handyfit\Framework\Preacher\PreacherResponse;
  * @method static PreacherResponse receipt(object $data)
  * @method static PreacherResponse rows(array $data)
  * @method static PreacherResponse allow(bool $allow, mixed $pass, mixed $noPass, callable $handle = null)
- *
- * @see \Handyfit\Framework\Preacher\Builder
+ * @method static PreacherResponse model(Model $model)
  *
  * @author KanekiTuto
+ *
+ * @see    \Handyfit\Framework\Preacher\Builder
  */
 class Preacher extends Facade
 {
