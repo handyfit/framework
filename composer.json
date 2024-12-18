@@ -28,9 +28,6 @@
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "0.x-alpha-dev"
-        },
         "laravel": {
             "providers": [
                 "Handyfit\\Framework\\HandyFitServiceProvider"
