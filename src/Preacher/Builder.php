@@ -3,6 +3,7 @@
 namespace Handyfit\Framework\Preacher;
 
 use Closure;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Preacher Builder
@@ -155,6 +156,19 @@ class Builder
         }
 
         return $allow ? $pass : $noPass;
+    }
+
+    /**
+     * 设置 Eloquent 模型
+     *
+     * @param  Model  $model
+     *
+     * @return PreacherResponse
+     */
+    public static function model(Model $model): PreacherResponse
+    {
+        return (new PreacherResponse(self::getMsgActivity()))
+            ->setModel($model);
     }
 
 }
