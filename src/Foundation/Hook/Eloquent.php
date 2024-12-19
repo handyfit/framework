@@ -2,10 +2,10 @@
 
 namespace Handyfit\Framework\Foundation\Hook;
 
-use Handyfit\Framework\Support\Timestamp;
-use Illuminate\Database\Eloquent\Builder;
-use Handyfit\Framework\Trace\EloquentTrace;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Handyfit\Framework\Support\Timestamp;
+use Handyfit\Framework\Trace\EloquentTrace;
 use Handyfit\Framework\Hook\Eloquent as Hook;
 
 /**
@@ -19,7 +19,7 @@ class Eloquent extends Hook
     /**
      * 模型插入前的操作
      *
-     * @param  Model  $model
+     * @param  Model          $model
      * @param  Builder        $query
      * @param  EloquentTrace  $eloquentTrace
      *
@@ -27,7 +27,10 @@ class Eloquent extends Hook
      */
     public function performInsert(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool
     {
-        $model->setAttribute($model->getKeyName(), Timestamp::millisecond());
+        if (empty($model->getAttribute($model->getKeyName()))) {
+            $model->setAttribute($model->getKeyName(), Timestamp::millisecond());
+        }
+
         $model->setAttribute($model::CREATED_AT, Timestamp::second());
         $model->setAttribute($model::UPDATED_AT, Timestamp::second());
 
@@ -37,7 +40,7 @@ class Eloquent extends Hook
     /**
      * 模型更新前的操作
      *
-     * @param  Model  $model
+     * @param  Model          $model
      * @param  Builder        $query
      * @param  EloquentTrace  $eloquentTrace
      *
