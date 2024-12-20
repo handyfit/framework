@@ -2,18 +2,14 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Handyfit\Framework\Cascade\DiskManager;
-use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
-use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
-use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Illuminate\Support\Str;
-
-use function Laravel\Prompts\error;
-use function Laravel\Prompts\info;
+use Handyfit\Framework\Cascade\DiskManager;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use function Laravel\Prompts\note;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 
 /**
@@ -48,27 +44,6 @@ abstract class Builder
     protected TableParams $tableParams;
 
     /**
-     * Migration 参数对象
-     *
-     * @var MigrationParams
-     */
-    protected MigrationParams $migrationParams;
-
-    /**
-     * 模型参数对象
-     *
-     * @var ModelParams
-     */
-    protected ModelParams $modelParams;
-
-    /**
-     * Blueprint 参数对象
-     *
-     * @var BlueprintParams
-     */
-    protected BlueprintParams $blueprintParams;
-
-    /**
      * Schema 参数对象
      *
      * @var SchemaParams
@@ -78,29 +53,20 @@ abstract class Builder
     /**
      * 构建一个 Builder 实例
      *
-     * @param ConfigureParams $configureParams
-     * @param BlueprintParams $blueprintParams
-     * @param TableParams     $tableParams
-     * @param ModelParams     $modelParams
-     * @param MigrationParams $migrationParams
-     * @param SchemaParams    $schemaParams
+     * @param  ConfigureParams  $configureParams
+     * @param  TableParams      $tableParams
+     * @param  SchemaParams     $schemaParams
      *
      * @return void
      */
     public function __construct(
         ConfigureParams $configureParams,
-        BlueprintParams $blueprintParams,
         TableParams $tableParams,
-        ModelParams $modelParams,
-        MigrationParams $migrationParams,
         SchemaParams $schemaParams
     ) {
         $this->stub = '';
         $this->configureParams = $configureParams;
-        $this->blueprintParams = $blueprintParams;
-        $this->migrationParams = $migrationParams;
         $this->tableParams = $tableParams;
-        $this->modelParams = $modelParams;
         $this->schemaParams = $schemaParams;
     }
 
@@ -114,8 +80,8 @@ abstract class Builder
     /**
      * 替换参数至存根
      *
-     * @param string      $param
-     * @param string|bool $value
+     * @param  string       $param
+     * @param  string|bool  $value
      *
      * @return void
      */
@@ -127,9 +93,9 @@ abstract class Builder
     /**
      * 替换参数
      *
-     * @param string      $param
-     * @param string|bool $value
-     * @param string      $stub
+     * @param  string       $param
+     * @param  string|bool  $value
+     * @param  string       $stub
      *
      * @return string
      */
@@ -146,8 +112,8 @@ abstract class Builder
     /**
      * 初始化
      *
-     * @param string $classname
-     * @param string $filename
+     * @param  string  $classname
+     * @param  string  $filename
      *
      * @return bool
      */
@@ -173,7 +139,7 @@ abstract class Builder
     /**
      * 构建器唯一标识
      *
-     * @param string $classname
+     * @param  string  $classname
      *
      * @return string
      */
@@ -187,9 +153,9 @@ abstract class Builder
     /**
      * 写入存根内容到磁盘
      *
-     * @param string $classname
-     * @param string $filename
-     * @param string $folderPath
+     * @param  string  $classname
+     * @param  string  $filename
+     * @param  string  $folderPath
      *
      * @return void
      */
@@ -212,7 +178,7 @@ abstract class Builder
     /**
      * 获取 Cascade 命名空间
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */
@@ -227,7 +193,7 @@ abstract class Builder
     /**
      * 获取应用命名空间
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */
@@ -242,7 +208,7 @@ abstract class Builder
     /**
      * 获取 Cascade 磁盘路径
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */
@@ -257,7 +223,7 @@ abstract class Builder
     /**
      * 获取应用磁盘路径
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */
@@ -267,23 +233,6 @@ abstract class Builder
             $this->configureParams->getAppFilepath(),
             ...$values,
         ]);
-    }
-
-    /**
-     * 获取 Eloquent Trace 实例
-     *
-     * @return EloquentTrace
-     */
-    protected function getEloquentTrace(): EloquentTrace
-    {
-        return new EloquentTrace(
-            $this->configureParams,
-            $this->blueprintParams,
-            $this->tableParams,
-            $this->modelParams,
-            $this->migrationParams,
-            $this->schemaParams
-        );
     }
 
 }

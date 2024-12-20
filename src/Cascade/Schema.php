@@ -3,10 +3,6 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
-use Handyfit\Framework\Cascade\Params\ColumnManger;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 
 /**
  * Cascade schema
@@ -17,115 +13,95 @@ class Schema
 {
 
     /**
-     * Scheme 参数对象
+     * Schema 参数对象
      *
-     * @var SchemaParams
+     * @var Params\Schema
      */
-    private static SchemaParams $schemaParams;
-
-    private static string $action;
+    private Params\Schema $schemaParams;
 
     /**
-     * Schema 实例
+     * 行为
      *
-     * @param string $action
+     * @var string
+     */
+    private string $action;
+
+    /**
+     * 构造一个 Schema 实例
+     *
+     * @param  Params\Schema  $schemaParams
+     * @param  string         $action
      *
      * @return void
      */
-    public function __construct(string $action)
+    private function __construct(Params\Schema $schemaParams, string $action)
     {
-        static::$action = $action;
+        $this->schemaParams = $schemaParams;
+        $this->action = $action;
     }
 
     /**
-     * 初始化
+     * 构建实例并绑定到闭包
      *
-     * @param SchemaParams $schemaParams
+     * @param  Params\Schema  $schemaParams
      *
      * @return void
      */
-    public static function init(SchemaParams $schemaParams): void
+    public static function builder(Params\Schema $schemaParams): void
     {
-        static::$schemaParams = $schemaParams;
+        collect(['up', 'down'])->map(function ($action) use ($schemaParams) {
+            $callable = $schemaParams->getCallable($action);
 
-        $upCallable = static::$schemaParams->getCallable('up');
-        $downCallable = static::$schemaParams->getCallable('down');
-
-        $upCallable(new static('up'));
-        $downCallable(new static('down'));
+            $callable(new static($schemaParams, $action));
+        });
     }
 
     /**
      * 标记为 - create
      *
-     * @param Closure $callable
+     * @param  Closure  $callable
      *
      * @return void
      */
-    public static function create(Closure $callable): void
+    public function create(Closure $callable): void
     {
-        static::build(__FUNCTION__, $callable);
-    }
-
-    /**
-     * 标记为 - table
-     *
-     * @param Closure $callable
-     *
-     * @return void
-     */
-    public static function table(Closure $callable): void
-    {
-        static::build(__FUNCTION__, $callable);
-    }
-
-    /**
-     * 使用 dropIfExists
-     *
-     * @return void
-     */
-    public static function dropIfExists(): void
-    {
-        static::$schemaParams->appendCodes(
-            self::$action,
-            "Schema::dropIfExists(TheEloquentTrace::TABLE);"
-        );
+        $this->build(__FUNCTION__, $callable);
     }
 
     /**
      * Build blueprint params
      *
-     * @param string  $fn
-     * @param Closure $callable
+     * @param  string   $fn
+     * @param  Closure  $callable
      *
      * @return void
      */
-    private static function build(string $fn, Closure $callable): void
+    private function build(string $fn, Closure $callable): void
     {
-        $params = new BlueprintParams(
-            static::$schemaParams->getTable(),
+        $params = new Params\Blueprint(
+            $this->schemaParams->getTable(),
             $callable
         );
 
         $blueprintCallable = $params->getCallable();
         $blueprintCallable(new Blueprint($params));
 
-        static::cloneToManger($params->getColumns());
+        $this->cloneToManger($params->getColumns());
 
-        static::$schemaParams->setBlueprints(static::$action, $fn, $params);
+        $this->schemaParams->setBlueprints($this->action, $fn, $params);
     }
 
     /**
-     * 参数克隆至 Manger
+     * 参数克隆至 Column manger
      *
-     * @param ColumnParams[] $columns
+     * @param  Params\Column[]  $columns
      *
      * @return void
      */
-    private static function cloneToManger(array $columns): void
+    private function cloneToManger(array $columns): void
     {
-        foreach ($columns as $column) {
-            $columnManger = new ColumnManger(
+        collect($columns)->map(function ($column) {
+            $columnManger = new Params\ColumnManger(
                 $column->getField(),
                 $column->getComment(),
                 $column->getCast(),
@@ -133,8 +109,33 @@ class Schema
                 $column->isFillable()
             );
 
-            static::$schemaParams->appendColumnsManger($columnManger);
-        }
+            $this->schemaParams->appendColumnsManger($columnManger);
+        });
+    }
+
+    /**
+     * 标记为 - table
+     *
+     * @param  Closure  $callable
+     *
+     * @return void
+     */
+    public function table(Closure $callable): void
+    {
+        $this->build(__FUNCTION__, $callable);
+    }
+
+    /**
+     * 使用 dropIfExists
+     *
+     * @return void
+     */
+    public function dropIfExists(): void
+    {
+        $this->schemaParams->appendCodes(
+            $this->action,
+            "Schema::dropIfExists(TheEloquentTrace::TABLE);"
+        );
     }
 
 }

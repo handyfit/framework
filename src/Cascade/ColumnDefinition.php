@@ -164,9 +164,9 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param string|Expression $expression
+     * @param  string|Expression  $expression
      *
-     * @return LaravelColumnDefinition|ColumnDefinition
+     * @return ColumnDefinition
      */
     public function virtualAs(string|Expression $expression): self
     {

@@ -2,8 +2,8 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Handyfit\Framework\Cascade\DiskManager;
 use Illuminate\Support\Str;
+use Handyfit\Framework\Cascade\DiskManager;
 
 /**
  * 存根模板
@@ -127,5 +127,12 @@ trait Template
 
         return implode("\n", $returnStub);
     }
+
+    /**
+     * 引导构建
+     *
+     * @return void
+     */
+    abstract public function boot(): void;
 
 }
