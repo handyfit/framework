@@ -3,8 +3,8 @@
 namespace Handyfit\Framework\Cascade\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Base Command
@@ -27,16 +27,6 @@ class BaseCommand extends Command
     }
 
     /**
-     * 获取所有的 [Cascade] 文件
-     *
-     * @return array
-     */
-    protected function getCascadeFiles(): array
-    {
-        return $this->useDisk()->files();
-    }
-
-    /**
      * 使用文件驱动
      *
      * @return Filesystem
@@ -47,16 +37,6 @@ class BaseCommand extends Command
             'driver' => 'local',
             'root' => $this->getCascadePath(),
         ]);
-    }
-
-    /**
-     * 获取 [Cascade] 目录的路径
-     *
-     * @return string
-     */
-    protected function getCascadePath(): string
-    {
-        return $this->laravel->databasePath() . DIRECTORY_SEPARATOR . 'cascades';
     }
 
     /**
@@ -72,6 +52,26 @@ class BaseCommand extends Command
         })->all())->flatMap(function (array $values) {
             return $values;
         })->all();
+    }
+
+    /**
+     * 获取所有的 [Cascade] 文件
+     *
+     * @return array
+     */
+    protected function getCascadeFiles(): array
+    {
+        return $this->useDisk()->files();
+    }
+
+    /**
+     * 获取 [Cascade] 目录的路径
+     *
+     * @return string
+     */
+    protected function getCascadePath(): string
+    {
+        return $this->laravel->databasePath() . DIRECTORY_SEPARATOR . 'cascades';
     }
 
     /**

@@ -3,14 +3,14 @@
 namespace Handyfit\Framework\Support\Facades;
 
 use Closure;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Database\Eloquent\Model;
 use Handyfit\Framework\Preacher\PreacherResponse;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Facade;
 
 /**
  * Preacher Facade
  *
- * @method static void useMsgHook(Closure $closure)
+ * @method static void             useMsgHook(Closure $closure)
  * @method static PreacherResponse base()
  * @method static PreacherResponse msg(string $msg)
  * @method static PreacherResponse code(int $code)
@@ -33,7 +33,7 @@ class Preacher extends Facade
      *
      * @var string
      */
-    const FACADE_ACCESSOR = 'handy.preacher';
+    public const FACADE_ACCESSOR = 'handy.preacher';
 
     /**
      * Indicates whether the parsed Facade should be cached

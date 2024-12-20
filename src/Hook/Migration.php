@@ -2,8 +2,8 @@
 
 namespace Handyfit\Framework\Hook;
 
-use Handyfit\Framework\Trace\EloquentTrace;
 use Handyfit\Framework\Contracts\Hook\Migration as Contracts;
+use Handyfit\Framework\Trace\EloquentTrace;
 
 /**
  * [Migration] hook abstract class

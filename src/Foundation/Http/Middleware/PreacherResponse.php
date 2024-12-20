@@ -3,13 +3,13 @@
 namespace Handyfit\Framework\Foundation\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\RouteAction;
 use Handyfit\Framework\Preacher\Export;
-use Symfony\Component\HttpFoundation\Response;
-use Laravel\SerializableClosure\SerializableClosure;
 use Handyfit\Framework\Preacher\PreacherResponse as PResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\RouteAction;
+use Laravel\SerializableClosure\SerializableClosure;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 响应处理中间件
@@ -22,8 +22,8 @@ class PreacherResponse
     /**
      * 处理传入的请求
      *
-     * @param  Request  $request
-     * @param  Closure  $next
+     * @param Request $request
+     * @param Closure $next
      *
      * @return Response
      */
@@ -42,7 +42,7 @@ class PreacherResponse
     /**
      * 判定是哪种方式的 [action]
      *
-     * @param  array  $action
+     * @param array $action
      *
      * @return bool
      */
@@ -54,7 +54,7 @@ class PreacherResponse
     /**
      * 判断 [action] 是否包含序列化闭包
      *
-     * @param  array  $action
+     * @param array $action
      *
      * @return bool
      */
@@ -66,9 +66,9 @@ class PreacherResponse
     /**
      * 运行控制器方式的路由处理
      *
-     * @param  Request  $request
-     * @param  Closure  $next
-     * @param  Closure  $handle
+     * @param Request $request
+     * @param Closure $next
+     * @param Closure $handle
      *
      * @return Response
      */
@@ -94,7 +94,7 @@ class PreacherResponse
     /**
      * 转换返回的数据
      *
-     * @param  mixed  $callable
+     * @param mixed $callable
      *
      * @return JsonResponse|false
      */
@@ -114,9 +114,9 @@ class PreacherResponse
     /**
      * 运行闭包方式的路由处理
      *
-     * @param  Request  $request
-     * @param  Closure  $next
-     * @param  Closure  $handle
+     * @param Request $request
+     * @param Closure $next
+     * @param Closure $handle
      *
      * @return Response
      */

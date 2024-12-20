@@ -2,15 +2,15 @@
 
 namespace Handyfit\Framework\Cascade\Trait\Laravel;
 
-use stdClass;
+use Handyfit\Framework\Cascade\Blueprint as CascadeBlueprint;
 use Handyfit\Framework\Cascade\ColumnDefinition;
 use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
-use Handyfit\Framework\Cascade\Blueprint as CascadeBlueprint;
 use Handyfit\Framework\Cascade\Params\Migration as MigrationParams;
+use stdClass;
 
 /**
  * @todo 需要重新整合
-*/
+ */
 trait Blueprint
 {
 
@@ -19,10 +19,10 @@ trait Blueprint
     /**
      * 自动化的参数处理
      *
-     * @param  string            $fn
-     * @param  string            $column
-     * @param  array             $params
-     * @param  CascadeBlueprint  $blueprint
+     * @param string           $fn
+     * @param string           $column
+     * @param array            $params
+     * @param CascadeBlueprint $blueprint
      *
      * @return ColumnDefinition
      */
@@ -43,10 +43,10 @@ trait Blueprint
     /**
      * 把参数加入到对象树中
      *
-     * @param  string            $fn
-     * @param  string            $column
-     * @param  stdClass          $params
-     * @param  CascadeBlueprint  $blueprint
+     * @param string           $fn
+     * @param string           $column
+     * @param stdClass         $params
+     * @param CascadeBlueprint $blueprint
      *
      * @return ColumnDefinition
      */

@@ -41,10 +41,10 @@ class Model
     /**
      * 构建一个 Model Builder 参数实例
      *
-     * @param  string  $extends
-     * @param  string  $hook
-     * @param  bool    $incrementing
-     * @param  bool    $timestamps
+     * @param string $extends
+     * @param string $hook
+     * @param bool   $incrementing
+     * @param bool   $timestamps
      *
      * @return void
      */

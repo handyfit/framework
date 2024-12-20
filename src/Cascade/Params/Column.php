@@ -57,7 +57,7 @@ class Column
     /**
      * 构建一个列参数实例
      *
-     * @param  string  $field
+     * @param string $field
      *
      * @return void
      */
@@ -84,7 +84,7 @@ class Column
     /**
      * 设置是否可大量分配属性
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return static
      */
@@ -108,7 +108,7 @@ class Column
     /**
      * 设置是否隐藏属性
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return static
      */
@@ -142,7 +142,7 @@ class Column
     /**
      * 设置备注
      *
-     * @param  string  $comment
+     * @param string $comment
      *
      * @return static
      */
@@ -166,7 +166,7 @@ class Column
     /**
      * 设置应该强制转换的类型
      *
-     * @param  string  $cast
+     * @param string $cast
      *
      * @return static
      */
@@ -190,7 +190,7 @@ class Column
     /**
      * 新增 Migration 参数
      *
-     * @param  Migration  $migrationParams
+     * @param Migration $migrationParams
      *
      * @return Column
      */

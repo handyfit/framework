@@ -3,9 +3,9 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Illuminate\Contracts\Database\Query\Expression;
 use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
 use Handyfit\Framework\Cascade\Trait\Laravel\ColumnDefinition as LaravelColumnDefinition;
+use Illuminate\Contracts\Database\Query\Expression;
 
 class ColumnDefinition
 {
@@ -22,7 +22,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return ColumnDefinition
      */
@@ -36,7 +36,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string  $comment
+     * @param string $comment
      *
      * @return ColumnDefinition
      */
@@ -52,7 +52,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return ColumnDefinition
      */
@@ -66,7 +66,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  bool|string|null  $indexName
+     * @param bool|string|null $indexName
      *
      * @return ColumnDefinition
      */
@@ -80,7 +80,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  bool|string|null  $indexName
+     * @param bool|string|null $indexName
      *
      * @return ColumnDefinition
      */
@@ -94,7 +94,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -108,7 +108,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string|Expression  $expression
+     * @param string|Expression $expression
      *
      * @return ColumnDefinition
      */
@@ -119,11 +119,10 @@ class ColumnDefinition
         ], $this);
     }
 
-
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  mixed  $value
+     * @param mixed $value
      *
      * @return ColumnDefinition
      */
@@ -137,7 +136,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  int  $startingValue
+     * @param int $startingValue
      *
      * @return ColumnDefinition
      */
@@ -151,7 +150,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string  $charset
+     * @param string $charset
      *
      * @return ColumnDefinition
      */
@@ -165,7 +164,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string|Expression  $expression
+     * @param string|Expression $expression
      *
      * @return LaravelColumnDefinition|ColumnDefinition
      */
@@ -179,7 +178,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string|Expression|null  $expression
+     * @param string|Expression|null $expression
      *
      * @return ColumnDefinition
      */
@@ -253,7 +252,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string  $collation
+     * @param string $collation
      *
      * @return ColumnDefinition
      */
@@ -287,7 +286,7 @@ class ColumnDefinition
     /**
      * 标记为隐藏列
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return ColumnDefinition
      */
@@ -301,7 +300,7 @@ class ColumnDefinition
     /**
      * 标记为可填充列
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return ColumnDefinition
      */
@@ -315,7 +314,7 @@ class ColumnDefinition
     /**
      * 指定转换类型
      *
-     * @param  Closure|string  $value
+     * @param Closure|string $value
      *
      * @return ColumnDefinition
      */

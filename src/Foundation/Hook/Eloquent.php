@@ -2,11 +2,11 @@
 
 namespace Handyfit\Framework\Foundation\Hook;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use Handyfit\Framework\Hook\Eloquent as Hook;
 use Handyfit\Framework\Support\Timestamp;
 use Handyfit\Framework\Trace\EloquentTrace;
-use Handyfit\Framework\Hook\Eloquent as Hook;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * 基础的模型 - Hook
@@ -19,9 +19,9 @@ class Eloquent extends Hook
     /**
      * 模型插入前的操作
      *
-     * @param  Model          $model
-     * @param  Builder        $query
-     * @param  EloquentTrace  $eloquentTrace
+     * @param Model         $model
+     * @param Builder       $query
+     * @param EloquentTrace $eloquentTrace
      *
      * @return bool
      */
@@ -40,9 +40,9 @@ class Eloquent extends Hook
     /**
      * 模型更新前的操作
      *
-     * @param  Model          $model
-     * @param  Builder        $query
-     * @param  EloquentTrace  $eloquentTrace
+     * @param Model         $model
+     * @param Builder       $query
+     * @param EloquentTrace $eloquentTrace
      *
      * @return bool
      */

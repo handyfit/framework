@@ -29,8 +29,8 @@ class Migration
     /**
      * 构造一个 Migration 参数实例
      *
-     * @param  string    $fn
-     * @param  stdClass  $params
+     * @param string   $fn
+     * @param stdClass $params
      *
      * @return void
      */

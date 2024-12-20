@@ -2,8 +2,8 @@
 
 namespace Handyfit\Framework\Foundation\Database\Eloquent\Casts;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * [Eloquent] cast abstract class
@@ -16,10 +16,10 @@ abstract class Cast implements CastsAttributes
     /**
      * 对提取的数据进行转换
      *
-     * @param  Model   $model
-     * @param  string  $key
-     * @param  mixed   $value
-     * @param  array   $attributes
+     * @param Model  $model
+     * @param string $key
+     * @param mixed  $value
+     * @param array  $attributes
      *
      * @return string
      */
@@ -28,10 +28,10 @@ abstract class Cast implements CastsAttributes
     /**
      * 转换为将被存储的值
      *
-     * @param  Model   $model
-     * @param  string  $key
-     * @param  array   $value
-     * @param  array   $attributes
+     * @param Model  $model
+     * @param string $key
+     * @param array  $value
+     * @param array  $attributes
      *
      * @return int
      */

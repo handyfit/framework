@@ -10,14 +10,14 @@ namespace Handyfit\Framework\Support;
 class IdeIgnore
 {
 
-	/**
-	 * Ignore unused parameters
-	 *
-	 * @param  mixed  $field
-	 */
-	public static function noUseParam(mixed ...$field): void
-	{
-		// ...
-	}
+    /**
+     * Ignore unused parameters
+     *
+     * @param mixed $field
+     */
+    public static function noUseParam(mixed ...$field): void
+    {
+        // ...
+    }
 
 }

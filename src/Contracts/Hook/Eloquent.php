@@ -2,9 +2,9 @@
 
 namespace Handyfit\Framework\Contracts\Hook;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Handyfit\Framework\Trace\EloquentTrace;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * [Eloquent] hook interface
@@ -17,9 +17,9 @@ interface Eloquent
     /**
      * 模型插入前的操作
      *
-     * @param  Model          $model
-     * @param  Builder        $query
-     * @param  EloquentTrace  $eloquentTrace
+     * @param Model         $model
+     * @param Builder       $query
+     * @param EloquentTrace $eloquentTrace
      *
      * @return bool
      */
@@ -28,9 +28,9 @@ interface Eloquent
     /**
      * 模型更新前的操作
      *
-     * @param  Model          $model
-     * @param  Builder        $query
-     * @param  EloquentTrace  $eloquentTrace
+     * @param Model         $model
+     * @param Builder       $query
+     * @param EloquentTrace $eloquentTrace
      *
      * @return bool
      */

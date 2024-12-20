@@ -2,17 +2,19 @@
 
 namespace Handyfit\Framework\Cascade\Console;
 
-use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
 use Handyfit\Framework\Cascade\Cascade;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Handyfit\Framework\Console\Trait\ConfirmableTrait;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use function Laravel\Prompts\info;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+
 use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\warning;
-use function Laravel\Prompts\multiselect;
+
+use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'handyfit:cascade')]
 class CascadeCommand extends BaseCommand
@@ -81,7 +83,7 @@ class CascadeCommand extends BaseCommand
     /**
      * Run the cascade
      *
-     * @param  string  $filepath
+     * @param string $filepath
      *
      * @return int
      */
