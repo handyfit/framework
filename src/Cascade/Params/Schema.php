@@ -50,8 +50,8 @@ class Schema
     /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param  string     $table
-     * @param  Closure[]  $callable
+     * @param string    $table
+     * @param Closure[] $callable
      *
      * @return void
      */
@@ -75,19 +75,19 @@ class Schema
     /**
      * 获取回调闭包
      *
-     * @param  string  $action
+     * @param string $action
      *
      * @return Closure
      */
     public function getCallable(string $action): Closure
     {
-        return $this->callable[$action] ?? fn() => null;
+        return $this->callable[$action] ?? fn () => null;
     }
 
     /**
      * 获取蓝图集
      *
-     * @param  string  $action
+     * @param string $action
      *
      * @return Blueprint[]
      */
@@ -99,9 +99,9 @@ class Schema
     /**
      * 新增蓝图信息
      *
-     * @param  string     $action
-     * @param  string     $fn
-     * @param  Blueprint  $blueprint
+     * @param string    $action
+     * @param string    $fn
+     * @param Blueprint $blueprint
      *
      * @return void
      */
@@ -127,7 +127,7 @@ class Schema
     /**
      * 新增列管理信息
      *
-     * @param  ColumnManger  $columnManger
+     * @param ColumnManger $columnManger
      *
      * @return void
      */
@@ -151,8 +151,8 @@ class Schema
     /**
      * 新增代码
      *
-     * @param  string  $action
-     * @param  string  $value
+     * @param string $action
+     * @param string $value
      *
      * @return void
      */

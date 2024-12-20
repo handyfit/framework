@@ -23,7 +23,7 @@ class Builder
     /**
      * 使用消息生命周期
      *
-     * @param  Closure  $closure
+     * @param Closure $closure
      */
     public static function useMsgHook(Closure $closure): void
     {
@@ -41,25 +41,9 @@ class Builder
     }
 
     /**
-     * 获取消息的生命周期
-     *
-     * @return Closure
-     */
-    private static function getMsgActivity(): Closure
-    {
-        if (!isset(self::$msgHook)) {
-            return function (string $message) {
-                return $message;
-            };
-        }
-
-        return self::$msgHook;
-    }
-
-    /**
      * 等同于 [setMsg()]
      *
-     * @param  string  $msg
+     * @param string $msg
      *
      * @return PreacherResponse
      */
@@ -72,7 +56,7 @@ class Builder
     /**
      * 等同于 [setCode()]
      *
-     * @param  int  $code
+     * @param int $code
      *
      * @return PreacherResponse
      */
@@ -85,8 +69,8 @@ class Builder
     /**
      * 同时设置 [msg] 和 [code]
      *
-     * @param  int     $code
-     * @param  string  $msg
+     * @param int    $code
+     * @param string $msg
      *
      * @return PreacherResponse
      */
@@ -100,10 +84,10 @@ class Builder
     /**
      * 等同于 [setPaging]
      *
-     * @param  int    $page
-     * @param  int    $prePage
-     * @param  int    $total
-     * @param  array  $data
+     * @param int   $page
+     * @param int   $prePage
+     * @param int   $total
+     * @param array $data
      *
      * @return PreacherResponse
      */
@@ -116,7 +100,7 @@ class Builder
     /**
      * 等同于 [setReceipt]
      *
-     * @param  object  $data
+     * @param object $data
      *
      * @return PreacherResponse
      */
@@ -129,7 +113,7 @@ class Builder
     /**
      * 等同于 [setRows]
      *
-     * @param  array  $data
+     * @param array $data
      *
      * @return PreacherResponse
      */
@@ -142,10 +126,10 @@ class Builder
     /**
      * 验证并返回预设
      *
-     * @param  bool              $allow
-     * @param  PreacherResponse  $pass
-     * @param  PreacherResponse  $noPass
-     * @param  callable|null     $handle
+     * @param bool             $allow
+     * @param PreacherResponse $pass
+     * @param PreacherResponse $noPass
+     * @param callable|null    $handle
      *
      * @return PreacherResponse
      */
@@ -161,7 +145,7 @@ class Builder
     /**
      * 设置 Eloquent 模型
      *
-     * @param  Model  $model
+     * @param Model $model
      *
      * @return PreacherResponse
      */
@@ -169,6 +153,22 @@ class Builder
     {
         return (new PreacherResponse(self::getMsgActivity()))
             ->setModel($model);
+    }
+
+    /**
+     * 获取消息的生命周期
+     *
+     * @return Closure
+     */
+    private static function getMsgActivity(): Closure
+    {
+        if (!isset(self::$msgHook)) {
+            return function (string $message) {
+                return $message;
+            };
+        }
+
+        return self::$msgHook;
     }
 
 }

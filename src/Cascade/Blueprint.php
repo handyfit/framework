@@ -25,7 +25,7 @@ class Blueprint
     /**
      * 构建一个 Blueprint 实例
      *
-     * @param  BlueprintParams  $blueprintParams
+     * @param BlueprintParams $blueprintParams
      *
      * @return void
      */
@@ -37,8 +37,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string    $column
-     * @param  int|null  $length
+     * @param string   $column
+     * @param int|null $length
      *
      * @return ColumnDefinition
      */
@@ -53,9 +53,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string    $column
-     * @param  int|null  $length
-     * @param  bool      $fixed
+     * @param string   $column
+     * @param int|null $length
+     * @param bool     $fixed
      *
      * @return ColumnDefinition
      */
@@ -71,8 +71,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -87,8 +87,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -103,9 +103,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $total
-     * @param  int     $places
+     * @param string $column
+     * @param int    $total
+     * @param int    $places
      *
      * @return ColumnDefinition
      */
@@ -121,8 +121,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  array   $allowed
+     * @param string $column
+     * @param array  $allowed
      *
      * @return ColumnDefinition
      */
@@ -137,8 +137,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -153,8 +153,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $length
+     * @param string $column
+     * @param int    $length
      *
      * @return ColumnDefinition
      */
@@ -169,9 +169,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string       $column
-     * @param  string|null  $subtype
-     * @param  int          $srid
+     * @param string      $column
+     * @param string|null $subtype
+     * @param int         $srid
      *
      * @return ColumnDefinition
      */
@@ -187,9 +187,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string       $column
-     * @param  string|null  $subtype
-     * @param  int          $srid
+     * @param string      $column
+     * @param string|null $subtype
+     * @param int         $srid
      *
      * @return ColumnDefinition
      */
@@ -205,8 +205,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  array   $allowed
+     * @param string $column
+     * @param array  $allowed
      *
      * @return ColumnDefinition
      */
@@ -221,8 +221,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $length
+     * @param string $column
+     * @param int    $length
      *
      * @return ColumnDefinition
      */
@@ -237,9 +237,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
-     * @param  bool    $unsigned
+     * @param string $column
+     * @param bool   $autoIncrement
+     * @param bool   $unsigned
      *
      * @return ColumnDefinition
      */
@@ -255,9 +255,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
-     * @param  bool    $unsigned
+     * @param string $column
+     * @param bool   $autoIncrement
+     * @param bool   $unsigned
      *
      * @return ColumnDefinition
      */
@@ -273,9 +273,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
-     * @param  bool    $unsigned
+     * @param string $column
+     * @param bool   $autoIncrement
+     * @param bool   $unsigned
      *
      * @return ColumnDefinition
      */
@@ -291,9 +291,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
-     * @param  bool    $unsigned
+     * @param string $column
+     * @param bool   $autoIncrement
+     * @param bool   $unsigned
      *
      * @return ColumnDefinition
      */
@@ -309,9 +309,9 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
-     * @param  bool    $unsigned
+     * @param string $column
+     * @param bool   $autoIncrement
+     * @param bool   $unsigned
      *
      * @return ColumnDefinition
      */
@@ -327,8 +327,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
+     * @param string $column
+     * @param bool   $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -343,8 +343,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
+     * @param string $column
+     * @param bool   $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -359,8 +359,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
+     * @param string $column
+     * @param bool   $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -375,8 +375,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
+     * @param string $column
+     * @param bool   $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -391,8 +391,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  bool    $autoIncrement
+     * @param string $column
+     * @param bool   $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -407,8 +407,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -423,8 +423,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -439,8 +439,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -455,8 +455,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -471,8 +471,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -487,8 +487,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
-     * @param  int     $precision
+     * @param string $column
+     * @param int    $precision
      *
      * @return ColumnDefinition
      */
@@ -503,7 +503,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -517,7 +517,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -531,7 +531,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -545,7 +545,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -559,7 +559,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -573,7 +573,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -587,7 +587,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -601,7 +601,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -615,7 +615,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -629,7 +629,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -643,7 +643,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -657,7 +657,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -671,7 +671,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -685,7 +685,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -699,7 +699,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -713,7 +713,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -727,7 +727,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -741,7 +741,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -755,7 +755,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -769,7 +769,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -783,7 +783,7 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -797,8 +797,8 @@ class Blueprint
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param  string  $name
-     * @param  null    $indexName
+     * @param string $name
+     * @param null   $indexName
      *
      * @return void
      */

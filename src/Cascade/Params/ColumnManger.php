@@ -48,11 +48,11 @@ class ColumnManger
     /**
      * 构建一个列参数实例
      *
-     * @param  string  $field
-     * @param  string  $comment
-     * @param  string  $cast
-     * @param  bool    $hidden
-     * @param  bool    $fillable
+     * @param string $field
+     * @param string $comment
+     * @param string $cast
+     * @param bool   $hidden
+     * @param bool   $fillable
      */
     public function __construct(string $field, string $comment, string $cast, bool $hidden, bool $fillable)
     {

@@ -3,9 +3,9 @@
 namespace Handyfit\Framework\Preacher;
 
 use Closure;
-use stdClass;
-use Illuminate\Database\Eloquent\Model;
 use Handyfit\Framework\Preacher\Trait\DefaultConst;
+use Illuminate\Database\Eloquent\Model;
+use stdClass;
 
 /**
  * Preacher
@@ -55,9 +55,9 @@ class PreacherResponse
     /**
      * 构造一个 [Preacher] 实例
      *
-     * @param  Closure  $msgActivity
-     * @param  int      $code
-     * @param  string   $msg
+     * @param Closure $msgActivity
+     * @param int     $code
+     * @param string  $msg
      *
      * @return void
      */
@@ -72,10 +72,10 @@ class PreacherResponse
     /**
      * 设置分页信息
      *
-     * @param  int    $page
-     * @param  int    $prePage
-     * @param  int    $total
-     * @param  array  $rows
+     * @param int   $page
+     * @param int   $prePage
+     * @param int   $total
+     * @param array $rows
      *
      * @return static
      */
@@ -108,7 +108,7 @@ class PreacherResponse
     /**
      * 设置回执信息
      *
-     * @param  stdClass  $value
+     * @param stdClass $value
      *
      * @return static
      */
@@ -122,7 +122,7 @@ class PreacherResponse
     /**
      * 合并回执信息
      *
-     * @param  stdClass  $value
+     * @param stdClass $value
      *
      * @return PreacherResponse
      */
@@ -149,7 +149,7 @@ class PreacherResponse
     /**
      * 设置行数据
      *
-     * @param  array  $value
+     * @param array $value
      *
      * @return static
      */
@@ -163,7 +163,7 @@ class PreacherResponse
     /**
      * 合并行信息
      *
-     * @param  array  $value
+     * @param array $value
      *
      * @return PreacherResponse
      */
@@ -223,7 +223,7 @@ class PreacherResponse
     /**
      * 设置响应状态码
      *
-     * @param  int  $code
+     * @param int $code
      *
      * @return static
      */
@@ -247,7 +247,7 @@ class PreacherResponse
     /**
      * 设置响应消息
      *
-     * @param  string  $msg
+     * @param string $msg
      *
      * @return static
      */
@@ -272,7 +272,7 @@ class PreacherResponse
     /**
      * 设置 Eloquent 模型
      *
-     * @param  Model  $model
+     * @param Model $model
      *
      * @return static
      */

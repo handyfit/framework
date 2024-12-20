@@ -2,8 +2,8 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Illuminate\Support\Str;
 use Handyfit\Framework\Cascade\DiskManager;
+use Illuminate\Support\Str;
 
 /**
  * 存根模板
@@ -18,13 +18,13 @@ trait Template
     /**
      * 制表
      *
-     * @param  string  $string
-     * @param  int     $quantity
-     * @param  bool    $first
+     * @param string $string
+     * @param int    $quantity
+     * @param bool   $first
      *
      * @return string
      */
-    protected final function tab(string $string, int $quantity, bool $first = true): string
+    final protected function tab(string $string, int $quantity, bool $first = true): string
     {
         $string = explode("\n", $string);
         $tabString = [];
@@ -43,12 +43,12 @@ trait Template
     /**
      * 常量声明模板
      *
-     * @param  string        $const
-     * @param  string|array  $value
+     * @param string       $const
+     * @param string|array $value
      *
      * @return string
      */
-    protected final function templateConst(string $const, string|array $value): string
+    final protected function templateConst(string $const, string|array $value): string
     {
         $value = match (gettype($value)) {
             'array' => '[' . implode(', ', $value) . ']',
@@ -69,12 +69,12 @@ trait Template
     /**
      * 属性注释模板
      *
-     * @param  string  $comment
-     * @param  string  $var
+     * @param string $comment
+     * @param string $var
      *
      * @return string
      */
-    protected final function templatePropertyComment(string $comment, string $var): string
+    final protected function templatePropertyComment(string $comment, string $var): string
     {
         $stubsDisk = DiskManager::stubDisk();
         $stub = $stubsDisk->get('template.comment.property.stub');
@@ -89,11 +89,11 @@ trait Template
     /**
      * 存根代码格式化
      *
-     * @param  string  $stub
+     * @param string $stub
      *
      * @return string
      */
-    protected final function formattingStub(string $stub): string
+    final protected function formattingStub(string $stub): string
     {
         $stubArray = explode("\n", $stub);
         $recordRow = [];

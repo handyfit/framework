@@ -15,7 +15,7 @@ interface Migration
     /**
      * 执行迁移时之前触发
      *
-     * @param  EloquentTrace  $eloquentTrace
+     * @param EloquentTrace $eloquentTrace
      *
      * @return void
      */
@@ -24,7 +24,7 @@ interface Migration
     /**
      * 执行迁移时之后触发
      *
-     * @param  EloquentTrace  $eloquentTrace
+     * @param EloquentTrace $eloquentTrace
      *
      * @return void
      */
@@ -33,7 +33,7 @@ interface Migration
     /**
      * 回滚迁移时之前触发
      *
-     * @param  EloquentTrace  $eloquentTrace
+     * @param EloquentTrace $eloquentTrace
      *
      * @return void
      */
@@ -42,7 +42,7 @@ interface Migration
     /**
      * 回滚迁移时之后触发
      *
-     * @param  EloquentTrace  $eloquentTrace
+     * @param EloquentTrace $eloquentTrace
      *
      * @return void
      */

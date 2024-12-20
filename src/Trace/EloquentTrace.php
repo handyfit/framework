@@ -15,20 +15,20 @@ class EloquentTrace
      *
      * @var string
      */
-    const TABLE = '';
+    public const TABLE = '';
 
     /**
      * 隐藏的属性
      *
      * @var array<int, string>
      */
-    const HIDDEN = [];
+    public const HIDDEN = [];
 
     /**
      * 可填充的属性
      *
      * @var array<int, string>
      */
-    const FILLABLE = [];
+    public const FILLABLE = [];
 
 }

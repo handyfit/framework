@@ -37,8 +37,8 @@ class Blueprint
     /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param  string   $table
-     * @param  Closure  $callable
+     * @param string  $table
+     * @param Closure $callable
      *
      * @return void
      */
@@ -82,7 +82,7 @@ class Blueprint
     /**
      * 新增列信息
      *
-     * @param  Column  $column
+     * @param Column $column
      *
      * @return void
      */

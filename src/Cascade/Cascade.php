@@ -3,18 +3,18 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Handyfit\Framework\Cascade\Builder\EloquentTrace as EloquentTraceBuilder;
+use Handyfit\Framework\Cascade\Builder\Migration as MigrationBuilder;
 use Handyfit\Framework\Cascade\Builder\Model as ModelBuilder;
-use Illuminate\Database\Eloquent\Model as LaravelEloquentModel;
+use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
+use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
 use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Builder\Migration as MigrationBuilder;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
-use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
 use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
-use Handyfit\Framework\Cascade\Builder\EloquentTrace as EloquentTraceBuilder;
+use Illuminate\Database\Eloquent\Model as LaravelEloquentModel;
 
 /**
  * Cascade
@@ -89,10 +89,10 @@ class Cascade
             false
         );
 
-        $this->blueprintParams = new BlueprintParams('default', fn() => null);
+        $this->blueprintParams = new BlueprintParams('default', fn () => null);
         $this->schemaParams = new SchemaParams('default', [
-            'up' => fn() => null,
-            'down' => fn() => null,
+            'up' => fn () => null,
+            'down' => fn () => null,
         ]);
     }
 
@@ -109,8 +109,8 @@ class Cascade
     /**
      * 设置 - 【Table】
      *
-     * @param  string  $table
-     * @param  string  $comment
+     * @param string $table
+     * @param string $comment
      *
      * @return static
      */
@@ -124,9 +124,9 @@ class Cascade
     /**
      * 设置 - 【Migration】
      *
-     * @param  string       $filename
-     * @param  string       $comment
-     * @param  string|null  $hook
+     * @param string      $filename
+     * @param string      $comment
+     * @param string|null $hook
      *
      * @return static
      */
@@ -144,10 +144,10 @@ class Cascade
     /**
      * 设置 - [Model]
      *
-     * @param  string       $extends
-     * @param  string|null  $hook
-     * @param  bool         $incrementing
-     * @param  bool         $timestamps
+     * @param string      $extends
+     * @param string|null $hook
+     * @param bool        $incrementing
+     * @param bool        $timestamps
      *
      * @return static
      */
@@ -169,7 +169,7 @@ class Cascade
     /**
      * 设置 - [Blueprint]
      *
-     * @param  Closure  $callable
+     * @param Closure $callable
      *
      * @return static
      */
@@ -190,8 +190,8 @@ class Cascade
     /**
      * 设置 Schema
      *
-     * @param  Closure  $up
-     * @param  Closure  $down
+     * @param Closure $up
+     * @param Closure $down
      *
      * @return static
      */

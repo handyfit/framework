@@ -2,11 +2,13 @@
 
 namespace Handyfit\Framework\Cascade\Trait\Laravel;
 
-use stdClass;
 use Exception;
-use ReflectionMethod;
 use Illuminate\Support\Str;
+
 use function Laravel\Prompts\error;
+
+use ReflectionMethod;
+use stdClass;
 
 /**
  * @todo 需要重新整合
@@ -17,9 +19,9 @@ trait Helper
     /**
      * 自动判断是否需要使用方法参数 [如果值不是默认的话]
      *
-     * @param  string  $class
-     * @param  string  $fn
-     * @param  array   $params
+     * @param string $class
+     * @param string $fn
+     * @param array  $params
      *
      * @return stdClass
      */

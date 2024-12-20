@@ -2,8 +2,8 @@
 
 namespace Handyfit\Framework\Foundation\Hook;
 
-use Handyfit\Framework\Trace\EloquentTrace;
 use Handyfit\Framework\Hook\Migration as Hook;
+use Handyfit\Framework\Trace\EloquentTrace;
 
 /**
  * 基础的迁移 - Hook

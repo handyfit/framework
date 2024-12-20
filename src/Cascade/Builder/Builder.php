@@ -2,17 +2,18 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Illuminate\Support\Str;
 use Handyfit\Framework\Cascade\DiskManager;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
 use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
-use function Laravel\Prompts\note;
-use function Laravel\Prompts\info;
+use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
+use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Illuminate\Support\Str;
+
 use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\note;
 use function Laravel\Prompts\warning;
 
 /**
@@ -31,7 +32,6 @@ abstract class Builder
      * @var string
      */
     protected string $stub;
-
 
     /**
      * 配置参数对象
@@ -78,12 +78,12 @@ abstract class Builder
     /**
      * 构建一个 Builder 实例
      *
-     * @param  ConfigureParams  $configureParams
-     * @param  BlueprintParams  $blueprintParams
-     * @param  TableParams      $tableParams
-     * @param  ModelParams      $modelParams
-     * @param  MigrationParams  $migrationParams
-     * @param  SchemaParams     $schemaParams
+     * @param ConfigureParams $configureParams
+     * @param BlueprintParams $blueprintParams
+     * @param TableParams     $tableParams
+     * @param ModelParams     $modelParams
+     * @param MigrationParams $migrationParams
+     * @param SchemaParams    $schemaParams
      *
      * @return void
      */
@@ -114,12 +114,12 @@ abstract class Builder
     /**
      * 替换参数至存根
      *
-     * @param  string       $param
-     * @param  string|bool  $value
+     * @param string      $param
+     * @param string|bool $value
      *
      * @return void
      */
-    protected final function stubParam(string $param, string|bool $value): void
+    final protected function stubParam(string $param, string|bool $value): void
     {
         $this->stub = $this->param($param, $value, $this->stub);
     }
@@ -127,13 +127,13 @@ abstract class Builder
     /**
      * 替换参数
      *
-     * @param  string       $param
-     * @param  string|bool  $value
-     * @param  string       $stub
+     * @param string      $param
+     * @param string|bool $value
+     * @param string      $stub
      *
      * @return string
      */
-    protected final function param(string $param, string|bool $value, string $stub): string
+    final protected function param(string $param, string|bool $value, string $stub): string
     {
         $value = match (gettype($value)) {
             'boolean' => $value ? 'true' : 'false',
@@ -146,12 +146,12 @@ abstract class Builder
     /**
      * 初始化
      *
-     * @param  string  $classname
-     * @param  string  $filename
+     * @param string $classname
+     * @param string $filename
      *
      * @return bool
      */
-    protected final function init(string $classname, string $filename): bool
+    final protected function init(string $classname, string $filename): bool
     {
         $classname = $this->builderUUid($classname);
 
@@ -173,11 +173,11 @@ abstract class Builder
     /**
      * 构建器唯一标识
      *
-     * @param  string  $classname
+     * @param string $classname
      *
      * @return string
      */
-    protected final function builderUUid(string $classname): string
+    final protected function builderUUid(string $classname): string
     {
         $classname = collect(explode('\\', $classname))->last();
 
@@ -187,13 +187,13 @@ abstract class Builder
     /**
      * 写入存根内容到磁盘
      *
-     * @param  string  $classname
-     * @param  string  $filename
-     * @param  string  $folderPath
+     * @param string $classname
+     * @param string $filename
+     * @param string $folderPath
      *
      * @return void
      */
-    protected final function put(string $classname, string $filename, string $folderPath): void
+    final protected function put(string $classname, string $filename, string $folderPath): void
     {
         $classname = $this->builderUUid($classname);
 
@@ -212,11 +212,11 @@ abstract class Builder
     /**
      * 获取 Cascade 命名空间
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */
-    protected final function getCascadeNamespace(array $values): string
+    final protected function getCascadeNamespace(array $values): string
     {
         return $this->getAppNamespace([
             $this->configureParams->getCascadeNamespace(),
@@ -227,11 +227,11 @@ abstract class Builder
     /**
      * 获取应用命名空间
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */
-    protected final function getAppNamespace(array $values): string
+    final protected function getAppNamespace(array $values): string
     {
         return implode('\\', [
             $this->configureParams->getAppNamespace(),
@@ -242,11 +242,11 @@ abstract class Builder
     /**
      * 获取 Cascade 磁盘路径
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */
-    protected final function getCascadeFilepath(array $values): string
+    final protected function getCascadeFilepath(array $values): string
     {
         return $this->getAppFilepath([
             $this->configureParams->getCascadeFilepath(),
@@ -257,11 +257,11 @@ abstract class Builder
     /**
      * 获取应用磁盘路径
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */
-    protected final function getAppFilepath(array $values): string
+    final protected function getAppFilepath(array $values): string
     {
         return implode(DIRECTORY_SEPARATOR, [
             $this->configureParams->getAppFilepath(),

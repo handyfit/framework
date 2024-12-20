@@ -3,13 +3,13 @@
 namespace Handyfit\Framework\Foundation\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
-use Illuminate\Routing\RouteAction;
 use Handyfit\Framework\Preacher\Export;
-use Symfony\Component\HttpFoundation\Response;
-use Laravel\SerializableClosure\SerializableClosure;
 use Handyfit\Framework\Preacher\PreacherResponse as PResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\RouteAction;
+use Laravel\SerializableClosure\SerializableClosure;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 响应处理中间件
@@ -22,8 +22,8 @@ class PreacherResponse
     /**
      * 处理传入的请求
      *
-     * @param  Request  $request
-     * @param  Closure  $next
+     * @param Request $request
+     * @param Closure $next
      *
      * @return Response
      */
@@ -32,34 +32,17 @@ class PreacherResponse
         $route = $request->route();
         $action = $route->getAction();
 
-        // 无论是控制器处理的请求还是闭包处理的请求，他们最终都应该被以闭包的方式返回
-        $handle = function (mixed $callable, Route $route) {
-            if ($callable instanceof PResponse) {
-                $route->uses(function () use ($callable) {
-                    return $callable->export()->json();
-                });
-            }
-
-            if ($callable instanceof Export) {
-                $route->uses(function () use ($callable) {
-                    return $callable->json();
-                });
-            }
-
-            return false;
-        };
-
         if ($this->isControllerAction($action)) {
-            return $this->runController($request, $next, $handle);
+            return $this->runController($request, $next);
         }
 
-        return $this->runCallable($request, $next, $handle);
+        return $this->runCallable($request, $next);
     }
 
     /**
      * 判定是哪种方式的 [action]
      *
-     * @param  array  $action
+     * @param array $action
      *
      * @return bool
      */
@@ -71,7 +54,7 @@ class PreacherResponse
     /**
      * 判断 [action] 是否包含序列化闭包
      *
-     * @param  array  $action
+     * @param array $action
      *
      * @return bool
      */
@@ -83,38 +66,61 @@ class PreacherResponse
     /**
      * 运行控制器方式的路由处理
      *
-     * @param  Request  $request
-     * @param  Closure  $next
-     * @param  Closure  $handle
+     * @param Request $request
+     * @param Closure $next
+     * @param Closure $handle
      *
      * @return Response
      */
-    protected function runController(Request $request, Closure $next, Closure $handle): Response
+    protected function runController(Request $request, Closure $next): Response
     {
         $route = $request->route();
 
-        $callable = $route->controllerDispatcher()
-            ->dispatch($route, $route->getController(), $route->getActionMethod());
+        $callable = $route->controllerDispatcher()->dispatch(
+            $route,
+            $route->getController(),
+            $route->getActionMethod()
+        );
 
-        $handleResult = $handle($callable, $route);
+        $convertResult = $this->convert($callable);
 
-        if ($handleResult !== false) {
-            return $handleResult;
+        if ($convertResult !== false) {
+            return $convertResult;
         }
 
         return $next($request);
     }
 
     /**
+     * 转换返回的数据
+     *
+     * @param mixed $callable
+     *
+     * @return JsonResponse|false
+     */
+    protected function convert(mixed $callable): JsonResponse|false
+    {
+        if ($callable instanceof PResponse) {
+            return $callable->export()->json();
+        }
+
+        if ($callable instanceof Export) {
+            return $callable->json();
+        }
+
+        return false;
+    }
+
+    /**
      * 运行闭包方式的路由处理
      *
-     * @param  Request  $request
-     * @param  Closure  $next
-     * @param  Closure  $handle
+     * @param Request $request
+     * @param Closure $next
+     * @param Closure $handle
      *
      * @return Response
      */
-    protected function runCallable(Request $request, Closure $next, Closure $handle): Response
+    protected function runCallable(Request $request, Closure $next): Response
     {
         $route = $request->route();
         $action = $route->getAction();
@@ -126,12 +132,10 @@ class PreacherResponse
                 $callable = $callable->getClosure();
             }
 
-            $callable = $callable();
+            $convertResult = $this->convert($callable());
 
-            $handleResult = $handle($callable, $route);
-
-            if ($handleResult !== false) {
-                return $handleResult;
+            if ($convertResult !== false) {
+                return $convertResult;
             }
         }
 

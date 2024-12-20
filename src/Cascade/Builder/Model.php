@@ -2,15 +2,14 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-
-use Illuminate\Support\Str;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
+use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Configure\EloquentModel as BuilderParams;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Illuminate\Support\Str;
 
 /**
  * Model builder
@@ -58,12 +57,12 @@ class Model extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param  ConfigureParams  $configureParams
-     * @param  BlueprintParams  $blueprintParams
-     * @param  TableParams      $tableParams
-     * @param  ModelParams      $modelParams
-     * @param  MigrationParams  $migrationParams
-     * @param  SchemaParams     $schemaParams
+     * @param ConfigureParams $configureParams
+     * @param BlueprintParams $blueprintParams
+     * @param TableParams     $tableParams
+     * @param ModelParams     $modelParams
+     * @param MigrationParams $migrationParams
+     * @param SchemaParams    $schemaParams
      *
      * @return void
      */
@@ -198,7 +197,7 @@ class Model extends Builder
     /**
      * 加入到包中
      *
-     * @param  string  $value
+     * @param string $value
      *
      * @return void
      */

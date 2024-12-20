@@ -34,9 +34,9 @@ class Migration
     /**
      * 构建一个 Migration Builder 参数实例
      *
-     * @param  string  $filename
-     * @param  string  $comment
-     * @param  string  $hook
+     * @param string $filename
+     * @param string $comment
+     * @param string $hook
      *
      * @return void
      */

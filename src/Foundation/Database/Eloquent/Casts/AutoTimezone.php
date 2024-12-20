@@ -2,13 +2,13 @@
 
 namespace Handyfit\Framework\Foundation\Database\Eloquent\Casts;
 
-use Exception;
-use DateTimeZone;
 use DateTimeImmutable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Request;
+use DateTimeZone;
+use Exception;
 use Handyfit\Framework\Support\IdeIgnore;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Request;
 
 /**
  * [Eloquent - Cast] 自动时间转换
@@ -21,10 +21,10 @@ class AutoTimezone implements CastsAttributes
     /**
      * 对提取的数据进行转换
      *
-     * @param  Model   $model
-     * @param  string  $key
-     * @param  mixed   $value
-     * @param  array   $attributes
+     * @param Model  $model
+     * @param string $key
+     * @param mixed  $value
+     * @param array  $attributes
      *
      * @return string
      */
@@ -46,10 +46,10 @@ class AutoTimezone implements CastsAttributes
     /**
      * 转换为将被存储的值
      *
-     * @param  Model   $model
-     * @param  string  $key
-     * @param  array   $value
-     * @param  array   $attributes
+     * @param Model  $model
+     * @param string $key
+     * @param array  $value
+     * @param array  $attributes
      *
      * @return int
      */

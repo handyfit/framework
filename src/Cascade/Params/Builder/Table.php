@@ -43,8 +43,8 @@ class Table
     /**
      * 构建一个 Table Builder 参数实例
      *
-     * @param  string  $table
-     * @param  string  $comment
+     * @param string $table
+     * @param string $comment
      *
      * @return void
      */
@@ -55,35 +55,6 @@ class Table
 
         $this->setNamespace();
         $this->setClassname();
-    }
-
-    /**
-     * 设置命名空间
-     *
-     * @return void
-     */
-    private function setNamespace(): void
-    {
-        $table = explode('_', $this->table);
-        $table = collect($table)->except([count($table) - 1])->all();
-        $table = implode('_', $table);
-
-        $this->namespace = Str::of(Str::headline($table))
-            ->replace(' ', '')
-            ->toString();
-    }
-
-    /**
-     * 设置类名称
-     *
-     * @return void
-     */
-    private function setClassname(): void
-    {
-        // 取最后一个名称作为最终的类名
-        $classname = collect(explode('_', $this->table))->last();
-
-        $this->classname = Str::headline($classname);
     }
 
     /**
@@ -124,6 +95,35 @@ class Table
     public function getClassname(): string
     {
         return $this->classname;
+    }
+
+    /**
+     * 设置命名空间
+     *
+     * @return void
+     */
+    private function setNamespace(): void
+    {
+        $table = explode('_', $this->table);
+        $table = collect($table)->except([count($table) - 1])->all();
+        $table = implode('_', $table);
+
+        $this->namespace = Str::of(Str::headline($table))
+            ->replace(' ', '')
+            ->toString();
+    }
+
+    /**
+     * 设置类名称
+     *
+     * @return void
+     */
+    private function setClassname(): void
+    {
+        // 取最后一个名称作为最终的类名
+        $classname = collect(explode('_', $this->table))->last();
+
+        $this->classname = Str::headline($classname);
     }
 
 }

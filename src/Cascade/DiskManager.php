@@ -2,8 +2,8 @@
 
 namespace Handyfit\Framework\Cascade;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * 磁盘管理
@@ -26,7 +26,7 @@ class DiskManager
     /**
      * 使用磁盘
      *
-     * @param  string  $root
+     * @param string $root
      *
      * @return Filesystem
      */
