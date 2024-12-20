@@ -41,7 +41,7 @@ class CascadeCommand extends BaseCommand
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $pattern = $this->option('pattern');
 

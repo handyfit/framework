@@ -16,6 +16,13 @@ trait Template
 {
 
     /**
+     * 引导构建
+     *
+     * @return void
+     */
+    abstract public function boot(): void;
+
+    /**
      * 制表
      *
      * @param string $string

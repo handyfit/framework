@@ -2,8 +2,6 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
 use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
@@ -41,6 +39,13 @@ class Model extends Builder
     private BuilderParams $builderParams;
 
     /**
+     * Model 参数对象
+     *
+     * @var ModelParams
+     */
+    private ModelParams $modelParams;
+
+    /**
      * 类名称
      *
      * @var string
@@ -58,31 +63,21 @@ class Model extends Builder
      * 构建一个 Eloquent Trace Builder 实例
      *
      * @param ConfigureParams $configureParams
-     * @param BlueprintParams $blueprintParams
      * @param TableParams     $tableParams
      * @param ModelParams     $modelParams
-     * @param MigrationParams $migrationParams
      * @param SchemaParams    $schemaParams
      *
      * @return void
      */
     public function __construct(
         ConfigureParams $configureParams,
-        BlueprintParams $blueprintParams,
         TableParams $tableParams,
         ModelParams $modelParams,
-        MigrationParams $migrationParams,
         SchemaParams $schemaParams
     ) {
-        parent::__construct(
-            $configureParams,
-            $blueprintParams,
-            $tableParams,
-            $modelParams,
-            $migrationParams,
-            $schemaParams
-        );
+        parent::__construct($configureParams, $tableParams, $schemaParams);
 
+        $this->modelParams = $modelParams;
         $this->builderParams = $configureParams->getEloquentModel();
 
         // 类名称由表名称决定
@@ -122,7 +117,7 @@ class Model extends Builder
         $this->stubParam('class', $this->classname);
         $this->stubParam('comment', '');
 
-        $this->stubParam('traceEloquent', $this->getEloquentTrace()->getPackage());
+        $this->stubParam('traceEloquent', app(EloquentTrace::class)->getPackage());
 
         $this->stubParam('timestamps', $this->modelParams->getTimestamps());
         $this->stubParam('incrementing', $this->modelParams->getIncrementing());

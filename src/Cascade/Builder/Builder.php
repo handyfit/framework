@@ -3,9 +3,6 @@
 namespace Handyfit\Framework\Cascade\Builder;
 
 use Handyfit\Framework\Cascade\DiskManager;
-use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
-use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
@@ -48,27 +45,6 @@ abstract class Builder
     protected TableParams $tableParams;
 
     /**
-     * Migration 参数对象
-     *
-     * @var MigrationParams
-     */
-    protected MigrationParams $migrationParams;
-
-    /**
-     * 模型参数对象
-     *
-     * @var ModelParams
-     */
-    protected ModelParams $modelParams;
-
-    /**
-     * Blueprint 参数对象
-     *
-     * @var BlueprintParams
-     */
-    protected BlueprintParams $blueprintParams;
-
-    /**
      * Schema 参数对象
      *
      * @var SchemaParams
@@ -79,28 +55,19 @@ abstract class Builder
      * 构建一个 Builder 实例
      *
      * @param ConfigureParams $configureParams
-     * @param BlueprintParams $blueprintParams
      * @param TableParams     $tableParams
-     * @param ModelParams     $modelParams
-     * @param MigrationParams $migrationParams
      * @param SchemaParams    $schemaParams
      *
      * @return void
      */
     public function __construct(
         ConfigureParams $configureParams,
-        BlueprintParams $blueprintParams,
         TableParams $tableParams,
-        ModelParams $modelParams,
-        MigrationParams $migrationParams,
         SchemaParams $schemaParams
     ) {
         $this->stub = '';
         $this->configureParams = $configureParams;
-        $this->blueprintParams = $blueprintParams;
-        $this->migrationParams = $migrationParams;
         $this->tableParams = $tableParams;
-        $this->modelParams = $modelParams;
         $this->schemaParams = $schemaParams;
     }
 
@@ -267,23 +234,6 @@ abstract class Builder
             $this->configureParams->getAppFilepath(),
             ...$values,
         ]);
-    }
-
-    /**
-     * 获取 Eloquent Trace 实例
-     *
-     * @return EloquentTrace
-     */
-    protected function getEloquentTrace(): EloquentTrace
-    {
-        return new EloquentTrace(
-            $this->configureParams,
-            $this->blueprintParams,
-            $this->tableParams,
-            $this->modelParams,
-            $this->migrationParams,
-            $this->schemaParams
-        );
     }
 
 }

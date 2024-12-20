@@ -33,7 +33,7 @@ class Preacher extends Facade
      *
      * @var string
      */
-    public const FACADE_ACCESSOR = 'handy.preacher';
+    public const FACADE_ACCESSOR = 'handyfit.preacher';
 
     /**
      * Indicates whether the parsed Facade should be cached

@@ -3,7 +3,11 @@
 namespace Handyfit\Framework\Cascade\Builder;
 
 use Handyfit\Framework\Cascade\DiskManager;
+use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Illuminate\Support\Str;
 use stdClass;
 
@@ -14,6 +18,34 @@ use stdClass;
  */
 class Migration extends Builder
 {
+
+    /**
+     * Migration 参数对象
+     *
+     * @var MigrationParams
+     */
+    private MigrationParams $migrationParams;
+
+    /**
+     * 构建一个 Eloquent Trace Builder 实例
+     *
+     * @param ConfigureParams $configureParams
+     * @param TableParams     $tableParams
+     * @param SchemaParams    $schemaParams
+     * @param MigrationParams $migrationParams
+     *
+     * @return void
+     */
+    public function __construct(
+        ConfigureParams $configureParams,
+        TableParams $tableParams,
+        SchemaParams $schemaParams,
+        MigrationParams $migrationParams
+    ) {
+        parent::__construct($configureParams, $tableParams, $schemaParams);
+
+        $this->migrationParams = $migrationParams;
+    }
 
     /**
      * 引导构建
@@ -31,11 +63,13 @@ class Migration extends Builder
         $filename = "cascade_create_{$table}_table";
         $folderPath = DiskManager::getMigrationPath();
 
-        $this->stubParam('traceEloquent', $this->getEloquentTrace()->getPackage());
+        $this->stubParam('traceEloquent', app(EloquentTrace::class)->getPackage());
+
+        $this->stubParam('hook', $this->migrationParams->getHook());
         $this->stubParam('comment', $this->migrationParams->getComment());
+
         $this->stubParam('upSchema', $this->schemaBuilder('up'));
         $this->stubParam('downSchema', $this->schemaBuilder('down'));
-        $this->stubParam('hook', $this->migrationParams->getHook());
 
         $this->stub = $this->formattingStub($this->stub);
 

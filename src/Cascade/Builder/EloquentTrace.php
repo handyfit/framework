@@ -2,9 +2,6 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
-use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\ColumnManger;
 use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
@@ -35,13 +32,6 @@ class EloquentTrace extends Builder
     private array $fillable = [];
 
     /**
-     * 构建参数
-     *
-     * @var BuilderParams
-     */
-    private BuilderParams $builderParams;
-
-    /**
      * 类名称
      *
      * @var string
@@ -56,33 +46,25 @@ class EloquentTrace extends Builder
     private string $namespace;
 
     /**
+     * 构建参数
+     *
+     * @var BuilderParams
+     */
+    private BuilderParams $builderParams;
+
+    /**
      * 构建一个 Eloquent Trace Builder 实例
      *
      * @param ConfigureParams $configureParams
-     * @param BlueprintParams $blueprintParams
      * @param TableParams     $tableParams
-     * @param ModelParams     $modelParams
-     * @param MigrationParams $migrationParams
      * @param SchemaParams    $schemaParams
-     *
-     * @return void
      */
     public function __construct(
         ConfigureParams $configureParams,
-        BlueprintParams $blueprintParams,
         TableParams $tableParams,
-        ModelParams $modelParams,
-        MigrationParams $migrationParams,
         SchemaParams $schemaParams
     ) {
-        parent::__construct(
-            $configureParams,
-            $blueprintParams,
-            $tableParams,
-            $modelParams,
-            $migrationParams,
-            $schemaParams
-        );
+        parent::__construct($configureParams, $tableParams, $schemaParams);
 
         $this->builderParams = $configureParams->getEloquentTrace();
 

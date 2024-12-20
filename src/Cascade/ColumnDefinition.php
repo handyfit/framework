@@ -166,7 +166,7 @@ class ColumnDefinition
      *
      * @param string|Expression $expression
      *
-     * @return LaravelColumnDefinition|ColumnDefinition
+     * @return ColumnDefinition
      */
     public function virtualAs(string|Expression $expression): self
     {
