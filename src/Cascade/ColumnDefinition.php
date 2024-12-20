@@ -164,7 +164,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string|Expression  $expression
+     * @param string|Expression $expression
      *
      * @return ColumnDefinition
      */
