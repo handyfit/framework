@@ -3,10 +3,11 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
 use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
 use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+
 use function Laravel\Prompts\error;
 
 /**
@@ -44,7 +45,35 @@ class Cascade
             App::forgetInstance($abstract);
         });
 
-        App::instance(Params\Configure::class, new Params\Configure());
+        App::instance(
+            Params\Configure\App::class,
+            new Params\Configure\App('App', 'app')
+        );
+
+        App::instance(
+            Params\Configure\Cascade::class,
+            new Params\Configure\Cascade('Cascade')
+        );
+
+        App::instance(
+            Params\Configure\Summary::class,
+            new Params\Configure\Summary('Summaries', 'Summary')
+        );
+
+        App::instance(
+            Params\Configure\Model::class,
+            new Params\Configure\Model('Models', 'Model')
+        );
+
+        App::instance(
+            Params\Configure::class,
+            new Params\Configure(
+                App::make(Params\Configure\App::class),
+                App::make(Params\Configure\Cascade::class),
+                App::make(Params\Configure\Summary::class),
+                App::make(Params\Configure\Model::class)
+            )
+        );
     }
 
     /**
@@ -60,8 +89,8 @@ class Cascade
     /**
      * 设置 - Table
      *
-     * @param  string  $table
-     * @param  string  $comment
+     * @param string $table
+     * @param string $comment
      *
      * @return static
      */
@@ -78,9 +107,9 @@ class Cascade
     /**
      * 设置 - Migration
      *
-     * @param  string  $filename
-     * @param  string  $comment
-     * @param  string  $hook
+     * @param string $filename
+     * @param string $comment
+     * @param string $hook
      *
      * @return static
      */
@@ -100,10 +129,10 @@ class Cascade
     /**
      * 设置 - Model
      *
-     * @param  string  $extends
-     * @param  string  $hook
-     * @param  bool    $incrementing
-     * @param  bool    $timestamps
+     * @param string $extends
+     * @param string $hook
+     * @param bool   $incrementing
+     * @param bool   $timestamps
      *
      * @return static
      */
@@ -124,8 +153,8 @@ class Cascade
     /**
      * 设置 - Schema
      *
-     * @param  Closure  $up
-     * @param  Closure  $down
+     * @param Closure $up
+     * @param Closure $down
      *
      * @return static
      */
@@ -165,18 +194,10 @@ class Cascade
             )
         );
 
-        $this->container->map(function (string $abstract) {
-            if (App::bound($abstract)) {
-                echo "\n $abstract 已绑定\n";
-            } else {
-                echo "\n $abstract 未绑定\n";
-            }
-        });
-
         // 注册闭包方法
         Schema::builder(App::make(Params\Schema::class));
 
-        $this->runEloquentTrace();
+        $this->runSummary();
 
         if (App::bound(Params\Builder\Migration::class)) {
             $this->runMigrationBuilder();
@@ -212,13 +233,13 @@ class Cascade
     }
 
     /**
-     * 绑定并运行 Eloquent trace
+     * 绑定并运行 Summary
      *
      * @return void
      */
-    private function runEloquentTrace(): void
+    private function runSummary(): void
     {
-        App::when(Builder\EloquentTrace::class)
+        App::when(Builder\Summary::class)
             ->needs('$configureParams')
             ->needs('$tableParams')
             ->needs('$schemaParams')
@@ -228,7 +249,7 @@ class Cascade
                 App::make(Params\Configure::class),
             ]);
 
-        app(Builder\EloquentTrace::class)->boot();
+        app(Builder\Summary::class)->boot();
     }
 
     /**

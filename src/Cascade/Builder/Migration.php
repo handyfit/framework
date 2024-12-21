@@ -2,14 +2,14 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use stdClass;
-use Illuminate\Support\Str;
 use Handyfit\Framework\Cascade\DiskManager;
-use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Builder\Migration as MigrationParams;
+use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
+use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Illuminate\Support\Str;
+use stdClass;
 
 /**
  * Migration builder
@@ -29,10 +29,10 @@ class Migration extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param  ConfigureParams  $configureParams
-     * @param  TableParams      $tableParams
-     * @param  SchemaParams     $schemaParams
-     * @param  MigrationParams  $migrationParams
+     * @param ConfigureParams $configureParams
+     * @param TableParams     $tableParams
+     * @param SchemaParams    $schemaParams
+     * @param MigrationParams $migrationParams
      *
      * @return void
      */
@@ -63,7 +63,7 @@ class Migration extends Builder
         $filename = "cascade_create_{$table}_table";
         $folderPath = DiskManager::getMigrationPath();
 
-        $this->stubParam('traceEloquent', app(EloquentTrace::class)->getPackage());
+        $this->stubParam('summary', app(Summary::class)->getPackage());
 
         $this->stubParam('hook', $this->migrationParams->getHook());
         $this->stubParam('comment', $this->migrationParams->getComment());
@@ -78,43 +78,9 @@ class Migration extends Builder
     }
 
     /**
-     * Schema 构建
-     *
-     * @param  string  $action
-     *
-     * @return string
-     */
-    private function schemaBuilder(string $action): string
-    {
-        $templates = [];
-        $blueprints = $this->schemaParams->getBlueprints($action);
-        $codes = $this->schemaParams->getCodes($action);
-
-        // 生成 Blueprints 部分
-        foreach ($blueprints as $fn => $blueprint) {
-            $template = [];
-
-            $template[] = "Schema::$fn(TheEloquentTrace::TABLE, function (Blueprint @table) {";
-            $template[] = $this->columnsBuilder($blueprint->getColumns());
-            $template[] = "});";
-
-            $template = implode("\n", $template);
-            $template = Str::of($template)->replace('@', '$')->toString();
-
-            $templates[] = $template;
-        }
-
-        foreach ($codes as $code) {
-            $templates[] = $code;
-        }
-
-        return $this->tab(implode("\n\n", $templates), 2);
-    }
-
-    /**
      * 构建所有列信息
      *
-     * @param  ColumnParams[]  $columns
+     * @param ColumnParams[] $columns
      *
      * @return string
      */
@@ -132,7 +98,7 @@ class Migration extends Builder
     /**
      * 构建一个完整的列定义调用
      *
-     * @param  ColumnParams  $column
+     * @param ColumnParams $column
      *
      * @return string
      */
@@ -159,7 +125,7 @@ class Migration extends Builder
     /**
      * 构建函数参数信息
      *
-     * @param  stdClass  $values
+     * @param stdClass $values
      *
      * @return array
      */
@@ -183,7 +149,7 @@ class Migration extends Builder
                 'boolean' => $val ? 'true' : 'false',
                 'array' => $this->arrayParamsBuilder($val),
                 default => $val
-            } : 'TheEloquentTrace::' . Str::upper($val);
+            } : 'TheSummary::' . Str::upper($val);
 
             // 命名参数设置，避免顺序问题
             $parameters[] = "$key: $val";
@@ -193,9 +159,43 @@ class Migration extends Builder
     }
 
     /**
+     * Schema 构建
+     *
+     * @param string $action
+     *
+     * @return string
+     */
+    private function schemaBuilder(string $action): string
+    {
+        $templates = [];
+        $blueprints = $this->schemaParams->getBlueprints($action);
+        $codes = $this->schemaParams->getCodes($action);
+
+        // 生成 Blueprints 部分
+        foreach ($blueprints as $fn => $blueprint) {
+            $template = [];
+
+            $template[] = "Schema::$fn(TheSummary::TABLE, function (Blueprint @table) {";
+            $template[] = $this->columnsBuilder($blueprint->getColumns());
+            $template[] = "});";
+
+            $template = implode("\n", $template);
+            $template = Str::of($template)->replace('@', '$')->toString();
+
+            $templates[] = $template;
+        }
+
+        foreach ($codes as $code) {
+            $templates[] = $code;
+        }
+
+        return $this->tab(implode("\n\n", $templates), 2);
+    }
+
+    /**
      * 数组转换为参数字符串
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */

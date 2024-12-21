@@ -2,14 +2,15 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Illuminate\Support\Str;
 use Handyfit\Framework\Cascade\DiskManager;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use function Laravel\Prompts\note;
-use function Laravel\Prompts\info;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Illuminate\Support\Str;
+
 use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\note;
 use function Laravel\Prompts\warning;
 
 /**
@@ -53,9 +54,9 @@ abstract class Builder
     /**
      * 构建一个 Builder 实例
      *
-     * @param  ConfigureParams  $configureParams
-     * @param  TableParams      $tableParams
-     * @param  SchemaParams     $schemaParams
+     * @param ConfigureParams $configureParams
+     * @param TableParams     $tableParams
+     * @param SchemaParams    $schemaParams
      *
      * @return void
      */
@@ -80,8 +81,8 @@ abstract class Builder
     /**
      * 替换参数至存根
      *
-     * @param  string       $param
-     * @param  string|bool  $value
+     * @param string      $param
+     * @param string|bool $value
      *
      * @return void
      */
@@ -93,9 +94,9 @@ abstract class Builder
     /**
      * 替换参数
      *
-     * @param  string       $param
-     * @param  string|bool  $value
-     * @param  string       $stub
+     * @param string      $param
+     * @param string|bool $value
+     * @param string      $stub
      *
      * @return string
      */
@@ -112,8 +113,8 @@ abstract class Builder
     /**
      * 初始化
      *
-     * @param  string  $classname
-     * @param  string  $filename
+     * @param string $classname
+     * @param string $filename
      *
      * @return bool
      */
@@ -139,7 +140,7 @@ abstract class Builder
     /**
      * 构建器唯一标识
      *
-     * @param  string  $classname
+     * @param string $classname
      *
      * @return string
      */
@@ -153,9 +154,9 @@ abstract class Builder
     /**
      * 写入存根内容到磁盘
      *
-     * @param  string  $classname
-     * @param  string  $filename
-     * @param  string  $folderPath
+     * @param string $classname
+     * @param string $filename
+     * @param string $folderPath
      *
      * @return void
      */
@@ -178,14 +179,14 @@ abstract class Builder
     /**
      * 获取 Cascade 命名空间
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */
     final protected function getCascadeNamespace(array $values): string
     {
         return $this->getAppNamespace([
-            $this->configureParams->getCascadeNamespace(),
+            $this->configureParams->getCascade()->getNamespace(),
             ...$values,
         ]);
     }
@@ -193,14 +194,14 @@ abstract class Builder
     /**
      * 获取应用命名空间
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */
     final protected function getAppNamespace(array $values): string
     {
         return implode('\\', [
-            $this->configureParams->getAppNamespace(),
+            $this->configureParams->getApp()->getNamespace(),
             ...$values,
         ]);
     }
@@ -208,14 +209,14 @@ abstract class Builder
     /**
      * 获取 Cascade 磁盘路径
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */
     final protected function getCascadeFilepath(array $values): string
     {
         return $this->getAppFilepath([
-            $this->configureParams->getCascadeFilepath(),
+            $this->configureParams->getCascade()->getFilepath(),
             ...$values,
         ]);
     }
@@ -223,14 +224,14 @@ abstract class Builder
     /**
      * 获取应用磁盘路径
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */
     final protected function getAppFilepath(array $values): string
     {
         return implode(DIRECTORY_SEPARATOR, [
-            $this->configureParams->getAppFilepath(),
+            $this->configureParams->getApp()->getFilepath(),
             ...$values,
         ]);
     }

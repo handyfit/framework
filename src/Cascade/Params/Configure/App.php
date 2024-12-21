@@ -2,14 +2,12 @@
 
 namespace Handyfit\Framework\Cascade\Params\Configure;
 
-use Illuminate\Support\Str;
-
 /**
- * Eloquent Trace
+ * App params
  *
  * @author KanekiYuto
  */
-class EloquentTrace
+class App
 {
 
     /**
@@ -27,24 +25,17 @@ class EloquentTrace
     private string $filepath;
 
     /**
-     * 类名后缀
+     * 构建一个 App 参数实例
      *
-     * @var string
-     */
-    private string $classSuffix;
-
-    /**
-     * 构建一个 Eloquent Trace 参数实例
+     * @param string $namespace
+     * @param string $filepath
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $namespace, string $filepath)
     {
-        $this->namespace = 'Trace\\Eloquent';
-        $this->filepath = Str::of($this->namespace)
-            ->replace('\\', DIRECTORY_SEPARATOR)
-            ->toString();
-        $this->classSuffix = 'Trace';
+        $this->namespace = $namespace;
+        $this->filepath = $filepath;
     }
 
     /**
@@ -65,16 +56,6 @@ class EloquentTrace
     public function getFilepath(): string
     {
         return $this->filepath;
-    }
-
-    /**
-     * 获取类名后缀
-     *
-     * @return string
-     */
-    public function getClassSuffix(): string
-    {
-        return $this->classSuffix;
     }
 
 }

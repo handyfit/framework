@@ -2,12 +2,12 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Illuminate\Support\Str;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
 use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
-use Handyfit\Framework\Cascade\Params\Configure\EloquentModel as BuilderParams;
+use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Configure\Model as BuilderParams;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Illuminate\Support\Str;
 
 /**
  * Model builder
@@ -62,10 +62,10 @@ class Model extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param  ConfigureParams  $configureParams
-     * @param  TableParams      $tableParams
-     * @param  ModelParams      $modelParams
-     * @param  SchemaParams     $schemaParams
+     * @param ConfigureParams $configureParams
+     * @param TableParams     $tableParams
+     * @param ModelParams     $modelParams
+     * @param SchemaParams    $schemaParams
      *
      * @return void
      */
@@ -78,7 +78,7 @@ class Model extends Builder
         parent::__construct($configureParams, $tableParams, $schemaParams);
 
         $this->modelParams = $modelParams;
-        $this->builderParams = $configureParams->getEloquentModel();
+        $this->builderParams = $configureParams->getModel();
 
         // 类名称由表名称决定
         $this->classname = implode('', [
@@ -117,7 +117,7 @@ class Model extends Builder
         $this->stubParam('class', $this->classname);
         $this->stubParam('comment', '');
 
-        $this->stubParam('traceEloquent', app(EloquentTrace::class)->getPackage());
+        $this->stubParam('summary', app(Summary::class)->getPackage());
 
         $this->stubParam('timestamps', $this->modelParams->getTimestamps());
         $this->stubParam('incrementing', $this->modelParams->getIncrementing());
@@ -147,7 +147,7 @@ class Model extends Builder
 
             if (!empty($column->getCast())) {
                 $key = Str::upper($field);
-                $this->casts["TheEloquentTrace::$key"] = $column->getCast();
+                $this->casts["TheSummary::$key"] = $column->getCast();
             }
         }
     }
@@ -192,7 +192,7 @@ class Model extends Builder
     /**
      * 加入到包中
      *
-     * @param  string  $value
+     * @param string $value
      *
      * @return void
      */

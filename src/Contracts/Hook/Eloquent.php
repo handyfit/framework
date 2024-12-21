@@ -2,7 +2,7 @@
 
 namespace Handyfit\Framework\Contracts\Hook;
 
-use Handyfit\Framework\Trace\EloquentTrace;
+use Handyfit\Framework\Summary\Summary;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,23 +17,23 @@ interface Eloquent
     /**
      * 模型插入前的操作
      *
-     * @param Model         $model
-     * @param Builder       $query
-     * @param EloquentTrace $eloquentTrace
+     * @param Model   $model
+     * @param Builder $query
+     * @param Summary $summary
      *
      * @return bool
      */
-    public function performInsert(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool;
+    public function performInsert(Model $model, Builder $query, Summary $summary): bool;
 
     /**
      * 模型更新前的操作
      *
-     * @param Model         $model
-     * @param Builder       $query
-     * @param EloquentTrace $eloquentTrace
+     * @param Model   $model
+     * @param Builder $query
+     * @param Summary $summary
      *
      * @return bool
      */
-    public function performUpdate(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool;
+    public function performUpdate(Model $model, Builder $query, Summary $summary): bool;
 
 }

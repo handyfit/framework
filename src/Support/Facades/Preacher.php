@@ -3,9 +3,9 @@
 namespace Handyfit\Framework\Support\Facades;
 
 use Closure;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Database\Eloquent\Model;
 use Handyfit\Framework\Preacher\PreacherResponse;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Facade;
 
 /**
  * Preacher Facade

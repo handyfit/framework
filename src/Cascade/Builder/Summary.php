@@ -2,19 +2,19 @@
 
 namespace Handyfit\Framework\Cascade\Builder;
 
-use Illuminate\Support\Str;
-use Handyfit\Framework\Cascade\Params\ColumnManger;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
 use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use Handyfit\Framework\Cascade\Params\Configure\EloquentTrace as BuilderParams;
+use Handyfit\Framework\Cascade\Params\ColumnManger;
+use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
+use Handyfit\Framework\Cascade\Params\Configure\Summary as BuilderParams;
+use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
+use Illuminate\Support\Str;
 
 /**
- * Eloquent Trace builder
+ * Summary builder
  *
  * @author KanekiYuto
  */
-class EloquentTrace extends Builder
+class Summary extends Builder
 {
 
     /**
@@ -55,10 +55,9 @@ class EloquentTrace extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param  ConfigureParams  $configureParams
-     * @param  TableParams      $tableParams
-     * @param  SchemaParams     $schemaParams
-     *
+     * @param ConfigureParams $configureParams
+     * @param TableParams     $tableParams
+     * @param SchemaParams    $schemaParams
      */
     public function __construct(
         ConfigureParams $configureParams,
@@ -67,7 +66,7 @@ class EloquentTrace extends Builder
     ) {
         parent::__construct($configureParams, $tableParams, $schemaParams);
 
-        $this->builderParams = $configureParams->getEloquentTrace();
+        $this->builderParams = $configureParams->getSummary();
 
         // 类名称由表名称决定
         $this->classname = implode('', [
@@ -103,7 +102,7 @@ class EloquentTrace extends Builder
     public function boot(): void
     {
         // 初始化 - 载入存根
-        if (!$this->init(__CLASS__, 'eloquent-trace')) {
+        if (!$this->init(__CLASS__, 'summary')) {
             return;
         }
 
@@ -150,7 +149,7 @@ class EloquentTrace extends Builder
     /**
      * 构建列参数
      *
-     * @param  ColumnManger  $column
+     * @param ColumnManger $column
      *
      * @return string
      */
@@ -179,7 +178,7 @@ class EloquentTrace extends Builder
     /**
      * 构建所有常量值
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */

@@ -2,14 +2,14 @@
 
 namespace {{ namespace }};
 
-use Handyfit\Framework\Trace\EloquentTrace;
+use Handyfit\Framework\Summary\Summary;
 
 /**
- * 追踪类 （帮助 IDE 更好地发现）
+ * Summary class
  *
  * @author KanekiYuto
  */
-class {{ class }} extends EloquentTrace
+class {{ class }} extends Summary
 {
 
     /**

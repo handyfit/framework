@@ -29,8 +29,8 @@ class Schema
     /**
      * 构造一个 Schema 实例
      *
-     * @param  Params\Schema  $schemaParams
-     * @param  string         $action
+     * @param Params\Schema $schemaParams
+     * @param string        $action
      *
      * @return void
      */
@@ -43,7 +43,7 @@ class Schema
     /**
      * 构建实例并绑定到闭包
      *
-     * @param  Params\Schema  $schemaParams
+     * @param Params\Schema $schemaParams
      *
      * @return void
      */
@@ -59,7 +59,7 @@ class Schema
     /**
      * 标记为 - create
      *
-     * @param  Closure  $callable
+     * @param Closure $callable
      *
      * @return void
      */
@@ -69,10 +69,35 @@ class Schema
     }
 
     /**
+     * 标记为 - table
+     *
+     * @param Closure $callable
+     *
+     * @return void
+     */
+    public function table(Closure $callable): void
+    {
+        $this->build(__FUNCTION__, $callable);
+    }
+
+    /**
+     * 使用 dropIfExists
+     *
+     * @return void
+     */
+    public function dropIfExists(): void
+    {
+        $this->schemaParams->appendCodes(
+            $this->action,
+            "Schema::dropIfExists(TheSummary::TABLE);"
+        );
+    }
+
+    /**
      * Build blueprint params
      *
-     * @param  string   $fn
-     * @param  Closure  $callable
+     * @param string  $fn
+     * @param Closure $callable
      *
      * @return void
      */
@@ -94,7 +119,7 @@ class Schema
     /**
      * 参数克隆至 Column manger
      *
-     * @param  Params\Column[]  $columns
+     * @param Params\Column[] $columns
      *
      * @return void
      */
@@ -111,31 +136,6 @@ class Schema
 
             $this->schemaParams->appendColumnsManger($columnManger);
         });
-    }
-
-    /**
-     * 标记为 - table
-     *
-     * @param  Closure  $callable
-     *
-     * @return void
-     */
-    public function table(Closure $callable): void
-    {
-        $this->build(__FUNCTION__, $callable);
-    }
-
-    /**
-     * 使用 dropIfExists
-     *
-     * @return void
-     */
-    public function dropIfExists(): void
-    {
-        $this->schemaParams->appendCodes(
-            $this->action,
-            "Schema::dropIfExists(TheEloquentTrace::TABLE);"
-        );
     }
 
 }

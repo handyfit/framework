@@ -5,11 +5,11 @@ namespace Handyfit\Framework\Cascade\Params\Configure;
 use Illuminate\Support\Str;
 
 /**
- * Eloquent Model Params
+ * Eloquent model params
  *
  * @author KanekiYuto
  */
-class EloquentModel
+class Model
 {
 
     /**
@@ -36,15 +36,18 @@ class EloquentModel
     /**
      * 构建一个 Eloquent Model 参数实例
      *
+     * @param string $namespace
+     * @param string $classSuffix
+     *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $namespace, string $classSuffix)
     {
-        $this->namespace = 'Models';
-        $this->filepath = Str::of($this->namespace)
+        $this->namespace = $namespace;
+        $this->filepath = Str::of($namespace)
             ->replace('\\', DIRECTORY_SEPARATOR)
             ->toString();
-        $this->classSuffix = 'Model';
+        $this->classSuffix = $classSuffix;
     }
 
     /**

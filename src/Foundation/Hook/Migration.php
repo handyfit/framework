@@ -3,7 +3,7 @@
 namespace Handyfit\Framework\Foundation\Hook;
 
 use Handyfit\Framework\Hook\Migration as Hook;
-use Handyfit\Framework\Trace\EloquentTrace;
+use Handyfit\Framework\Summary\Summary;
 
 /**
  * 基础的迁移 - Hook
@@ -13,22 +13,22 @@ use Handyfit\Framework\Trace\EloquentTrace;
 class Migration extends Hook
 {
 
-    public function upBefore(EloquentTrace $eloquentTrace): void
+    public function upBefore(Summary $summary): void
     {
         // Do it...
     }
 
-    public function upAfter(EloquentTrace $eloquentTrace): void
+    public function upAfter(Summary $summary): void
     {
         // Do it...
     }
 
-    public function downBefore(EloquentTrace $eloquentTrace): void
+    public function downBefore(Summary $summary): void
     {
         // Do it...
     }
 
-    public function downAfter(EloquentTrace $eloquentTrace): void
+    public function downAfter(Summary $summary): void
     {
         // Do it...
     }
