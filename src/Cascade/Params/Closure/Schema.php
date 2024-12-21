@@ -29,8 +29,8 @@ class Schema
     /**
      * 构造一个 Schema closure 参数实例
      *
-     * @param  Closure  $up
-     * @param  Closure  $down
+     * @param Closure $up
+     * @param Closure $down
      *
      * @return void
      */

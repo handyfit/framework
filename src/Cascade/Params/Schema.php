@@ -41,7 +41,7 @@ class Schema
     /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param string    $table
+     * @param string $table
      *
      * @return void
      */
