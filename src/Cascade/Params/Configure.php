@@ -2,9 +2,6 @@
 
 namespace Handyfit\Framework\Cascade\Params;
 
-use Handyfit\Framework\Cascade\Params\Configure\EloquentModel;
-use Handyfit\Framework\Cascade\Params\Configure\EloquentTrace;
-
 /**
  * Configure params
  *
@@ -14,120 +11,93 @@ class Configure
 {
 
     /**
-     * 应用命名空间
+     * App 参数对象
      *
-     * @var string
+     * @var Configure\App
      */
-    private string $appNamespace;
+    private Configure\App $app;
 
     /**
-     * 应用文件路径
+     * Cascade 参数对象
      *
-     * @var string
+     * @var Configure\Cascade
      */
-    private string $appFilePath;
+    private Configure\Cascade $cascade;
 
     /**
-     * Cascade 命名空间
+     * Summary 参数对象
      *
-     * @var string
+     * @var Configure\Summary
      */
-    private string $cascadeNamespace;
+    private Configure\Summary $summary;
 
     /**
-     * Cascade 文件路径
+     * Model 参数对象
      *
-     * @var string
+     * @var Configure\Model
      */
-    private string $cascadeFilepath;
-
-    /**
-     * Eloquent Trace 参数对象
-     *
-     * @var EloquentTrace
-     */
-    private EloquentTrace $eloquentTrace;
-
-    /**
-     * Eloquent Model 参数对象
-     *
-     * @var EloquentModel
-     */
-    private EloquentModel $eloquentModel;
+    private Configure\Model $model;
 
     /**
      * 构建一个配置参数实例
      *
+     * @param Configure\App     $app
+     * @param Configure\Cascade $cascade
+     * @param Configure\Summary $summary
+     * @param Configure\Model   $model
+     *
      * @return void
      */
-    public function __construct()
-    {
-        $this->appNamespace = 'App';
-        $this->appFilePath = 'app';
-        $this->cascadeNamespace = 'Cascade';
-        $this->cascadeFilepath = $this->cascadeNamespace;
-        $this->eloquentTrace = new EloquentTrace();
-        $this->eloquentModel = new EloquentModel();
+    public function __construct(
+        Configure\App $app,
+        Configure\Cascade $cascade,
+        Configure\Summary $summary,
+        Configure\Model $model
+    ) {
+        $this->app = $app;
+        $this->cascade = $cascade;
+        $this->summary = $summary;
+        $this->model = $model;
     }
 
     /**
-     * 获取应用命名空间
+     * 获取 App 参数对象
      *
-     * @return string
+     * @return Configure\App
      */
-    public function getAppNamespace(): string
+    public function getApp(): Configure\App
     {
-        return $this->appNamespace;
+        return $this->app;
     }
 
     /**
-     * 获取应用文件路径
+     * 获取 Cascade 参数对象
      *
-     * @return string
+     * @return Configure\Cascade
      */
-    public function getAppFilepath(): string
+    public function getCascade(): Configure\Cascade
     {
-        return $this->appFilePath;
+        return $this->cascade;
     }
 
     /**
-     * 获取 Cascade 命名空间
+     * 获取 Model 参数对象
      *
-     * @return string
+     * @return Configure\Model
      */
-    public function getCascadeNamespace(): string
+    public function getModel(): Configure\Model
     {
-        return $this->cascadeNamespace;
+        return $this->model;
     }
 
     /**
-     * 获取 Cascade 文件路径
+     * 获取 Summary 参数对象
      *
-     * @return string
+     * @return Configure\Summary
      */
-    public function getCascadeFilepath(): string
+    public function getSummary(): Configure\Summary
     {
-        return $this->cascadeFilepath;
-    }
-
-    /**
-     * 获取 Eloquent Trace 参数对象
-     *
-     * @return EloquentTrace
-     */
-    public function getEloquentTrace(): EloquentTrace
-    {
-        return $this->eloquentTrace;
-    }
-
-    /**
-     * 获取 getEloquent Model 参数对象
-     *
-     * @return EloquentModel
-     */
-    public function getEloquentModel(): EloquentModel
-    {
-        return $this->eloquentModel;
+        return $this->summary;
     }
 
 }

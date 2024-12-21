@@ -9,8 +9,6 @@ use Illuminate\Support\Str;
  * 存根模板
  *
  * @author KanekiYuto
- *
- * @todo   需要简化重构
  */
 trait Template
 {
@@ -66,11 +64,7 @@ trait Template
         $stubsDisk = DiskManager::stubDisk();
         $stub = $stubsDisk->get('template.const.stub');
 
-        return $this->param(
-            'value',
-            $value,
-            $this->param('const', $const, $stub)
-        );
+        return $this->param('value', $value, $this->param('const', $const, $stub));
     }
 
     /**
@@ -99,6 +93,8 @@ trait Template
      * @param string $stub
      *
      * @return string
+     *
+     * @todo 需要独立格式化
      */
     final protected function formattingStub(string $stub): string
     {

@@ -3,9 +3,6 @@
 namespace Handyfit\Framework;
 
 use Closure;
-use Handyfit\Framework\Cascade\Console\CascadeCommand;
-use Handyfit\Framework\Preacher\Builder;
-use Handyfit\Framework\Support\Facades\Preacher;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -22,7 +19,8 @@ class HandyFitServiceProvider extends ServiceProvider
      * @var array
      */
     protected array $commands = [
-        CascadeCommand::class,
+        Cascade\Console\CascadeCommand::class,
+        Cascade\Console\MakeCommand::class,
     ];
 
     /**
@@ -34,7 +32,8 @@ class HandyFitServiceProvider extends ServiceProvider
     {
         $this->registerCommands($this->commands);
 
-        $this->app->bind(Preacher::FACADE_ACCESSOR, Builder::class);
+        $this->app->bind(Support\Facades\Preacher::FACADE_ACCESSOR, Preacher\Builder::class);
+        $this->app->bind(Support\Facades\Crush::FACADE_ACCESSOR, Tentative\Crush\Builder::class);
     }
 
     /**
@@ -73,8 +72,11 @@ class HandyFitServiceProvider extends ServiceProvider
     protected function matchCommand(string $className): Closure
     {
         return match ($className) {
-            CascadeCommand::class => function () {
-                return new CascadeCommand();
+            Cascade\Console\CascadeCommand::class => function () {
+                return new Cascade\Console\CascadeCommand();
+            },
+            Cascade\Console\MakeCommand::class => function () {
+                return new Cascade\Console\MakeCommand();
             },
             default => function () {
                 return null;

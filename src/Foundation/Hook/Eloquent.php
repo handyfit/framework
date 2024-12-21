@@ -3,8 +3,8 @@
 namespace Handyfit\Framework\Foundation\Hook;
 
 use Handyfit\Framework\Hook\Eloquent as Hook;
+use Handyfit\Framework\Summary\Summary;
 use Handyfit\Framework\Support\Timestamp;
-use Handyfit\Framework\Trace\EloquentTrace;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,13 +19,13 @@ class Eloquent extends Hook
     /**
      * 模型插入前的操作
      *
-     * @param Model         $model
-     * @param Builder       $query
-     * @param EloquentTrace $eloquentTrace
+     * @param Model   $model
+     * @param Builder $query
+     * @param Summary $summary
      *
      * @return bool
      */
-    public function performInsert(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool
+    public function performInsert(Model $model, Builder $query, Summary $summary): bool
     {
         if (empty($model->getAttribute($model->getKeyName()))) {
             $model->setAttribute($model->getKeyName(), Timestamp::millisecond());
@@ -40,13 +40,13 @@ class Eloquent extends Hook
     /**
      * 模型更新前的操作
      *
-     * @param Model         $model
-     * @param Builder       $query
-     * @param EloquentTrace $eloquentTrace
+     * @param Model   $model
+     * @param Builder $query
+     * @param Summary $summary
      *
      * @return bool
      */
-    public function performUpdate(Model $model, Builder $query, EloquentTrace $eloquentTrace): bool
+    public function performUpdate(Model $model, Builder $query, Summary $summary): bool
     {
         $model->setAttribute($model::UPDATED_AT, Timestamp::second());
 

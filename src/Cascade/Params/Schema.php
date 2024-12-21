@@ -2,8 +2,6 @@
 
 namespace Handyfit\Framework\Cascade\Params;
 
-use Closure;
-
 /**
  * Schema params
  *
@@ -18,13 +16,6 @@ class Schema
      * @var string
      */
     private string $table;
-
-    /**
-     * 回调闭包
-     *
-     * @var Closure[]
-     */
-    private array $callable;
 
     /**
      * 蓝图集
@@ -50,15 +41,13 @@ class Schema
     /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param string    $table
-     * @param Closure[] $callable
+     * @param string $table
      *
      * @return void
      */
-    public function __construct(string $table, array $callable)
+    public function __construct(string $table)
     {
         $this->table = $table;
-        $this->callable = $callable;
         $this->columnsManger = [];
     }
 
@@ -70,18 +59,6 @@ class Schema
     public function getTable(): string
     {
         return $this->table;
-    }
-
-    /**
-     * 获取回调闭包
-     *
-     * @param string $action
-     *
-     * @return Closure
-     */
-    public function getCallable(string $action): Closure
-    {
-        return $this->callable[$action] ?? fn () => null;
     }
 
     /**

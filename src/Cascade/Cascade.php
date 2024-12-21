@@ -5,7 +5,6 @@ namespace Handyfit\Framework\Cascade;
 use Closure;
 use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
 use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 
 use function Laravel\Prompts\error;
@@ -19,33 +18,36 @@ class Cascade
 {
 
     /**
-     * 容器集合
-     *
-     * @var Collection
-     */
-    private Collection $container;
-
-    /**
      * 创建一个 Cascade 实例
      *
      * @return void
      */
     private function __construct()
     {
-        $this->container = collect([
-            Params\Configure::class,
-            Params\Builder\Table::class,
-            Params\Builder\Migration::class,
-            Params\Builder\Model::class,
-            Params\Schema::class,
-        ]);
-
-        // 批量注销绑定
-        $this->container->map(function (string $abstract) {
-            App::forgetInstance($abstract);
+        App::bind(Params\Configure\App::class, function () {
+            return new Params\Configure\App('App', 'app');
         });
 
-        App::instance(Params\Configure::class, new Params\Configure());
+        App::bind(Params\Configure\Cascade::class, function () {
+            return new Params\Configure\Cascade('Cascade');
+        });
+
+        App::bind(Params\Configure\Summary::class, function () {
+            return new Params\Configure\Summary('Summaries', 'Summary');
+        });
+
+        App::bind(Params\Configure\Model::class, function () {
+            return new Params\Configure\Model('Models', 'Model');
+        });
+
+        App::bind(Params\Configure::class, function () {
+            return new Params\Configure(
+                App::make(Params\Configure\App::class),
+                App::make(Params\Configure\Cascade::class),
+                App::make(Params\Configure\Summary::class),
+                App::make(Params\Configure\Model::class)
+            );
+        });
     }
 
     /**
@@ -68,10 +70,9 @@ class Cascade
      */
     public function withTable(string $table, string $comment = ''): static
     {
-        App::instance(
-            Params\Builder\Table::class,
-            new Params\Builder\Table($table, $comment)
-        );
+        App::bind(Params\Builder\Table::class, function () use ($table, $comment) {
+            return new Params\Builder\Table($table, $comment);
+        });
 
         return $this;
     }
@@ -90,10 +91,9 @@ class Cascade
         string $comment = '',
         string $hook = FoundationMigrationHook::class
     ): static {
-        App::instance(
-            Params\Builder\Migration::class,
-            new Params\Builder\Migration($filename, $comment, $hook)
-        );
+        App::bind(Params\Builder\Migration::class, function () use ($filename, $comment, $hook) {
+            return new Params\Builder\Migration($filename, $comment, $hook);
+        });
 
         return $this;
     }
@@ -114,10 +114,14 @@ class Cascade
         bool $incrementing = false,
         bool $timestamps = false
     ): static {
-        App::instance(
-            Params\Builder\Model::class,
-            new Params\Builder\Model($extends, $hook, $incrementing, $timestamps)
-        );
+        App::bind(Params\Builder\Model::class, function () use (
+            $extends,
+            $hook,
+            $incrementing,
+            $timestamps
+        ) {
+            return new Params\Builder\Model($extends, $hook, $incrementing, $timestamps);
+        });
 
         return $this;
     }
@@ -132,10 +136,9 @@ class Cascade
      */
     public function withSchema(Closure $up, Closure $down): static
     {
-        App::instance(
-            Params\Schema::class,
-            new Params\Schema('', ['up' => $up, 'down' => $down])
-        );
+        App::bind(Params\Closure\Schema::class, function () use ($up, $down) {
+            return new Params\Closure\Schema($up, $down);
+        });
 
         return $this;
     }
@@ -151,33 +154,23 @@ class Cascade
             return;
         }
 
-        // 兼容调用顺序重新绑定实例
-        $schemaParams = App::make(Params\Schema::class);
-        $tableParams = App::make(Params\Builder\Table::class);
+        // 无论如何都注销以防止污染
+        App::forgetInstance(Params\Schema::class);
 
         App::instance(
             Params\Schema::class,
-            new Params\Schema(
-                $tableParams->getTable(),
-                [
-                    'up' => $schemaParams->getCallable('up'),
-                    'down' => $schemaParams->getCallable('down'),
-                ]
-            )
+            new Params\Schema(app(Params\Builder\Table::class)->getTable())
         );
 
-        $this->container->map(function (string $abstract) {
-            if (App::bound($abstract)) {
-                echo "\n $abstract 已绑定\n";
-            } else {
-                echo "\n $abstract 未绑定\n";
-            }
-        });
+        app(Params\Closure\Schema::class)->getUp()(
+            new Schema(App::make(Params\Schema::class), 'up')
+        );
 
-        // 注册闭包方法
-        Schema::builder(App::make(Params\Schema::class));
+        app(Params\Closure\Schema::class)->getDown()(
+            new Schema(App::make(Params\Schema::class), 'down')
+        );
 
-        $this->runEloquentTrace();
+        $this->runSummary();
 
         if (App::bound(Params\Builder\Migration::class)) {
             $this->runMigrationBuilder();
@@ -198,7 +191,7 @@ class Cascade
         $required = collect([
             Params\Configure::class => '预期之外的结果',
             Params\Builder\Table::class => '必须调用 withTable 并给予参数',
-            Params\Schema::class => '必须调用 withSchema 并给予参数',
+            Params\Closure\Schema::class => '必须调用 withSchema 并给予参数',
         ]);
 
         foreach ($required as $abstract => $message) {
@@ -213,23 +206,21 @@ class Cascade
     }
 
     /**
-     * 绑定并运行 Eloquent trace
+     * 绑定并运行 Summary
      *
      * @return void
      */
-    private function runEloquentTrace(): void
+    private function runSummary(): void
     {
-        App::when(Builder\EloquentTrace::class)
-            ->needs('$configureParams')
-            ->needs('$tableParams')
-            ->needs('$schemaParams')
-            ->give([
+        App::bind(Builder\Summary::class, function () {
+            return new Builder\Summary(
                 App::make(Params\Configure::class),
                 App::make(Params\Builder\Table::class),
-                App::make(Params\Configure::class),
-            ]);
+                App::make(Params\Schema::class)
+            );
+        });
 
-        app(Builder\EloquentTrace::class)->boot();
+        app(Builder\Summary::class)->boot();
     }
 
     /**
@@ -239,17 +230,14 @@ class Cascade
      */
     private function runMigrationBuilder(): void
     {
-        App::when(Builder\Migration::class)
-            ->needs('$configureParams')
-            ->needs('$tableParams')
-            ->needs('$schemaParams')
-            ->needs('$migrationParams')
-            ->give([
+        App::bind(Builder\Migration::class, function () {
+            return new Builder\Migration(
                 App::make(Params\Configure::class),
                 App::make(Params\Builder\Table::class),
-                App::make(Params\Configure::class),
-                App::make(Params\Builder\Migration::class),
-            ]);
+                App::make(Params\Schema::class),
+                App::make(Params\Builder\Migration::class)
+            );
+        });
 
         app(Builder\Migration::class)->boot();
     }
@@ -261,17 +249,14 @@ class Cascade
      */
     private function runModelBuilder(): void
     {
-        App::when(Builder\Model::class)
-            ->needs('$configureParams')
-            ->needs('$tableParams')
-            ->needs('$schemaParams')
-            ->needs('$modelParams')
-            ->give([
+        App::bind(Builder\Model::class, function () {
+            return new Builder\Model(
                 App::make(Params\Configure::class),
                 App::make(Params\Builder\Table::class),
-                App::make(Params\Configure::class),
                 App::make(Params\Builder\Model::class),
-            ]);
+                App::make(Params\Schema::class),
+            );
+        });
 
         app(Builder\Model::class)->boot();
     }

@@ -3,9 +3,9 @@
 namespace {{ namespace }};
 
 use Illuminate\Database\Eloquent\Builder;
-use Handyfit\Framework\Trace\EloquentTrace;
+use Handyfit\Framework\Summary\Summary;
 use Handyfit\Framework\Hook\Eloquent as Hook;
-use {{ traceEloquent }} as TheEloquentTrace;
+use {{ summary }} as TheSummary;
 use {{ hook }} as TheHook;
 use {{ extends }} as Model;
 
@@ -20,11 +20,11 @@ class {{ class }} extends Model
 {
 
     /**
-     * Eloquent model tracing class
+     * Summary class
      *
-     * @var EloquentTrace
+     * @var Summary
      */
-    protected EloquentTrace $eloquentTrace;
+    protected Summary $summary;
 
     /**
      * Hook class
@@ -38,14 +38,14 @@ class {{ class }} extends Model
      *
      * @var string
      */
-    protected $table = TheEloquentTrace::TABLE;
+    protected $table = TheSummary::TABLE;
 
     /**
      * Primary key
      *
      * @var string
      */
-    protected $primaryKey = TheEloquentTrace::PRIMARY_KEY;
+    protected $primaryKey = TheSummary::PRIMARY_KEY;
 
     /**
      * The primary key increases automatically
@@ -66,14 +66,14 @@ class {{ class }} extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = TheEloquentTrace::HIDDEN;
+    protected $hidden = TheSummary::HIDDEN;
 
     /**
      * Attributes that can be filled
      *
      * @var array<string>
      */
-    protected $fillable = TheEloquentTrace::FILLABLE;
+    protected $fillable = TheSummary::FILLABLE;
 
     /**
      * Create an Eloquent model instance
@@ -82,7 +82,7 @@ class {{ class }} extends Model
      */
     public function __construct()
     {
-        $this->eloquentTrace = new TheEloquentTrace();
+        $this->summary = new TheSummary();
         $this->hook = new TheHook();
 
         parent::__construct();
@@ -107,7 +107,7 @@ class {{ class }} extends Model
      */
     protected function performInsert(Builder $query): bool
     {
-        if (!$this->hook->performInsert($this, $query, $this->eloquentTrace)) {
+        if (!$this->hook->performInsert($this, $query, $this->summary)) {
             return false;
         }
 
@@ -123,7 +123,7 @@ class {{ class }} extends Model
      */
     protected function performUpdate(Builder $query): bool
     {
-        if (!$this->hook->performUpdate($this, $query, $this->eloquentTrace)) {
+        if (!$this->hook->performUpdate($this, $query, $this->summary)) {
             return false;
         }
 

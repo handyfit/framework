@@ -186,7 +186,7 @@ abstract class Builder
     final protected function getCascadeNamespace(array $values): string
     {
         return $this->getAppNamespace([
-            $this->configureParams->getCascadeNamespace(),
+            $this->configureParams->getCascade()->getNamespace(),
             ...$values,
         ]);
     }
@@ -201,7 +201,7 @@ abstract class Builder
     final protected function getAppNamespace(array $values): string
     {
         return implode('\\', [
-            $this->configureParams->getAppNamespace(),
+            $this->configureParams->getApp()->getNamespace(),
             ...$values,
         ]);
     }
@@ -216,7 +216,7 @@ abstract class Builder
     final protected function getCascadeFilepath(array $values): string
     {
         return $this->getAppFilepath([
-            $this->configureParams->getCascadeFilepath(),
+            $this->configureParams->getCascade()->getFilepath(),
             ...$values,
         ]);
     }
@@ -231,7 +231,7 @@ abstract class Builder
     final protected function getAppFilepath(array $values): string
     {
         return implode(DIRECTORY_SEPARATOR, [
-            $this->configureParams->getAppFilepath(),
+            $this->configureParams->getApp()->getFilepath(),
             ...$values,
         ]);
     }

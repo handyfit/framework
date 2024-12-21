@@ -34,26 +34,10 @@ class Schema
      *
      * @return void
      */
-    private function __construct(Params\Schema $schemaParams, string $action)
+    public function __construct(Params\Schema $schemaParams, string $action)
     {
         $this->schemaParams = $schemaParams;
         $this->action = $action;
-    }
-
-    /**
-     * 构建实例并绑定到闭包
-     *
-     * @param Params\Schema $schemaParams
-     *
-     * @return void
-     */
-    public static function builder(Params\Schema $schemaParams): void
-    {
-        collect(['up', 'down'])->map(function ($action) use ($schemaParams) {
-            $callable = $schemaParams->getCallable($action);
-
-            $callable(new static($schemaParams, $action));
-        });
     }
 
     /**
@@ -89,7 +73,7 @@ class Schema
     {
         $this->schemaParams->appendCodes(
             $this->action,
-            "Schema::dropIfExists(TheEloquentTrace::TABLE);"
+            "Schema::dropIfExists(TheSummary::TABLE);"
         );
     }
 
