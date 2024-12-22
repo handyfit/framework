@@ -1,24 +1,14 @@
 <?php
 
-namespace Handyfit\Framework\Cascade\Builder;
-
-use Handyfit\Framework\Cascade\DiskManager;
-use Illuminate\Support\Str;
+namespace Handyfit\Framework\Cascade;
 
 /**
  * 存根模板
  *
  * @author KanekiYuto
  */
-trait Template
+trait TemplateBuilder
 {
-
-    /**
-     * 引导构建
-     *
-     * @return void
-     */
-    abstract public function boot(): void;
 
     /**
      * 制表
@@ -85,50 +75,6 @@ trait Template
             "@var " . $var,
             $this->param('comment', $comment, $stub)
         );
-    }
-
-    /**
-     * 存根代码格式化
-     *
-     * @param string $stub
-     *
-     * @return string
-     *
-     * @todo 需要独立格式化
-     */
-    final protected function formattingStub(string $stub): string
-    {
-        $stubArray = explode("\n", $stub);
-        $recordRow = [];
-        $returnStub = [];
-
-        foreach ($stubArray as $index => $str) {
-            if ($index === 0 || $index === count($stubArray) - 1) {
-                $returnStub[] = $str;
-                continue;
-            }
-
-            if (in_array($index, $recordRow)) {
-                continue;
-            }
-
-            $lastRow = $stubArray[$index - 1];
-            $nextRow = $stubArray[$index + 1];
-
-            $nullRow = Str::of($str)
-                ->replace(' ', '')
-                ->toString();
-
-            if (empty($lastRow) && empty($nextRow) && empty($nullRow)) {
-                $recordRow[] = $index + 1;
-                continue;
-            }
-
-            $returnStub[] = $str;
-            $recordRow = [];
-        }
-
-        return implode("\n", $returnStub);
     }
 
 }

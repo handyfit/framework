@@ -3,6 +3,7 @@
 namespace Handyfit\Framework;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -14,26 +15,21 @@ class HandyFitServiceProvider extends ServiceProvider
 {
 
     /**
-     * Handy commands
-     *
-     * @var array
-     */
-    protected array $commands = [
-        Cascade\Console\CascadeCommand::class,
-        Cascade\Console\MakeCommand::class,
-    ];
-
-    /**
      * Register service
      *
      * @return void
      */
     public function register(): void
     {
-        $this->registerCommands($this->commands);
+        $this->registerCommands()->map(function (Closure $callable, string $command) {
+            $this->app->singleton($command, $callable);
+        });
 
-        $this->app->bind(Support\Facades\Preacher::FACADE_ACCESSOR, Preacher\Builder::class);
-        $this->app->bind(Support\Facades\Crush::FACADE_ACCESSOR, Tentative\Crush\Builder::class);
+        $this->commands(array_keys($this->registerCommands()->all()));
+
+        $this->registerFacades()->map(function (string $accessor, string $facade) {
+            $this->app->bind($facade, $accessor);
+        });
     }
 
     /**
@@ -47,41 +43,33 @@ class HandyFitServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the given command
+     * Register commands
      *
-     * @param array $commands
-     *
-     * @return void
+     * @return Collection
      */
-    protected function registerCommands(array $commands): void
+    protected function registerCommands(): Collection
     {
-        foreach ($commands as $command) {
-            $this->app->singleton($command, $this->matchCommand($command));
-        }
-
-        $this->commands(array_values($commands));
-    }
-
-    /**
-     * Matches the corresponding command function
-     *
-     * @param string $className
-     *
-     * @return Closure
-     */
-    protected function matchCommand(string $className): Closure
-    {
-        return match ($className) {
+        return collect([
             Cascade\Console\CascadeCommand::class => function () {
                 return new Cascade\Console\CascadeCommand();
             },
             Cascade\Console\MakeCommand::class => function () {
                 return new Cascade\Console\MakeCommand();
             },
-            default => function () {
-                return null;
-            }
-        };
+        ]);
+    }
+
+    /**
+     * Register facades
+     *
+     * @return Collection
+     */
+    protected function registerFacades(): Collection
+    {
+        return collect([
+            Support\Facades\Preacher::FACADE_ACCESSOR => Preacher\Builder::class,
+            Support\Facades\Crush::FACADE_ACCESSOR => Tentative\Crush\Builder::class,
+        ]);
     }
 
 }

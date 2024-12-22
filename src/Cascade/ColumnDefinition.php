@@ -3,20 +3,56 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
-use Handyfit\Framework\Cascade\Trait\Laravel\ColumnDefinition as LaravelColumnDefinition;
+use Handyfit\Framework\Cascade\Params\Blueprint;
+use Handyfit\Framework\Cascade\Params\Schema;
 use Illuminate\Contracts\Database\Query\Expression;
+use stdClass;
 
+/**
+ * 列定义
+ *
+ * @author KanekiYuto
+ */
 class ColumnDefinition
 {
 
-    use LaravelColumnDefinition;
+    use Trait\Helper;
 
-    protected ColumnParams $columnParams;
+    /**
+     * 列名称
+     *
+     * @var string
+     */
+    private string $column;
 
-    public function __construct(ColumnParams $columnParams)
+    /**
+     * Blueprint params
+     *
+     * @var Params\Blueprint
+     */
+    private Params\Blueprint $blueprintParams;
+
+    /**
+     * Schema params
+     *
+     * @var Params\Schema
+     */
+    private Params\Schema $schemaParams;
+
+    /**
+     * 构造一个列定义实例
+     *
+     * @param string    $column
+     * @param Blueprint $blueprint
+     * @param Schema    $schema
+     *
+     * @return void
+     */
+    public function __construct(string $column, Params\Blueprint $blueprint, Params\Schema $schema)
     {
-        $this->columnParams = $columnParams;
+        $this->column = $column;
+        $this->blueprintParams = $blueprint;
+        $this->schemaParams = $schema;
     }
 
     /**
@@ -30,7 +66,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$value' => $value,
-        ], $this);
+        ]);
     }
 
     /**
@@ -42,11 +78,11 @@ class ColumnDefinition
      */
     public function comment(string $comment): static
     {
-        $this->columnParams->setComment($comment);
+        $this->schemaParams->getColumn($this->column)->setComment($comment);
 
         return $this->autoParams(__FUNCTION__, [
             '$comment' => $comment,
-        ], $this);
+        ]);
     }
 
     /**
@@ -60,7 +96,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$value' => $value,
-        ], $this);
+        ]);
     }
 
     /**
@@ -74,7 +110,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$indexName' => $indexName,
-        ], $this);
+        ]);
     }
 
     /**
@@ -88,7 +124,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$indexName' => $indexName,
-        ], $this);
+        ]);
     }
 
     /**
@@ -102,7 +138,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -116,7 +152,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$expression' => $expression,
-        ], $this);
+        ]);
     }
 
     /**
@@ -130,7 +166,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$value' => $value,
-        ], $this);
+        ]);
     }
 
     /**
@@ -144,7 +180,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$startingValue' => $startingValue,
-        ], $this);
+        ]);
     }
 
     /**
@@ -158,7 +194,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$charset' => $charset,
-        ], $this);
+        ]);
     }
 
     /**
@@ -172,7 +208,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$expression' => $expression,
-        ], $this);
+        ]);
     }
 
     /**
@@ -186,7 +222,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$expression' => $expression,
-        ], $this);
+        ]);
     }
 
     /**
@@ -196,7 +232,7 @@ class ColumnDefinition
      */
     public function unsigned(): self
     {
-        return $this->autoParams(__FUNCTION__, [], $this);
+        return $this->autoParams(__FUNCTION__, []);
     }
 
     /**
@@ -206,7 +242,7 @@ class ColumnDefinition
      */
     public function useCurrent(): self
     {
-        return $this->autoParams(__FUNCTION__, [], $this);
+        return $this->autoParams(__FUNCTION__, []);
     }
 
     /**
@@ -216,7 +252,7 @@ class ColumnDefinition
      */
     public function useCurrentOnUpdate(): self
     {
-        return $this->autoParams(__FUNCTION__, [], $this);
+        return $this->autoParams(__FUNCTION__, []);
     }
 
     /**
@@ -226,7 +262,7 @@ class ColumnDefinition
      */
     public function always(): self
     {
-        return $this->autoParams(__FUNCTION__, [], $this);
+        return $this->autoParams(__FUNCTION__, []);
     }
 
     /**
@@ -236,7 +272,7 @@ class ColumnDefinition
      */
     public function first(): self
     {
-        return $this->autoParams(__FUNCTION__, [], $this);
+        return $this->autoParams(__FUNCTION__, []);
     }
 
     /**
@@ -246,7 +282,7 @@ class ColumnDefinition
      */
     public function invisible(): self
     {
-        return $this->autoParams(__FUNCTION__, [], $this);
+        return $this->autoParams(__FUNCTION__, []);
     }
 
     /**
@@ -260,7 +296,7 @@ class ColumnDefinition
     {
         return $this->autoParams(__FUNCTION__, [
             '$collation' => $collation,
-        ], $this);
+        ]);
     }
 
     /**
@@ -270,7 +306,7 @@ class ColumnDefinition
      */
     public function autoIncrement(): self
     {
-        return $this->autoParams(__FUNCTION__, [], $this);
+        return $this->autoParams(__FUNCTION__, []);
     }
 
     /**
@@ -280,7 +316,7 @@ class ColumnDefinition
      */
     public function change(): self
     {
-        return $this->autoParams(__FUNCTION__, [], $this);
+        return $this->autoParams(__FUNCTION__, []);
     }
 
     /**
@@ -292,7 +328,7 @@ class ColumnDefinition
      */
     public function hidden(bool $value = true): static
     {
-        $this->columnParams->setHidden($value);
+        $this->schemaParams->getColumn($this->column)->setHidden($value);
 
         return $this;
     }
@@ -306,7 +342,7 @@ class ColumnDefinition
      */
     public function fillable(bool $value = true): static
     {
-        $this->columnParams->setFillable($value);
+        $this->schemaParams->getColumn($this->column)->setFillable($value);
 
         return $this;
     }
@@ -324,7 +360,35 @@ class ColumnDefinition
             $value = $value();
         }
 
-        $this->columnParams->setCast($value);
+        $this->schemaParams->getColumn($this->column)->setCast($value);
+
+        return $this;
+    }
+
+    /**
+     * 自动处理参数
+     *
+     * @param string $fn
+     * @param array  $params
+     *
+     * @return ColumnDefinition
+     */
+    protected function autoParams(string $fn, array $params): static
+    {
+        return $this->pushParams($fn, $this->useParams(__CLASS__, $fn, $params));
+    }
+
+    /**
+     * 把参数加入到对象树中
+     *
+     * @param string   $fn
+     * @param stdClass $params
+     *
+     * @return static
+     */
+    protected function pushParams(string $fn, stdClass $params): static
+    {
+        $this->blueprintParams->appendMigration($this->column, new Params\Migration($fn, $params));
 
         return $this;
     }

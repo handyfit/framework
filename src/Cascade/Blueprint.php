@@ -2,8 +2,7 @@
 
 namespace Handyfit\Framework\Cascade;
 
-use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Trait\Laravel\Blueprint as LaravelBlueprint;
+use stdClass;
 
 /**
  * Cascade with laravel blueprint
@@ -13,25 +12,34 @@ use Handyfit\Framework\Cascade\Trait\Laravel\Blueprint as LaravelBlueprint;
 class Blueprint
 {
 
-    use LaravelBlueprint;
+    use Trait\Helper;
 
     /**
      * Blueprint params
      *
-     * @var BlueprintParams
+     * @var Params\Blueprint
      */
-    private BlueprintParams $blueprintParams;
+    private Params\Blueprint $blueprintParams;
+
+    /**
+     * Schema params
+     *
+     * @var Params\Schema
+     */
+    private Params\Schema $schemaParams;
 
     /**
      * 构建一个 Blueprint 实例
      *
-     * @param BlueprintParams $blueprintParams
+     * @param Params\Blueprint $blueprint
+     * @param Params\Schema    $schema
      *
      * @return void
      */
-    public function __construct(BlueprintParams $blueprintParams)
+    public function __construct(Params\Blueprint $blueprint, Params\Schema $schema)
     {
-        $this->blueprintParams = $blueprintParams;
+        $this->blueprintParams = $blueprint;
+        $this->schemaParams = $schema;
     }
 
     /**
@@ -47,7 +55,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$length' => $length,
-        ], $this);
+        ]);
     }
 
     /**
@@ -65,7 +73,7 @@ class Blueprint
             '@quote$column' => $column,
             '$length' => $length,
             '$fixed' => $fixed,
-        ], $this);
+        ]);
     }
 
     /**
@@ -81,7 +89,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -97,7 +105,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -115,7 +123,7 @@ class Blueprint
             '@quote$column' => $column,
             '$total' => $total,
             '$places' => $places,
-        ], $this);
+        ]);
     }
 
     /**
@@ -131,7 +139,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$allowed' => $allowed,
-        ], $this);
+        ]);
     }
 
     /**
@@ -147,7 +155,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -163,7 +171,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$length' => $length,
-        ], $this);
+        ]);
     }
 
     /**
@@ -181,7 +189,7 @@ class Blueprint
             '@quote$column' => $column,
             '$subtype' => $subtype,
             '$srid' => $srid,
-        ], $this);
+        ]);
     }
 
     /**
@@ -199,7 +207,7 @@ class Blueprint
             '@quote$column' => $column,
             '$subtype' => $subtype,
             '$srid' => $srid,
-        ], $this);
+        ]);
     }
 
     /**
@@ -215,7 +223,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$allowed' => $allowed,
-        ], $this);
+        ]);
     }
 
     /**
@@ -231,7 +239,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$length' => $length,
-        ], $this);
+        ]);
     }
 
     /**
@@ -249,7 +257,7 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
@@ -267,7 +275,7 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
@@ -285,7 +293,7 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
@@ -303,7 +311,7 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
@@ -321,7 +329,7 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
@@ -337,7 +345,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
@@ -353,7 +361,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
@@ -369,7 +377,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
@@ -385,7 +393,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
@@ -401,7 +409,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
@@ -417,7 +425,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -433,7 +441,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -449,7 +457,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -465,7 +473,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -481,7 +489,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -497,7 +505,7 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
@@ -511,7 +519,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -525,7 +533,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -539,7 +547,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -553,7 +561,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -567,7 +575,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -581,7 +589,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -595,7 +603,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -609,7 +617,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -623,7 +631,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -637,7 +645,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -651,7 +659,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -665,7 +673,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -679,7 +687,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -693,7 +701,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -707,7 +715,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -721,7 +729,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -735,7 +743,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -749,7 +757,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -763,7 +771,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -777,7 +785,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -791,7 +799,7 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
@@ -807,7 +815,38 @@ class Blueprint
         $this->autoParams(__FUNCTION__, $name, [
             '@quote$name' => $name,
             '$indexName' => $indexName,
-        ], $this);
+        ]);
+    }
+
+    /**
+     * 自动处理参数
+     *
+     * @param string $fn
+     * @param string $column
+     * @param array  $params
+     *
+     * @return ColumnDefinition
+     */
+    private function autoParams(string $fn, string $column, array $params): ColumnDefinition
+    {
+        return $this->pushParams($fn, $column, $this->useParams(__CLASS__, $fn, $params));
+    }
+
+    /**
+     * 把参数加入到对象树中
+     *
+     * @param string   $fn
+     * @param string   $column
+     * @param stdClass $params
+     *
+     * @return ColumnDefinition
+     */
+    private function pushParams(string $fn, string $column, stdClass $params): ColumnDefinition
+    {
+        $this->schemaParams->appendColumn(new Params\Column($column));
+        $this->blueprintParams->appendMigration($column, new Params\Migration($fn, $params));
+
+        return new ColumnDefinition($column, $this->blueprintParams, $this->schemaParams);
     }
 
 }

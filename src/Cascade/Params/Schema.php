@@ -18,18 +18,18 @@ class Schema
     private string $table;
 
     /**
+     * 列参数信息集
+     *
+     * @var Column[]
+     */
+    private array $columns;
+
+    /**
      * 蓝图集
      *
      * @var Blueprint[][]
      */
     private array $blueprints;
-
-    /**
-     * 列信息
-     *
-     * @var ColumnManger[]
-     */
-    private array $columnsManger;
 
     /**
      * 代码集
@@ -48,7 +48,7 @@ class Schema
     public function __construct(string $table)
     {
         $this->table = $table;
-        $this->columnsManger = [];
+        $this->columns = [];
     }
 
     /**
@@ -92,30 +92,6 @@ class Schema
     }
 
     /**
-     * 获取列管理信息
-     *
-     * @return array
-     */
-    public function getColumnsManger(): array
-    {
-        return $this->columnsManger;
-    }
-
-    /**
-     * 新增列管理信息
-     *
-     * @param ColumnManger $columnManger
-     *
-     * @return void
-     */
-    public function appendColumnsManger(ColumnManger $columnManger): void
-    {
-        $key = $columnManger->getField();
-
-        $this->columnsManger[$key] = $columnManger;
-    }
-
-    /**
      * 获取代码集
      *
      * @return string[]
@@ -140,6 +116,40 @@ class Schema
         }
 
         $this->codes[$action][] = $value;
+    }
+
+    /**
+     * 获取列信息集
+     *
+     * @return Column[]
+     */
+    public function getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    /**
+     * 获取指定列的信息
+     *
+     * @param string $column
+     *
+     * @return Column
+     */
+    public function getColumn(string $column): Column
+    {
+        return $this->columns[$column];
+    }
+
+    /**
+     * 新增列信息
+     *
+     * @param Column $column
+     *
+     * @return void
+     */
+    public function appendColumn(Column $column): void
+    {
+        $this->columns[$column->getColum()] = $column;
     }
 
 }

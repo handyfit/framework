@@ -1,12 +1,7 @@
 <?php
 
-namespace Handyfit\Framework\Cascade\Builder;
+namespace Handyfit\Framework\Cascade;
 
-use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use Handyfit\Framework\Cascade\Params\ColumnManger;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Params\Configure\Summary as BuilderParams;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Illuminate\Support\Str;
 
 /**
@@ -14,7 +9,7 @@ use Illuminate\Support\Str;
  *
  * @author KanekiYuto
  */
-class Summary extends Builder
+class SummaryBuilder extends Builder
 {
 
     /**
@@ -48,21 +43,21 @@ class Summary extends Builder
     /**
      * 构建参数
      *
-     * @var BuilderParams
+     * @var Params\Configure\Summary
      */
-    private BuilderParams $builderParams;
+    private Params\Configure\Summary $builderParams;
 
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param ConfigureParams $configureParams
-     * @param TableParams     $tableParams
-     * @param SchemaParams    $schemaParams
+     * @param Params\Configure     $configureParams
+     * @param Params\Builder\Table $tableParams
+     * @param Params\Schema        $schemaParams
      */
     public function __construct(
-        ConfigureParams $configureParams,
-        TableParams $tableParams,
-        SchemaParams $schemaParams
+        Params\Configure $configureParams,
+        Params\Builder\Table $tableParams,
+        Params\Schema $schemaParams
     ) {
         parent::__construct($configureParams, $tableParams, $schemaParams);
 
@@ -136,7 +131,7 @@ class Summary extends Builder
      */
     private function columnsBuilder(): string
     {
-        $columns = $this->schemaParams->getColumnsManger();
+        $columns = $this->schemaParams->getColumns();
         $templates = [];
 
         foreach ($columns as $column) {
@@ -149,15 +144,15 @@ class Summary extends Builder
     /**
      * 构建列参数
      *
-     * @param ColumnManger $column
+     * @param Params\Column $column
      *
      * @return string
      */
-    private function columnBuilder(ColumnManger $column): string
+    private function columnBuilder(Params\Column $column): string
     {
         $template = [];
 
-        $field = $column->getField();
+        $field = $column->getColum();
         $constantName = Str::of($field)->upper()->toString();
 
         $template[] = $this->templatePropertyComment($column->getComment(), 'string');

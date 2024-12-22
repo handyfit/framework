@@ -1,6 +1,6 @@
 <?php
 
-namespace Handyfit\Framework\Cascade\Trait\Laravel;
+namespace Handyfit\Framework\Cascade\Trait;
 
 use Exception;
 use Illuminate\Support\Str;
@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use function Laravel\Prompts\error;
 
 use ReflectionMethod;
+
 use stdClass;
 
 /**

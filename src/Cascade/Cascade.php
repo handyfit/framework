@@ -5,9 +5,11 @@ namespace Handyfit\Framework\Cascade;
 use Closure;
 use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
 use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 
 use function Laravel\Prompts\error;
+use function Laravel\Prompts\warning;
 
 /**
  * Cascade
@@ -24,29 +26,16 @@ class Cascade
      */
     private function __construct()
     {
-        App::bind(Params\Configure\App::class, function () {
-            return new Params\Configure\App('App', 'app');
-        });
-
-        App::bind(Params\Configure\Cascade::class, function () {
-            return new Params\Configure\Cascade('Cascade');
-        });
-
-        App::bind(Params\Configure\Summary::class, function () {
-            return new Params\Configure\Summary('Summaries', 'Summary');
-        });
-
-        App::bind(Params\Configure\Model::class, function () {
-            return new Params\Configure\Model('Models', 'Model');
+        $this->registerConfigure()->map(function (Closure $callable, string $configure) {
+            App::bind($configure, $callable);
         });
 
         App::bind(Params\Configure::class, function () {
-            return new Params\Configure(
-                App::make(Params\Configure\App::class),
-                App::make(Params\Configure\Cascade::class),
-                App::make(Params\Configure\Summary::class),
-                App::make(Params\Configure\Model::class)
-            );
+            $params = $this->registerConfigure()->keys()->map(function (string $configure) {
+                return App::make($configure);
+            });
+
+            return new Params\Configure(...$params);
         });
     }
 
@@ -157,6 +146,7 @@ class Cascade
         // 无论如何都注销以防止污染
         App::forgetInstance(Params\Schema::class);
 
+        // 重新绑定实例防止因为调用顺序导致的错误
         App::instance(
             Params\Schema::class,
             new Params\Schema(app(Params\Builder\Table::class)->getTable())
@@ -170,15 +160,30 @@ class Cascade
             new Schema(App::make(Params\Schema::class), 'down')
         );
 
-        $this->runSummary();
+        $this->boot();
+    }
 
-        if (App::bound(Params\Builder\Migration::class)) {
-            $this->runMigrationBuilder();
-        }
-
-        if (App::bound(Params\Builder\Model::class)) {
-            $this->runModelBuilder();
-        }
+    /**
+     * 注册配置项
+     *
+     * @return Collection
+     */
+    private function registerConfigure(): Collection
+    {
+        return collect([
+            Params\Configure\App::class => function () {
+                return new Params\Configure\App('App', 'app');
+            },
+            Params\Configure\Cascade::class => function () {
+                return new Params\Configure\Cascade('Cascade');
+            },
+            Params\Configure\Summary::class => function () {
+                return new Params\Configure\Summary('Summaries', 'Summary');
+            },
+            Params\Configure\Model::class => function () {
+                return new Params\Configure\Model('Models', 'Model');
+            },
+        ]);
     }
 
     /**
@@ -206,59 +211,53 @@ class Cascade
     }
 
     /**
-     * 绑定并运行 Summary
+     * 启动执行
      *
      * @return void
      */
-    private function runSummary(): void
+    private function boot(): void
     {
-        App::bind(Builder\Summary::class, function () {
-            return new Builder\Summary(
-                App::make(Params\Configure::class),
-                App::make(Params\Builder\Table::class),
-                App::make(Params\Schema::class)
-            );
-        });
-
-        app(Builder\Summary::class)->boot();
-    }
-
-    /**
-     * 绑定并运行迁移构建器
-     *
-     * @return void
-     */
-    private function runMigrationBuilder(): void
-    {
-        App::bind(Builder\Migration::class, function () {
-            return new Builder\Migration(
+        // 提供公共依赖
+        App::when(array_keys($this->builders()->all()))
+            ->needs('$configureParams')
+            ->needs('$tableParams')
+            ->needs('$schemaParams')
+            ->give([
                 App::make(Params\Configure::class),
                 App::make(Params\Builder\Table::class),
                 App::make(Params\Schema::class),
-                App::make(Params\Builder\Migration::class)
-            );
-        });
+            ]);
 
-        app(Builder\Migration::class)->boot();
+        // 动态注册依赖
+        $this->builders()->map(function (array $dependency, string $builder) {
+            foreach ($dependency as $key => $value) {
+                if (!App::bound($value)) {
+                    warning("[Debug]: $builder - 缺少 [$value] 依赖- 跳过注入");
+                    return;
+                }
+
+                App::when($builder)->needs($key)->give($value);
+            }
+
+            app($builder)->boot();
+        });
     }
 
     /**
-     * 绑定并运行模型构建器
+     * 构建器实例与依赖
      *
-     * @return void
+     * @return Collection
      */
-    private function runModelBuilder(): void
+    private function builders(): Collection
     {
-        App::bind(Builder\Model::class, function () {
-            return new Builder\Model(
-                App::make(Params\Configure::class),
-                App::make(Params\Builder\Table::class),
-                App::make(Params\Builder\Model::class),
-                App::make(Params\Schema::class),
-            );
-        });
-
-        app(Builder\Model::class)->boot();
+        return collect([
+            SummaryBuilder::class => [],
+            MigrationBuilder::class => [
+                '$migrationParams' => Params\Builder\Migration::class,
+            ],
+            ModelBuilder::class => [
+                '$modelParams' => Params\Builder\Model::class,
+            ],
+        ]);
     }
-
 }

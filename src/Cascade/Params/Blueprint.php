@@ -3,7 +3,6 @@
 namespace Handyfit\Framework\Cascade\Params;
 
 use Closure;
-use Handyfit\Framework\Cascade\Params\Column as ColumnParams;
 
 /**
  * Blueprint Params
@@ -14,13 +13,6 @@ class Blueprint
 {
 
     /**
-     * 表名称
-     *
-     * @var string
-     */
-    private string $table;
-
-    /**
      * 回调闭包
      *
      * @var Closure
@@ -28,45 +20,23 @@ class Blueprint
     private Closure $callable;
 
     /**
-     * 列参数信息集
+     * 迁移参数信息集
      *
-     * @var ColumnParams[]
+     * @var Migration[][]
      */
-    private array $columns;
+    private array $migrations;
 
     /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param string  $table
      * @param Closure $callable
      *
      * @return void
      */
-    public function __construct(string $table, Closure $callable)
+    public function __construct(Closure $callable)
     {
-        $this->table = $table;
         $this->callable = $callable;
-        $this->columns = [];
-    }
-
-    /**
-     * 获取表名称
-     *
-     * @return string
-     */
-    public function getTable(): string
-    {
-        return $this->table;
-    }
-
-    /**
-     * 获取列信息集
-     *
-     * @return ColumnParams[]
-     */
-    public function getColumns(): array
-    {
-        return $this->columns;
+        $this->migrations = [];
     }
 
     /**
@@ -80,15 +50,38 @@ class Blueprint
     }
 
     /**
-     * 新增列信息
+     * 获取所有迁移参数信息集
      *
-     * @param Column $column
-     *
-     * @return void
+     * @return Migration[][]
      */
-    public function appendColumn(ColumnParams $column): void
+    public function getMigrations(): array
     {
-        $this->columns[] = $column;
+        return $this->migrations;
+    }
+
+    /**
+     * 获取指定列的迁移参数信息集
+     *
+     * @return Migration[]
+     */
+    public function getColumnMigrations(string $colum): array
+    {
+        return $this->migrations[$colum] ?? [];
+    }
+
+    /**
+     * 设置迁移参数信息集
+     *
+     * @param string    $colum
+     * @param Migration $migration
+     *
+     * @return static
+     */
+    public function appendMigration(string $colum, Migration $migration): static
+    {
+        $this->migrations[$colum][] = $migration;
+
+        return $this;
     }
 
 }
