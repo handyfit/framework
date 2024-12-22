@@ -1,16 +1,11 @@
 <?php
 
-namespace Handyfit\Framework\Cascade\Builder;
+namespace Handyfit\Framework\Cascade;
 
-use Handyfit\Framework\Cascade\DiskManager;
-use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Illuminate\Support\Str;
-
-use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
+use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 
 /**
@@ -21,7 +16,7 @@ use function Laravel\Prompts\warning;
 abstract class Builder
 {
 
-    use Template;
+    use TemplateBuilder;
 
     /**
      * 存根内容
@@ -33,37 +28,37 @@ abstract class Builder
     /**
      * 配置参数对象
      *
-     * @var ConfigureParams
+     * @var Params\Configure
      */
-    protected ConfigureParams $configureParams;
+    protected Params\Configure $configureParams;
 
     /**
      * 表参数对象
      *
-     * @var TableParams
+     * @var Params\Builder\Table
      */
-    protected TableParams $tableParams;
+    protected Params\Builder\Table $tableParams;
 
     /**
      * Schema 参数对象
      *
-     * @var SchemaParams
+     * @var Params\Schema
      */
-    protected SchemaParams $schemaParams;
+    protected Params\Schema $schemaParams;
 
     /**
      * 构建一个 Builder 实例
      *
-     * @param ConfigureParams $configureParams
-     * @param TableParams     $tableParams
-     * @param SchemaParams    $schemaParams
+     * @param  Params\Configure      $configureParams
+     * @param  Params\Builder\Table  $tableParams
+     * @param  Params\Schema         $schemaParams
      *
      * @return void
      */
     public function __construct(
-        ConfigureParams $configureParams,
-        TableParams $tableParams,
-        SchemaParams $schemaParams
+        Params\Configure $configureParams,
+        Params\Builder\Table $tableParams,
+        Params\Schema $schemaParams
     ) {
         $this->stub = '';
         $this->configureParams = $configureParams;
@@ -81,8 +76,8 @@ abstract class Builder
     /**
      * 替换参数至存根
      *
-     * @param string      $param
-     * @param string|bool $value
+     * @param  string       $param
+     * @param  string|bool  $value
      *
      * @return void
      */
@@ -94,9 +89,9 @@ abstract class Builder
     /**
      * 替换参数
      *
-     * @param string      $param
-     * @param string|bool $value
-     * @param string      $stub
+     * @param  string       $param
+     * @param  string|bool  $value
+     * @param  string       $stub
      *
      * @return string
      */
@@ -113,8 +108,8 @@ abstract class Builder
     /**
      * 初始化
      *
-     * @param string $classname
-     * @param string $filename
+     * @param  string  $classname
+     * @param  string  $filename
      *
      * @return bool
      */
@@ -140,7 +135,7 @@ abstract class Builder
     /**
      * 构建器唯一标识
      *
-     * @param string $classname
+     * @param  string  $classname
      *
      * @return string
      */
@@ -154,9 +149,9 @@ abstract class Builder
     /**
      * 写入存根内容到磁盘
      *
-     * @param string $classname
-     * @param string $filename
-     * @param string $folderPath
+     * @param  string  $classname
+     * @param  string  $filename
+     * @param  string  $folderPath
      *
      * @return void
      */
@@ -179,7 +174,7 @@ abstract class Builder
     /**
      * 获取 Cascade 命名空间
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */
@@ -194,7 +189,7 @@ abstract class Builder
     /**
      * 获取应用命名空间
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */
@@ -209,7 +204,7 @@ abstract class Builder
     /**
      * 获取 Cascade 磁盘路径
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */
@@ -224,7 +219,7 @@ abstract class Builder
     /**
      * 获取应用磁盘路径
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */

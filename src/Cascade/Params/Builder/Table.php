@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 /**
  * Table builder params
  *
+ * @todo 需要修改命名空间和文件分类机制
  * @author KanekiYuto
  */
 class Table

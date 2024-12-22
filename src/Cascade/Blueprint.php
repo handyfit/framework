@@ -2,8 +2,7 @@
 
 namespace Handyfit\Framework\Cascade;
 
-use Handyfit\Framework\Cascade\Params\Blueprint as BlueprintParams;
-use Handyfit\Framework\Cascade\Trait\Laravel\Blueprint as LaravelBlueprint;
+use stdClass;
 
 /**
  * Cascade with laravel blueprint
@@ -13,32 +12,41 @@ use Handyfit\Framework\Cascade\Trait\Laravel\Blueprint as LaravelBlueprint;
 class Blueprint
 {
 
-    use LaravelBlueprint;
+    use Trait\Helper;
 
     /**
      * Blueprint params
      *
-     * @var BlueprintParams
+     * @var Params\Blueprint
      */
-    private BlueprintParams $blueprintParams;
+    private Params\Blueprint $blueprintParams;
+
+    /**
+     * Schema params
+     *
+     * @var Params\Schema
+     */
+    private Params\Schema $schemaParams;
 
     /**
      * 构建一个 Blueprint 实例
      *
-     * @param BlueprintParams $blueprintParams
+     * @param  Params\Blueprint  $blueprint
+     * @param  Params\Schema     $schema
      *
      * @return void
      */
-    public function __construct(BlueprintParams $blueprintParams)
+    public function __construct(Params\Blueprint $blueprint, Params\Schema $schema)
     {
-        $this->blueprintParams = $blueprintParams;
+        $this->blueprintParams = $blueprint;
+        $this->schemaParams = $schema;
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string   $column
-     * @param int|null $length
+     * @param  string    $column
+     * @param  int|null  $length
      *
      * @return ColumnDefinition
      */
@@ -47,15 +55,46 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$length' => $length,
-        ], $this);
+        ]);
+    }
+
+    /**
+     * 自动处理参数
+     *
+     * @param  string  $fn
+     * @param  string  $column
+     * @param  array   $params
+     *
+     * @return ColumnDefinition
+     */
+    private function autoParams(string $fn, string $column, array $params): ColumnDefinition
+    {
+        return $this->pushParams($fn, $column, $this->useParams(__CLASS__, $fn, $params));
+    }
+
+    /**
+     * 把参数加入到对象树中
+     *
+     * @param  string    $fn
+     * @param  string    $column
+     * @param  stdClass  $params
+     *
+     * @return ColumnDefinition
+     */
+    private function pushParams(string $fn, string $column, stdClass $params): ColumnDefinition
+    {
+        $this->schemaParams->appendColumn(new Params\Column($column));
+        $this->blueprintParams->appendMigration($column, new Params\Migration($fn, $params));
+
+        return new ColumnDefinition($column, $this->blueprintParams, $this->schemaParams);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string   $column
-     * @param int|null $length
-     * @param bool     $fixed
+     * @param  string    $column
+     * @param  int|null  $length
+     * @param  bool      $fixed
      *
      * @return ColumnDefinition
      */
@@ -65,14 +104,14 @@ class Blueprint
             '@quote$column' => $column,
             '$length' => $length,
             '$fixed' => $fixed,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -81,14 +120,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -97,15 +136,15 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $total
-     * @param int    $places
+     * @param  string  $column
+     * @param  int     $total
+     * @param  int     $places
      *
      * @return ColumnDefinition
      */
@@ -115,14 +154,14 @@ class Blueprint
             '@quote$column' => $column,
             '$total' => $total,
             '$places' => $places,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param array  $allowed
+     * @param  string  $column
+     * @param  array   $allowed
      *
      * @return ColumnDefinition
      */
@@ -131,14 +170,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$allowed' => $allowed,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -147,14 +186,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $length
+     * @param  string  $column
+     * @param  int     $length
      *
      * @return ColumnDefinition
      */
@@ -163,15 +202,15 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$length' => $length,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string      $column
-     * @param string|null $subtype
-     * @param int         $srid
+     * @param  string       $column
+     * @param  string|null  $subtype
+     * @param  int          $srid
      *
      * @return ColumnDefinition
      */
@@ -181,15 +220,15 @@ class Blueprint
             '@quote$column' => $column,
             '$subtype' => $subtype,
             '$srid' => $srid,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string      $column
-     * @param string|null $subtype
-     * @param int         $srid
+     * @param  string       $column
+     * @param  string|null  $subtype
+     * @param  int          $srid
      *
      * @return ColumnDefinition
      */
@@ -199,14 +238,14 @@ class Blueprint
             '@quote$column' => $column,
             '$subtype' => $subtype,
             '$srid' => $srid,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param array  $allowed
+     * @param  string  $column
+     * @param  array   $allowed
      *
      * @return ColumnDefinition
      */
@@ -215,14 +254,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$allowed' => $allowed,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $length
+     * @param  string  $column
+     * @param  int     $length
      *
      * @return ColumnDefinition
      */
@@ -231,15 +270,15 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$length' => $length,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
-     * @param bool   $unsigned
+     * @param  string  $column
+     * @param  bool    $autoIncrement
+     * @param  bool    $unsigned
      *
      * @return ColumnDefinition
      */
@@ -249,15 +288,15 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
-     * @param bool   $unsigned
+     * @param  string  $column
+     * @param  bool    $autoIncrement
+     * @param  bool    $unsigned
      *
      * @return ColumnDefinition
      */
@@ -267,15 +306,15 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
-     * @param bool   $unsigned
+     * @param  string  $column
+     * @param  bool    $autoIncrement
+     * @param  bool    $unsigned
      *
      * @return ColumnDefinition
      */
@@ -285,15 +324,15 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
-     * @param bool   $unsigned
+     * @param  string  $column
+     * @param  bool    $autoIncrement
+     * @param  bool    $unsigned
      *
      * @return ColumnDefinition
      */
@@ -303,15 +342,15 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
-     * @param bool   $unsigned
+     * @param  string  $column
+     * @param  bool    $autoIncrement
+     * @param  bool    $unsigned
      *
      * @return ColumnDefinition
      */
@@ -321,14 +360,14 @@ class Blueprint
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
             '$unsigned' => $unsigned,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
+     * @param  string  $column
+     * @param  bool    $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -337,14 +376,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
+     * @param  string  $column
+     * @param  bool    $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -353,14 +392,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
+     * @param  string  $column
+     * @param  bool    $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -369,14 +408,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
+     * @param  string  $column
+     * @param  bool    $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -385,14 +424,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param bool   $autoIncrement
+     * @param  string  $column
+     * @param  bool    $autoIncrement
      *
      * @return ColumnDefinition
      */
@@ -401,14 +440,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$autoIncrement' => $autoIncrement,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -417,14 +456,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -433,14 +472,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -449,14 +488,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -465,14 +504,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -481,14 +520,14 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
-     * @param int    $precision
+     * @param  string  $column
+     * @param  int     $precision
      *
      * @return ColumnDefinition
      */
@@ -497,13 +536,13 @@ class Blueprint
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
             '$precision' => $precision,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -511,13 +550,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -525,13 +564,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -539,13 +578,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -553,13 +592,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -567,13 +606,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -581,13 +620,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -595,13 +634,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -609,13 +648,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -623,13 +662,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -637,13 +676,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -651,13 +690,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -665,13 +704,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -679,13 +718,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -693,13 +732,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -707,13 +746,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -721,13 +760,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -735,13 +774,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -749,13 +788,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -763,13 +802,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -777,13 +816,13 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $column
+     * @param  string  $column
      *
      * @return ColumnDefinition
      */
@@ -791,14 +830,14 @@ class Blueprint
     {
         return $this->autoParams(__FUNCTION__, $column, [
             '@quote$column' => $column,
-        ], $this);
+        ]);
     }
 
     /**
      * 与 Laravel Blueprint 保持一致
      *
-     * @param string $name
-     * @param null   $indexName
+     * @param  string  $name
+     * @param  null    $indexName
      *
      * @return void
      */
@@ -807,7 +846,7 @@ class Blueprint
         $this->autoParams(__FUNCTION__, $name, [
             '@quote$name' => $name,
             '$indexName' => $indexName,
-        ], $this);
+        ]);
     }
 
 }

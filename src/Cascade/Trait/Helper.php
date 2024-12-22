@@ -1,14 +1,13 @@
 <?php
 
-namespace Handyfit\Framework\Cascade\Trait\Laravel;
+namespace Handyfit\Framework\Cascade\Trait;
 
+use stdClass;
 use Exception;
+use ReflectionMethod;
 use Illuminate\Support\Str;
 
 use function Laravel\Prompts\error;
-
-use ReflectionMethod;
-use stdClass;
 
 /**
  * @todo 需要重新整合

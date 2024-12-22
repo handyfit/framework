@@ -2,8 +2,6 @@
 
 namespace Handyfit\Framework\Cascade\Params;
 
-use Handyfit\Framework\Cascade\Params\Migration as MigrationParams;
-
 /**
  * Column Params
  *
@@ -17,7 +15,7 @@ class Column
      *
      * @var string
      */
-    private string $field;
+    private string $colum;
 
     /**
      * 备注
@@ -25,13 +23,6 @@ class Column
      * @var string
      */
     private string $comment;
-
-    /**
-     * Migration 参数
-     *
-     * @var array
-     */
-    private array $migrationParams;
 
     /**
      * 是否隐藏属性
@@ -57,18 +48,15 @@ class Column
     /**
      * 构建一个列参数实例
      *
-     * @param string $field
-     *
-     * @return void
+     * @param  string  $colum
      */
-    public function __construct(string $field)
+    public function __construct(string $colum)
     {
-        $this->field = $field;
+        $this->colum = $colum;
         $this->comment = '';
         $this->cast = '';
         $this->hidden = false;
         $this->fillable = false;
-        $this->migrationParams = [];
     }
 
     /**
@@ -84,7 +72,7 @@ class Column
     /**
      * 设置是否可大量分配属性
      *
-     * @param bool $value
+     * @param  bool  $value
      *
      * @return static
      */
@@ -108,7 +96,7 @@ class Column
     /**
      * 设置是否隐藏属性
      *
-     * @param bool $value
+     * @param  bool  $value
      *
      * @return static
      */
@@ -124,9 +112,9 @@ class Column
      *
      * @return string
      */
-    public function getField(): string
+    public function getColum(): string
     {
-        return $this->field;
+        return $this->colum;
     }
 
     /**
@@ -142,7 +130,7 @@ class Column
     /**
      * 设置备注
      *
-     * @param string $comment
+     * @param  string  $comment
      *
      * @return static
      */
@@ -166,37 +154,13 @@ class Column
     /**
      * 设置应该强制转换的类型
      *
-     * @param string $cast
+     * @param  string  $cast
      *
      * @return static
      */
     public function setCast(string $cast): static
     {
         $this->cast = $cast;
-
-        return $this;
-    }
-
-    /**
-     * 获取 Migration 参数
-     *
-     * @return array
-     */
-    public function getMigrationParams(): array
-    {
-        return $this->migrationParams;
-    }
-
-    /**
-     * 新增 Migration 参数
-     *
-     * @param Migration $migrationParams
-     *
-     * @return Column
-     */
-    public function appendMigrationParams(MigrationParams $migrationParams): static
-    {
-        $this->migrationParams[] = $migrationParams;
 
         return $this;
     }

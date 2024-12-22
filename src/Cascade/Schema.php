@@ -87,39 +87,11 @@ class Schema
      */
     private function build(string $fn, Closure $callable): void
     {
-        $params = new Params\Blueprint(
-            $this->schemaParams->getTable(),
-            $callable
-        );
+        $params = new Params\Blueprint($callable);
 
-        $blueprintCallable = $params->getCallable();
-        $blueprintCallable(new Blueprint($params));
-
-        $this->cloneToManger($params->getColumns());
+        $params->getCallable()(new Blueprint($params, $this->schemaParams));
 
         $this->schemaParams->setBlueprints($this->action, $fn, $params);
-    }
-
-    /**
-     * 参数克隆至 Column manger
-     *
-     * @param Params\Column[] $columns
-     *
-     * @return void
-     */
-    private function cloneToManger(array $columns): void
-    {
-        collect($columns)->map(function ($column) {
-            $columnManger = new Params\ColumnManger(
-                $column->getField(),
-                $column->getComment(),
-                $column->getCast(),
-                $column->isHidden(),
-                $column->isFillable()
-            );
-
-            $this->schemaParams->appendColumnsManger($columnManger);
-        });
     }
 
 }

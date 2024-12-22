@@ -1,12 +1,7 @@
 <?php
 
-namespace Handyfit\Framework\Cascade\Builder;
+namespace Handyfit\Framework\Cascade;
 
-use Handyfit\Framework\Cascade\Params\Builder\Model as ModelParams;
-use Handyfit\Framework\Cascade\Params\Builder\Table as TableParams;
-use Handyfit\Framework\Cascade\Params\Configure as ConfigureParams;
-use Handyfit\Framework\Cascade\Params\Configure\Model as BuilderParams;
-use Handyfit\Framework\Cascade\Params\Schema as SchemaParams;
 use Illuminate\Support\Str;
 
 /**
@@ -14,7 +9,7 @@ use Illuminate\Support\Str;
  *
  * @author KanekiYuto
  */
-class Model extends Builder
+class ModelBuilder extends Builder
 {
 
     /**
@@ -34,16 +29,16 @@ class Model extends Builder
     /**
      * 构建参数
      *
-     * @var BuilderParams
+     * @var Params\Configure\Model
      */
-    private BuilderParams $builderParams;
+    private Params\Configure\Model $builderParams;
 
     /**
      * Model 参数对象
      *
-     * @var ModelParams
+     * @var Params\Builder\Model
      */
-    private ModelParams $modelParams;
+    private Params\Builder\Model $modelParams;
 
     /**
      * 类名称
@@ -62,18 +57,18 @@ class Model extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param ConfigureParams $configureParams
-     * @param TableParams     $tableParams
-     * @param ModelParams     $modelParams
-     * @param SchemaParams    $schemaParams
+     * @param  Params\Configure      $configureParams
+     * @param  Params\Builder\Table  $tableParams
+     * @param  Params\Builder\Model  $modelParams
+     * @param  Params\Schema         $schemaParams
      *
      * @return void
      */
     public function __construct(
-        ConfigureParams $configureParams,
-        TableParams $tableParams,
-        ModelParams $modelParams,
-        SchemaParams $schemaParams
+        Params\Configure $configureParams,
+        Params\Builder\Table $tableParams,
+        Params\Builder\Model $modelParams,
+        Params\Schema $schemaParams
     ) {
         parent::__construct($configureParams, $tableParams, $schemaParams);
 
@@ -117,7 +112,7 @@ class Model extends Builder
         $this->stubParam('class', $this->classname);
         $this->stubParam('comment', '');
 
-        $this->stubParam('summary', app(Summary::class)->getPackage());
+        $this->stubParam('summary', app(SummaryBuilder::class)->getPackage());
 
         $this->stubParam('timestamps', $this->modelParams->getTimestamps());
         $this->stubParam('incrementing', $this->modelParams->getIncrementing());
@@ -126,8 +121,6 @@ class Model extends Builder
 
         $this->stubParam('casts', $this->castsBuilder());
         $this->stubParam('usePackages', $this->usePackagesBuilder());
-
-        $this->stub = $this->formattingStub($this->stub);
 
         // 写入磁盘
         $this->put($this->builderUUid(__CLASS__), $this->classname, $folderPath);
@@ -140,10 +133,10 @@ class Model extends Builder
      */
     private function columnsMangerBuilder(): void
     {
-        $columns = $this->schemaParams->getColumnsManger();
+        $columns = $this->schemaParams->getColumns();
 
         foreach ($columns as $column) {
-            $field = $column->getField();
+            $field = $column->getColum();
 
             if (!empty($column->getCast())) {
                 $key = Str::upper($field);
@@ -192,7 +185,7 @@ class Model extends Builder
     /**
      * 加入到包中
      *
-     * @param string $value
+     * @param  string  $value
      *
      * @return void
      */
