@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Cascade;
+
+use Illuminate\Support\Collection;
+
+class Manger
+{
+
+    protected function summaries(): Collection
+    {
+        {{ summaries }}
+    }
+
+}

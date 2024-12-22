@@ -2,6 +2,10 @@
 
 namespace Handyfit\Framework\Cascade;
 
+use Handyfit\Framework\Cascade\Params\Builder\Table;
+use Handyfit\Framework\Cascade\Params\Configure;
+use Handyfit\Framework\Cascade\Params\Manger;
+use Handyfit\Framework\Cascade\Params\Schema;
 use Illuminate\Support\Str;
 
 /**
@@ -50,16 +54,18 @@ class SummaryBuilder extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param  Params\Configure      $configureParams
-     * @param  Params\Builder\Table  $tableParams
-     * @param  Params\Schema         $schemaParams
+     * @param Configure $configureParams
+     * @param Table     $tableParams
+     * @param Manger    $mangerParams
+     * @param Schema    $schemaParams
      */
     public function __construct(
         Params\Configure $configureParams,
         Params\Builder\Table $tableParams,
+        Params\Manger $mangerParams,
         Params\Schema $schemaParams
     ) {
-        parent::__construct($configureParams, $tableParams, $schemaParams);
+        parent::__construct($configureParams, $mangerParams);
 
         $this->builderParams = $configureParams->getSummary();
 
@@ -74,19 +80,9 @@ class SummaryBuilder extends Builder
             $this->builderParams->getNamespace(),
             $tableParams->getNamespace(),
         ]);
-    }
 
-    /**
-     * 对外提供的引入包名称
-     *
-     * @return string
-     */
-    public function getPackage(): string
-    {
-        return implode('\\', [
-            $this->namespace,
-            $this->classname,
-        ]);
+        $this->schemaParams = $schemaParams;
+        $this->tableParams = $tableParams;
     }
 
     /**
@@ -120,8 +116,25 @@ class SummaryBuilder extends Builder
         $this->stubParam('hidden', $this->constantValuesBuilder($this->hidden));
         $this->stubParam('fillable', $this->constantValuesBuilder($this->fillable));
 
+        app(Params\Manger::class)->appendSummary(
+            new Manger\Summary($table, $this->getPackage())
+        );
+
         // 写入磁盘
         $this->put($this->builderUUid(__CLASS__), $this->classname, $folderPath);
+    }
+
+    /**
+     * 对外提供的引入包名称
+     *
+     * @return string
+     */
+    public function getPackage(): string
+    {
+        return implode('\\', [
+            $this->namespace,
+            $this->classname,
+        ]);
     }
 
     /**
@@ -138,13 +151,13 @@ class SummaryBuilder extends Builder
             $templates[] = $this->columnBuilder($column);
         }
 
-        return $this->tab(implode("\n", $templates), 1);
+        return $this->tab(implode("\n\n", $templates), 1);
     }
 
     /**
      * 构建列参数
      *
-     * @param  Params\Column  $column
+     * @param Params\Column $column
      *
      * @return string
      */
@@ -157,7 +170,7 @@ class SummaryBuilder extends Builder
 
         $template[] = $this->templatePropertyComment($column->getComment(), 'string');
         $template[] = $this->templateConst($constantName, $field);
-        $template = implode('', $template);
+        $template = implode("\n", $template);
 
         if ($column->isHidden()) {
             $this->hidden[] = $constantName;
@@ -173,7 +186,7 @@ class SummaryBuilder extends Builder
     /**
      * 构建所有常量值
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */

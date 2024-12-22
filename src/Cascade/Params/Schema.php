@@ -39,9 +39,16 @@ class Schema
     private array $codes;
 
     /**
+     * 存根集
+     *
+     * @var Stub[]
+     */
+    private array $stubs;
+
+    /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param  string  $table
+     * @param string $table
      *
      * @return void
      */
@@ -49,6 +56,7 @@ class Schema
     {
         $this->table = $table;
         $this->columns = [];
+        $this->stubs = [];
     }
 
     /**
@@ -64,7 +72,7 @@ class Schema
     /**
      * 获取蓝图集
      *
-     * @param  string  $action
+     * @param string $action
      *
      * @return Blueprint[]
      */
@@ -76,9 +84,9 @@ class Schema
     /**
      * 新增蓝图信息
      *
-     * @param  string     $action
-     * @param  string     $fn
-     * @param  Blueprint  $blueprint
+     * @param string    $action
+     * @param string    $fn
+     * @param Blueprint $blueprint
      *
      * @return void
      */
@@ -104,8 +112,8 @@ class Schema
     /**
      * 新增代码
      *
-     * @param  string  $action
-     * @param  string  $value
+     * @param string $action
+     * @param string $value
      *
      * @return void
      */
@@ -131,7 +139,7 @@ class Schema
     /**
      * 获取指定列的信息
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return Column
      */
@@ -143,13 +151,35 @@ class Schema
     /**
      * 新增列信息
      *
-     * @param  Column  $column
+     * @param Column $column
      *
      * @return void
      */
     public function appendColumn(Column $column): void
     {
         $this->columns[$column->getColum()] = $column;
+    }
+
+    /**
+     * 获取所有存根
+     *
+     * @return array
+     */
+    public function getStubs(): array
+    {
+        return $this->stubs;
+    }
+
+    /**
+     * 新增存根
+     *
+     * @param Stub $stub
+     *
+     * @return void
+     */
+    public function appendStub(Stub $stub): void
+    {
+        $this->stubs[] = $stub;
     }
 
 }

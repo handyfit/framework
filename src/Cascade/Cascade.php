@@ -3,11 +3,11 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
 use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
 use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
-use function Laravel\Prompts\info;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 
@@ -18,49 +18,6 @@ use function Laravel\Prompts\warning;
  */
 class Cascade
 {
-
-    /**
-     * 创建一个 Cascade 实例
-     *
-     * @return void
-     */
-    private function __construct()
-    {
-        $this->registerConfigure()->map(function (Closure $callable, string $configure) {
-            App::bind($configure, $callable);
-        });
-
-        App::bind(Params\Configure::class, function () {
-            $params = $this->registerConfigure()->keys()->map(function (string $configure) {
-                return App::make($configure);
-            });
-
-            return new Params\Configure(...$params);
-        });
-    }
-
-    /**
-     * 注册配置项
-     *
-     * @return Collection
-     */
-    private function registerConfigure(): Collection
-    {
-        return collect([
-            Params\Configure\App::class => function () {
-                return new Params\Configure\App('App', 'app');
-            },
-            Params\Configure\Cascade::class => function () {
-                return new Params\Configure\Cascade('Cascade');
-            },
-            Params\Configure\Summary::class => function () {
-                return new Params\Configure\Summary('Summaries', 'Summary');
-            },
-            Params\Configure\Model::class => function () {
-                return new Params\Configure\Model('Models', 'Model');
-            },
-        ]);
-    }
 
     /**
      * 设置 Configure
@@ -75,8 +32,8 @@ class Cascade
     /**
      * 设置 - Table
      *
-     * @param  string  $table
-     * @param  string  $comment
+     * @param string $table
+     * @param string $comment
      *
      * @return static
      */
@@ -92,9 +49,9 @@ class Cascade
     /**
      * 设置 - Migration
      *
-     * @param  string  $filename
-     * @param  string  $comment
-     * @param  string  $hook
+     * @param string $filename
+     * @param string $comment
+     * @param string $hook
      *
      * @return static
      */
@@ -113,10 +70,10 @@ class Cascade
     /**
      * 设置 - Model
      *
-     * @param  string  $extends
-     * @param  string  $hook
-     * @param  bool    $incrementing
-     * @param  bool    $timestamps
+     * @param string $extends
+     * @param string $hook
+     * @param bool   $incrementing
+     * @param bool   $timestamps
      *
      * @return static
      */
@@ -141,8 +98,8 @@ class Cascade
     /**
      * 设置 - Schema
      *
-     * @param  Closure  $up
-     * @param  Closure  $down
+     * @param Closure $up
+     * @param Closure $down
      *
      * @return static
      */
@@ -219,15 +176,11 @@ class Cascade
     {
         // 提供公共依赖
         App::when(array_keys($this->builders()->all()))
-            ->needs('$configureParams')
             ->needs('$tableParams')
             ->needs('$schemaParams')
-            ->needs('$mangerParams')
             ->give([
-                App::make(Params\Configure::class),
                 App::make(Params\Builder\Table::class),
                 App::make(Params\Schema::class),
-                App::make(Params\Manger::class),
             ]);
 
         // 动态注册依赖
@@ -262,4 +215,5 @@ class Cascade
             ],
         ]);
     }
+
 }

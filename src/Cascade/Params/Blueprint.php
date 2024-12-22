@@ -29,7 +29,7 @@ class Blueprint
     /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param  Closure  $callable
+     * @param Closure $callable
      *
      * @return void
      */
@@ -72,8 +72,8 @@ class Blueprint
     /**
      * 设置迁移参数信息集
      *
-     * @param  string     $colum
-     * @param  Migration  $migration
+     * @param string    $colum
+     * @param Migration $migration
      *
      * @return static
      */

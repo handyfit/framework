@@ -2,13 +2,10 @@
 
 namespace Handyfit\Framework\Cascade\Console;
 
-use Handyfit\Framework\Cascade\Cascade;
+use Handyfit\Framework\Cascade\Distribute;
 use Handyfit\Framework\Console\Trait\ConfirmableTrait;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
-use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\select;
@@ -66,50 +63,18 @@ class CascadeCommand extends BaseCommand
             default => array_keys($this->getCascadeFilesOption())
         };
 
-        foreach ($files as $file) {
-            $result = $this->runCascade($file);
+        $distribute = new Distribute($files);
 
-            if ($result === 1) {
-                return $result;
-            }
+        $distribute->register();
+
+        if (!$distribute->boot()) {
+            return 1;
         }
+
+        $distribute->write();
 
         info(Str::of('|──|')->repeat(30));
         info("全部执行完成！");
-
-        return 0;
-    }
-
-    /**
-     * Run the cascade
-     *
-     * @param string $filepath
-     *
-     * @return int
-     */
-    private function runCascade(string $filepath): int
-    {
-        // 载入文件系统
-        $file = new Filesystem();
-
-        try {
-            $cascade = $file->requireOnce($filepath);
-        } catch (FileNotFoundException $e) {
-            error("$filepath: 发生错误！" . $e->getMessage());
-            return 1;
-        }
-
-        if (!($cascade instanceof Cascade)) {
-            error("$filepath: 该 [Cascade] 不可用！");
-            return 1;
-        }
-
-        $this->newLine();
-
-        info("$filepath: 开始执行...");
-        info(Str::of('|──|')->repeat(30));
-
-        $cascade->create();
 
         return 0;
     }

@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
  * Table builder params
  *
  * @todo 需要修改命名空间和文件分类机制
+ *
  * @author KanekiYuto
  */
 class Table
@@ -106,12 +107,11 @@ class Table
     private function setNamespace(): void
     {
         $table = explode('_', $this->table);
+        // 移除最后一个
         $table = collect($table)->except([count($table) - 1])->all();
-        $table = implode('_', $table);
+        $table = implode('\\', $table);
 
-        $this->namespace = Str::of(Str::headline($table))
-            ->replace(' ', '')
-            ->toString();
+        $this->namespace = Str::of(Str::headline($table))->toString();
     }
 
     /**
