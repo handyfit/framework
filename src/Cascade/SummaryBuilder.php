@@ -50,9 +50,9 @@ class SummaryBuilder extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param  Params\Configure      $configureParams
-     * @param  Params\Builder\Table  $tableParams
-     * @param  Params\Schema         $schemaParams
+     * @param Params\Configure     $configureParams
+     * @param Params\Builder\Table $tableParams
+     * @param Params\Schema        $schemaParams
      */
     public function __construct(
         Params\Configure $configureParams,
@@ -144,7 +144,7 @@ class SummaryBuilder extends Builder
     /**
      * 构建列参数
      *
-     * @param  Params\Column  $column
+     * @param Params\Column $column
      *
      * @return string
      */
@@ -173,7 +173,7 @@ class SummaryBuilder extends Builder
     /**
      * 构建所有常量值
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */

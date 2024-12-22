@@ -3,10 +3,10 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use stdClass;
-use Handyfit\Framework\Cascade\Params\Schema;
 use Handyfit\Framework\Cascade\Params\Blueprint;
+use Handyfit\Framework\Cascade\Params\Schema;
 use Illuminate\Contracts\Database\Query\Expression;
+use stdClass;
 
 /**
  * 列定义
@@ -42,9 +42,9 @@ class ColumnDefinition
     /**
      * 构造一个列定义实例
      *
-     * @param  string     $column
-     * @param  Blueprint  $blueprint
-     * @param  Schema     $schema
+     * @param string    $column
+     * @param Blueprint $blueprint
+     * @param Schema    $schema
      *
      * @return void
      */
@@ -58,7 +58,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return ColumnDefinition
      */
@@ -70,37 +70,9 @@ class ColumnDefinition
     }
 
     /**
-     * 自动处理参数
-     *
-     * @param  string  $fn
-     * @param  array   $params
-     *
-     * @return ColumnDefinition
-     */
-    protected function autoParams(string $fn, array $params): static
-    {
-        return $this->pushParams($fn, $this->useParams(__CLASS__, $fn, $params));
-    }
-
-    /**
-     * 把参数加入到对象树中
-     *
-     * @param  string    $fn
-     * @param  stdClass  $params
-     *
-     * @return static
-     */
-    protected function pushParams(string $fn, stdClass $params): static
-    {
-        $this->blueprintParams->appendMigration($this->column, new Params\Migration($fn, $params));
-
-        return $this;
-    }
-
-    /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string  $comment
+     * @param string $comment
      *
      * @return ColumnDefinition
      */
@@ -116,7 +88,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return ColumnDefinition
      */
@@ -130,7 +102,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  bool|string|null  $indexName
+     * @param bool|string|null $indexName
      *
      * @return ColumnDefinition
      */
@@ -144,7 +116,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  bool|string|null  $indexName
+     * @param bool|string|null $indexName
      *
      * @return ColumnDefinition
      */
@@ -158,7 +130,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return ColumnDefinition
      */
@@ -172,7 +144,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string|Expression  $expression
+     * @param string|Expression $expression
      *
      * @return ColumnDefinition
      */
@@ -186,7 +158,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  mixed  $value
+     * @param mixed $value
      *
      * @return ColumnDefinition
      */
@@ -200,7 +172,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  int  $startingValue
+     * @param int $startingValue
      *
      * @return ColumnDefinition
      */
@@ -214,7 +186,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string  $charset
+     * @param string $charset
      *
      * @return ColumnDefinition
      */
@@ -228,7 +200,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string|Expression  $expression
+     * @param string|Expression $expression
      *
      * @return ColumnDefinition
      */
@@ -242,7 +214,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string|Expression|null  $expression
+     * @param string|Expression|null $expression
      *
      * @return ColumnDefinition
      */
@@ -316,7 +288,7 @@ class ColumnDefinition
     /**
      * 与 Laravel ColumnDefinition 保持一致
      *
-     * @param  string  $collation
+     * @param string $collation
      *
      * @return ColumnDefinition
      */
@@ -350,7 +322,7 @@ class ColumnDefinition
     /**
      * 标记为隐藏列
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return ColumnDefinition
      */
@@ -364,7 +336,7 @@ class ColumnDefinition
     /**
      * 标记为可填充列
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return ColumnDefinition
      */
@@ -378,7 +350,7 @@ class ColumnDefinition
     /**
      * 指定转换类型
      *
-     * @param  Closure|string  $value
+     * @param Closure|string $value
      *
      * @return ColumnDefinition
      */
@@ -389,6 +361,34 @@ class ColumnDefinition
         }
 
         $this->schemaParams->getColumn($this->column)->setCast($value);
+
+        return $this;
+    }
+
+    /**
+     * 自动处理参数
+     *
+     * @param string $fn
+     * @param array  $params
+     *
+     * @return ColumnDefinition
+     */
+    protected function autoParams(string $fn, array $params): static
+    {
+        return $this->pushParams($fn, $this->useParams(__CLASS__, $fn, $params));
+    }
+
+    /**
+     * 把参数加入到对象树中
+     *
+     * @param string   $fn
+     * @param stdClass $params
+     *
+     * @return static
+     */
+    protected function pushParams(string $fn, stdClass $params): static
+    {
+        $this->blueprintParams->appendMigration($this->column, new Params\Migration($fn, $params));
 
         return $this;
     }

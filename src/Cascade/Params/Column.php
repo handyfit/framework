@@ -48,7 +48,7 @@ class Column
     /**
      * 构建一个列参数实例
      *
-     * @param  string  $colum
+     * @param string $colum
      */
     public function __construct(string $colum)
     {
@@ -72,7 +72,7 @@ class Column
     /**
      * 设置是否可大量分配属性
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return static
      */
@@ -96,7 +96,7 @@ class Column
     /**
      * 设置是否隐藏属性
      *
-     * @param  bool  $value
+     * @param bool $value
      *
      * @return static
      */
@@ -130,7 +130,7 @@ class Column
     /**
      * 设置备注
      *
-     * @param  string  $comment
+     * @param string $comment
      *
      * @return static
      */
@@ -154,7 +154,7 @@ class Column
     /**
      * 设置应该强制转换的类型
      *
-     * @param  string  $cast
+     * @param string $cast
      *
      * @return static
      */

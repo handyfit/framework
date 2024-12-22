@@ -41,7 +41,7 @@ class Schema
     /**
      * 构建一个 Blueprint 参数实例
      *
-     * @param  string  $table
+     * @param string $table
      *
      * @return void
      */
@@ -64,7 +64,7 @@ class Schema
     /**
      * 获取蓝图集
      *
-     * @param  string  $action
+     * @param string $action
      *
      * @return Blueprint[]
      */
@@ -76,9 +76,9 @@ class Schema
     /**
      * 新增蓝图信息
      *
-     * @param  string     $action
-     * @param  string     $fn
-     * @param  Blueprint  $blueprint
+     * @param string    $action
+     * @param string    $fn
+     * @param Blueprint $blueprint
      *
      * @return void
      */
@@ -104,8 +104,8 @@ class Schema
     /**
      * 新增代码
      *
-     * @param  string  $action
-     * @param  string  $value
+     * @param string $action
+     * @param string $value
      *
      * @return void
      */
@@ -131,7 +131,7 @@ class Schema
     /**
      * 获取指定列的信息
      *
-     * @param  string  $column
+     * @param string $column
      *
      * @return Column
      */
@@ -143,7 +143,7 @@ class Schema
     /**
      * 新增列信息
      *
-     * @param  Column  $column
+     * @param Column $column
      *
      * @return void
      */

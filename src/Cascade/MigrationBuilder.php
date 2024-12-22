@@ -2,8 +2,8 @@
 
 namespace Handyfit\Framework\Cascade;
 
-use stdClass;
 use Illuminate\Support\Str;
+use stdClass;
 
 /**
  * Migration builder
@@ -23,10 +23,10 @@ class MigrationBuilder extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param  Params\Configure          $configureParams
-     * @param  Params\Builder\Table      $tableParams
-     * @param  Params\Schema             $schemaParams
-     * @param  Params\Builder\Migration  $migrationParams
+     * @param Params\Configure         $configureParams
+     * @param Params\Builder\Table     $tableParams
+     * @param Params\Schema            $schemaParams
+     * @param Params\Builder\Migration $migrationParams
      *
      * @return void
      */
@@ -70,84 +70,9 @@ class MigrationBuilder extends Builder
     }
 
     /**
-     * 构建 Schema 部分
-     *
-     * @param  string  $action
-     *
-     * @return string
-     */
-    private function schemaBuilder(string $action): string
-    {
-        $templates = [];
-        $blueprints = $this->schemaParams->getBlueprints($action);
-        $codes = $this->schemaParams->getCodes($action);
-
-        foreach ($blueprints as $fn => $blueprint) {
-            $template = [];
-
-            $template[] = "Schema::$fn(TheSummary::TABLE, function (Blueprint @table) {";
-            $template[] = $this->blueprintBuilder($blueprint->getMigrations());
-            $template[] = "});";
-
-            $template = implode("\n", $template);
-            $template = Str::of($template)->replace('@', '$')->toString();
-
-            $templates[] = $template;
-        }
-
-        $templates = array_merge($templates, $codes);
-
-        return $this->tab(implode("\n\n", $templates), 2);
-    }
-
-    /**
-     * 构建 Blueprint 部分
-     *
-     * @param  array  $migrations
-     *
-     * @return string
-     */
-    private function blueprintBuilder(array $migrations): string
-    {
-        $templates = [];
-
-        foreach ($migrations as $column) {
-            $migrationBuilder = $this->migrationBuilder($column);
-
-            $templates[] = Str::of("@table$migrationBuilder;")
-                ->replace('@', '$')
-                ->toString();
-        }
-
-        return $this->tab(implode("\n", $templates), 1, false);
-    }
-
-    /**
-     * 构建 Migration 部分
-     *
-     * @param  Params\Migration[]  $migrations
-     *
-     * @return string
-     */
-    private function migrationBuilder(array $migrations): string
-    {
-        $templates = [];
-
-        foreach ($migrations as $migration) {
-            $fn = $migration->getFn();
-            $params = $migration->getParams();
-            $parameters = implode(', ', $this->parametersBuilder($params));
-
-            $templates[] = "->$fn($parameters)";
-        }
-
-        return implode('', $templates);
-    }
-
-    /**
      * 构建函数参数信息
      *
-     * @param  stdClass  $values
+     * @param stdClass $values
      *
      * @return array
      */
@@ -181,9 +106,84 @@ class MigrationBuilder extends Builder
     }
 
     /**
+     * 构建 Schema 部分
+     *
+     * @param string $action
+     *
+     * @return string
+     */
+    private function schemaBuilder(string $action): string
+    {
+        $templates = [];
+        $blueprints = $this->schemaParams->getBlueprints($action);
+        $codes = $this->schemaParams->getCodes($action);
+
+        foreach ($blueprints as $fn => $blueprint) {
+            $template = [];
+
+            $template[] = "Schema::$fn(TheSummary::TABLE, function (Blueprint @table) {";
+            $template[] = $this->blueprintBuilder($blueprint->getMigrations());
+            $template[] = "});";
+
+            $template = implode("\n", $template);
+            $template = Str::of($template)->replace('@', '$')->toString();
+
+            $templates[] = $template;
+        }
+
+        $templates = array_merge($templates, $codes);
+
+        return $this->tab(implode("\n\n", $templates), 2);
+    }
+
+    /**
+     * 构建 Blueprint 部分
+     *
+     * @param array $migrations
+     *
+     * @return string
+     */
+    private function blueprintBuilder(array $migrations): string
+    {
+        $templates = [];
+
+        foreach ($migrations as $column) {
+            $migrationBuilder = $this->migrationBuilder($column);
+
+            $templates[] = Str::of("@table$migrationBuilder;")
+                ->replace('@', '$')
+                ->toString();
+        }
+
+        return $this->tab(implode("\n", $templates), 1, false);
+    }
+
+    /**
+     * 构建 Migration 部分
+     *
+     * @param Params\Migration[] $migrations
+     *
+     * @return string
+     */
+    private function migrationBuilder(array $migrations): string
+    {
+        $templates = [];
+
+        foreach ($migrations as $migration) {
+            $fn = $migration->getFn();
+            $params = $migration->getParams();
+            $parameters = implode(', ', $this->parametersBuilder($params));
+
+            $templates[] = "->$fn($parameters)";
+        }
+
+        return implode('', $templates);
+    }
+
+    /**
      * 数组转换为参数字符串
      *
-     * @param  array  $values
+     * @param array $values
      *
      * @return string
      */

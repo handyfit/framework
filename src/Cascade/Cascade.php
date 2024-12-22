@@ -3,10 +3,11 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
 use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
 use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 
@@ -39,29 +40,6 @@ class Cascade
     }
 
     /**
-     * 注册配置项
-     *
-     * @return Collection
-     */
-    private function registerConfigure(): Collection
-    {
-        return collect([
-            Params\Configure\App::class => function () {
-                return new Params\Configure\App('App', 'app');
-            },
-            Params\Configure\Cascade::class => function () {
-                return new Params\Configure\Cascade('Cascade');
-            },
-            Params\Configure\Summary::class => function () {
-                return new Params\Configure\Summary('Summaries', 'Summary');
-            },
-            Params\Configure\Model::class => function () {
-                return new Params\Configure\Model('Models', 'Model');
-            },
-        ]);
-    }
-
-    /**
      * 设置 Configure
      *
      * @return static
@@ -74,8 +52,8 @@ class Cascade
     /**
      * 设置 - Table
      *
-     * @param  string  $table
-     * @param  string  $comment
+     * @param string $table
+     * @param string $comment
      *
      * @return static
      */
@@ -91,9 +69,9 @@ class Cascade
     /**
      * 设置 - Migration
      *
-     * @param  string  $filename
-     * @param  string  $comment
-     * @param  string  $hook
+     * @param string $filename
+     * @param string $comment
+     * @param string $hook
      *
      * @return static
      */
@@ -112,10 +90,10 @@ class Cascade
     /**
      * 设置 - Model
      *
-     * @param  string  $extends
-     * @param  string  $hook
-     * @param  bool    $incrementing
-     * @param  bool    $timestamps
+     * @param string $extends
+     * @param string $hook
+     * @param bool   $incrementing
+     * @param bool   $timestamps
      *
      * @return static
      */
@@ -140,8 +118,8 @@ class Cascade
     /**
      * 设置 - Schema
      *
-     * @param  Closure  $up
-     * @param  Closure  $down
+     * @param Closure $up
+     * @param Closure $down
      *
      * @return static
      */
@@ -183,6 +161,29 @@ class Cascade
         );
 
         $this->boot();
+    }
+
+    /**
+     * 注册配置项
+     *
+     * @return Collection
+     */
+    private function registerConfigure(): Collection
+    {
+        return collect([
+            Params\Configure\App::class => function () {
+                return new Params\Configure\App('App', 'app');
+            },
+            Params\Configure\Cascade::class => function () {
+                return new Params\Configure\Cascade('Cascade');
+            },
+            Params\Configure\Summary::class => function () {
+                return new Params\Configure\Summary('Summaries', 'Summary');
+            },
+            Params\Configure\Model::class => function () {
+                return new Params\Configure\Model('Models', 'Model');
+            },
+        ]);
     }
 
     /**

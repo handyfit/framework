@@ -33,6 +33,16 @@ class HandyFitServiceProvider extends ServiceProvider
     }
 
     /**
+     * Bootstrap service
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // ...
+    }
+
+    /**
      * Register commands
      *
      * @return Collection
@@ -60,16 +70,6 @@ class HandyFitServiceProvider extends ServiceProvider
             Support\Facades\Preacher::FACADE_ACCESSOR => Preacher\Builder::class,
             Support\Facades\Crush::FACADE_ACCESSOR => Tentative\Crush\Builder::class,
         ]);
-    }
-
-    /**
-     * Bootstrap service
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        // ...
     }
 
 }

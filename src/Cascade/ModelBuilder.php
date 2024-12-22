@@ -57,10 +57,10 @@ class ModelBuilder extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param  Params\Configure      $configureParams
-     * @param  Params\Builder\Table  $tableParams
-     * @param  Params\Builder\Model  $modelParams
-     * @param  Params\Schema         $schemaParams
+     * @param Params\Configure     $configureParams
+     * @param Params\Builder\Table $tableParams
+     * @param Params\Builder\Model $modelParams
+     * @param Params\Schema        $schemaParams
      *
      * @return void
      */
@@ -185,7 +185,7 @@ class ModelBuilder extends Builder
     /**
      * 加入到包中
      *
-     * @param  string  $value
+     * @param string $value
      *
      * @return void
      */
