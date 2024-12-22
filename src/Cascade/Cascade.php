@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
 use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 
@@ -221,10 +222,12 @@ class Cascade
             ->needs('$configureParams')
             ->needs('$tableParams')
             ->needs('$schemaParams')
+            ->needs('$mangerParams')
             ->give([
                 App::make(Params\Configure::class),
                 App::make(Params\Builder\Table::class),
                 App::make(Params\Schema::class),
+                App::make(Params\Manger::class),
             ]);
 
         // 动态注册依赖
