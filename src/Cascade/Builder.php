@@ -2,12 +2,12 @@
 
 namespace Handyfit\Framework\Cascade;
 
+use Handyfit\Framework\Cascade\Params\Configure;
+use Handyfit\Framework\Cascade\Params\Manger;
 use Illuminate\Support\Str;
 
 use function Laravel\Prompts\error;
-use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
-use function Laravel\Prompts\warning;
 
 /**
  * Builder abstract class
@@ -48,23 +48,23 @@ abstract class Builder
     protected Params\Schema $schemaParams;
 
     /**
+     * Manger 参数对象
+     *
+     * @var Params\Manger
+     */
+    protected Params\Manger $mangerParams;
+
+    /**
      * 构建一个 Builder 实例
      *
-     * @param Params\Configure     $configureParams
-     * @param Params\Builder\Table $tableParams
-     * @param Params\Schema        $schemaParams
-     *
-     * @return void
+     * @param Configure $configureParams
+     * @param Manger    $mangerParams
      */
-    public function __construct(
-        Params\Configure $configureParams,
-        Params\Builder\Table $tableParams,
-        Params\Schema $schemaParams
-    ) {
+    public function __construct(Params\Configure $configureParams, Params\Manger $mangerParams)
+    {
         $this->stub = '';
         $this->configureParams = $configureParams;
-        $this->tableParams = $tableParams;
-        $this->schemaParams = $schemaParams;
+        $this->mangerParams = $mangerParams;
     }
 
     /**
@@ -158,18 +158,13 @@ abstract class Builder
      */
     final protected function put(string $classname, string $filename, string $folderPath): void
     {
-        $classname = $this->builderUUid($classname);
+        $folderPath = Str::of($folderPath)
+            ->replace('\\', DIRECTORY_SEPARATOR)
+            ->toString();
 
-        $filename = "$filename.php";
-        $folderDisk = DiskManager::useDisk($folderPath);
-
-        if (!$folderDisk->put($filename, $this->stub)) {
-            error("$classname: 创建失败...写入文件失败！");
-            return;
-        }
-
-        info("$classname: 创建...完成！");
-        warning("$classname: 文件路径 - [$folderPath/$filename]");
+        $this->mangerParams->appendStub(
+            new Params\Stub($classname, $folderPath, "$filename.php", $this->stub)
+        );
     }
 
     /**

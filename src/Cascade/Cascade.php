@@ -20,26 +20,6 @@ class Cascade
 {
 
     /**
-     * 创建一个 Cascade 实例
-     *
-     * @return void
-     */
-    private function __construct()
-    {
-        $this->registerConfigure()->map(function (Closure $callable, string $configure) {
-            App::bind($configure, $callable);
-        });
-
-        App::bind(Params\Configure::class, function () {
-            $params = $this->registerConfigure()->keys()->map(function (string $configure) {
-                return App::make($configure);
-            });
-
-            return new Params\Configure(...$params);
-        });
-    }
-
-    /**
      * 设置 Configure
      *
      * @return static
@@ -164,29 +144,6 @@ class Cascade
     }
 
     /**
-     * 注册配置项
-     *
-     * @return Collection
-     */
-    private function registerConfigure(): Collection
-    {
-        return collect([
-            Params\Configure\App::class => function () {
-                return new Params\Configure\App('App', 'app');
-            },
-            Params\Configure\Cascade::class => function () {
-                return new Params\Configure\Cascade('Cascade');
-            },
-            Params\Configure\Summary::class => function () {
-                return new Params\Configure\Summary('Summaries', 'Summary');
-            },
-            Params\Configure\Model::class => function () {
-                return new Params\Configure\Model('Models', 'Model');
-            },
-        ]);
-    }
-
-    /**
      * 验证配置有效性
      *
      * @return bool
@@ -218,25 +175,28 @@ class Cascade
     private function boot(): void
     {
         // 提供公共依赖
-        App::when(array_keys($this->builders()->all()))
-            ->needs('$configureParams')
-            ->needs('$tableParams')
-            ->needs('$schemaParams')
-            ->give([
-                App::make(Params\Configure::class),
-                App::make(Params\Builder\Table::class),
-                App::make(Params\Schema::class),
-            ]);
+        collect([
+            Params\Schema::class,
+            Params\Builder\Table::class,
+        ])->map(function (string $abstract) {
+            App::when(array_keys($this->builders()->all()))
+                ->needs($abstract)
+                ->give(function () use ($abstract) {
+                    return App::make($abstract);
+                });
+        });
 
         // 动态注册依赖
-        $this->builders()->map(function (array $dependency, string $builder) {
-            foreach ($dependency as $key => $value) {
-                if (!App::bound($value)) {
-                    warning("[Debug]: $builder - 缺少 [$value] 依赖- 跳过注入");
+        $this->builders()->map(function (array $dependencies, string $builder) {
+            foreach ($dependencies as $dependency) {
+                if (!App::bound($dependency)) {
+                    warning("[Debug]: $builder - 缺少 [$dependency] 依赖- 跳过注入");
                     return;
                 }
 
-                App::when($builder)->needs($key)->give($value);
+                App::when($builder)->needs($dependency)->give(function () use ($dependency) {
+                    return App::make($dependency);
+                });
             }
 
             app($builder)->boot();
@@ -253,11 +213,12 @@ class Cascade
         return collect([
             SummaryBuilder::class => [],
             MigrationBuilder::class => [
-                '$migrationParams' => Params\Builder\Migration::class,
+                Params\Builder\Migration::class,
             ],
             ModelBuilder::class => [
-                '$modelParams' => Params\Builder\Model::class,
+                Params\Builder\Model::class,
             ],
         ]);
     }
+
 }

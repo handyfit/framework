@@ -2,6 +2,11 @@
 
 namespace Handyfit\Framework\Cascade;
 
+use Handyfit\Framework\Cascade\Params\Builder\Model;
+use Handyfit\Framework\Cascade\Params\Builder\Table;
+use Handyfit\Framework\Cascade\Params\Configure;
+use Handyfit\Framework\Cascade\Params\Manger;
+use Handyfit\Framework\Cascade\Params\Schema;
 use Illuminate\Support\Str;
 
 /**
@@ -57,20 +62,20 @@ class ModelBuilder extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param Params\Configure     $configureParams
-     * @param Params\Builder\Table $tableParams
-     * @param Params\Builder\Model $modelParams
-     * @param Params\Schema        $schemaParams
-     *
-     * @return void
+     * @param Configure $configureParams
+     * @param Table     $tableParams
+     * @param Model     $modelParams
+     * @param Manger    $mangerParams
+     * @param Schema    $schemaParams
      */
     public function __construct(
         Params\Configure $configureParams,
         Params\Builder\Table $tableParams,
         Params\Builder\Model $modelParams,
+        Params\Manger $mangerParams,
         Params\Schema $schemaParams
     ) {
-        parent::__construct($configureParams, $tableParams, $schemaParams);
+        parent::__construct($configureParams, $mangerParams);
 
         $this->modelParams = $modelParams;
         $this->builderParams = $configureParams->getModel();
@@ -84,8 +89,11 @@ class ModelBuilder extends Builder
         // 命名空间
         $this->namespace = $this->getCascadeNamespace([
             $this->builderParams->getNamespace(),
-            $tableParams->getNamespace(),
+            ...$tableParams->getNamespace(),
         ]);
+
+        $this->schemaParams = $schemaParams;
+        $this->tableParams = $tableParams;
     }
 
     /**
@@ -105,7 +113,7 @@ class ModelBuilder extends Builder
         // 文件夹路径
         $folderPath = $this->getCascadeFilepath([
             $this->builderParams->getFilepath(),
-            $this->tableParams->getNamespace(),
+            ...$this->tableParams->getNamespace(),
         ]);
 
         $this->stubParam('namespace', $this->namespace);

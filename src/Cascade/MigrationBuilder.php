@@ -2,6 +2,11 @@
 
 namespace Handyfit\Framework\Cascade;
 
+use Handyfit\Framework\Cascade\Params\Builder\Migration;
+use Handyfit\Framework\Cascade\Params\Builder\Table;
+use Handyfit\Framework\Cascade\Params\Configure;
+use Handyfit\Framework\Cascade\Params\Manger;
+use Handyfit\Framework\Cascade\Params\Schema;
 use Illuminate\Support\Str;
 use stdClass;
 
@@ -23,22 +28,24 @@ class MigrationBuilder extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param Params\Configure         $configureParams
-     * @param Params\Builder\Table     $tableParams
-     * @param Params\Schema            $schemaParams
-     * @param Params\Builder\Migration $migrationParams
-     *
-     * @return void
+     * @param Configure $configureParams
+     * @param Manger    $mangerParams
+     * @param Migration $migrationParams
+     * @param Table     $tableParams
+     * @param Schema    $schemaParams
      */
     public function __construct(
         Params\Configure $configureParams,
+        Params\Manger $mangerParams,
+        Params\Builder\Migration $migrationParams,
         Params\Builder\Table $tableParams,
-        Params\Schema $schemaParams,
-        Params\Builder\Migration $migrationParams
+        Params\Schema $schemaParams
     ) {
-        parent::__construct($configureParams, $tableParams, $schemaParams);
+        parent::__construct($configureParams, $mangerParams);
 
         $this->migrationParams = $migrationParams;
+        $this->schemaParams = $schemaParams;
+        $this->tableParams = $tableParams;
     }
 
     /**

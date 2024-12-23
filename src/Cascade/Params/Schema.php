@@ -39,6 +39,13 @@ class Schema
     private array $codes;
 
     /**
+     * 存根集
+     *
+     * @var Stub[]
+     */
+    private array $stubs;
+
+    /**
      * 构建一个 Blueprint 参数实例
      *
      * @param string $table
@@ -49,6 +56,7 @@ class Schema
     {
         $this->table = $table;
         $this->columns = [];
+        $this->stubs = [];
     }
 
     /**
@@ -150,6 +158,28 @@ class Schema
     public function appendColumn(Column $column): void
     {
         $this->columns[$column->getColum()] = $column;
+    }
+
+    /**
+     * 获取所有存根
+     *
+     * @return array
+     */
+    public function getStubs(): array
+    {
+        return $this->stubs;
+    }
+
+    /**
+     * 新增存根
+     *
+     * @param Stub $stub
+     *
+     * @return void
+     */
+    public function appendStub(Stub $stub): void
+    {
+        $this->stubs[] = $stub;
     }
 
 }
