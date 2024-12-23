@@ -7,8 +7,6 @@ use Illuminate\Support\Str;
 /**
  * Table builder params
  *
- * @todo 需要修改命名空间和文件分类机制
- *
  * @author KanekiYuto
  */
 class Table
@@ -29,13 +27,6 @@ class Table
     private string $comment;
 
     /**
-     * 命名空间
-     *
-     * @var string
-     */
-    private string $namespace;
-
-    /**
      * 类名称
      *
      * @var string
@@ -45,8 +36,8 @@ class Table
     /**
      * 构建一个 Table Builder 参数实例
      *
-     * @param string $table
-     * @param string $comment
+     * @param  string  $table
+     * @param  string  $comment
      *
      * @return void
      */
@@ -55,18 +46,45 @@ class Table
         $this->table = $table;
         $this->comment = $comment;
 
-        $this->setNamespace();
         $this->setClassname();
+    }
+
+    /**
+     * 设置类名称
+     *
+     * @return void
+     */
+    private function setClassname(): void
+    {
+        // 取最后一个名称作为最终的类名
+        $table = explode('_', $this->table);
+        $table = collect($table)->only([
+            count($table) - 1,
+            count($table) - 2,
+        ]);
+
+        $classname = $table->implode('_');
+
+        $this->classname = Str::of($classname)
+            ->headline()
+            ->replace(' ', '')
+            ->toString();
     }
 
     /**
      * 获取命名空间
      *
-     * @return string
+     * @return array
      */
-    public function getNamespace(): string
+    public function getNamespace(): array
     {
-        return $this->namespace;
+        $table = Str::of($this->table)->headline()->explode(' ');
+
+        // 移除最后两个
+        return collect($table)->except([
+            count($table) - 1,
+            count($table) - 2,
+        ])->all();
     }
 
     /**
@@ -97,34 +115,6 @@ class Table
     public function getClassname(): string
     {
         return $this->classname;
-    }
-
-    /**
-     * 设置命名空间
-     *
-     * @return void
-     */
-    private function setNamespace(): void
-    {
-        $table = explode('_', $this->table);
-        // 移除最后一个
-        $table = collect($table)->except([count($table) - 1])->all();
-        $table = implode('\\', $table);
-
-        $this->namespace = Str::of(Str::headline($table))->toString();
-    }
-
-    /**
-     * 设置类名称
-     *
-     * @return void
-     */
-    private function setClassname(): void
-    {
-        // 取最后一个名称作为最终的类名
-        $classname = collect(explode('_', $this->table))->last();
-
-        $this->classname = Str::headline($classname);
     }
 
 }

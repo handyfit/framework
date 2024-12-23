@@ -89,7 +89,7 @@ class ModelBuilder extends Builder
         // 命名空间
         $this->namespace = $this->getCascadeNamespace([
             $this->builderParams->getNamespace(),
-            $tableParams->getNamespace(),
+            ...$tableParams->getNamespace(),
         ]);
 
         $this->schemaParams = $schemaParams;
@@ -113,7 +113,7 @@ class ModelBuilder extends Builder
         // 文件夹路径
         $folderPath = $this->getCascadeFilepath([
             $this->builderParams->getFilepath(),
-            $this->tableParams->getNamespace(),
+            ...$this->tableParams->getNamespace(),
         ]);
 
         $this->stubParam('namespace', $this->namespace);

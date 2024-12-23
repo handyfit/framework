@@ -3,11 +3,10 @@
 namespace Handyfit\Framework\Cascade;
 
 use Closure;
-use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
-use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-
+use Handyfit\Framework\Foundation\Hook\Eloquent as FoundationEloquentHook;
+use Handyfit\Framework\Foundation\Hook\Migration as FoundationMigrationHook;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 
@@ -32,8 +31,8 @@ class Cascade
     /**
      * 设置 - Table
      *
-     * @param string $table
-     * @param string $comment
+     * @param  string  $table
+     * @param  string  $comment
      *
      * @return static
      */
@@ -49,9 +48,9 @@ class Cascade
     /**
      * 设置 - Migration
      *
-     * @param string $filename
-     * @param string $comment
-     * @param string $hook
+     * @param  string  $filename
+     * @param  string  $comment
+     * @param  string  $hook
      *
      * @return static
      */
@@ -70,10 +69,10 @@ class Cascade
     /**
      * 设置 - Model
      *
-     * @param string $extends
-     * @param string $hook
-     * @param bool   $incrementing
-     * @param bool   $timestamps
+     * @param  string  $extends
+     * @param  string  $hook
+     * @param  bool    $incrementing
+     * @param  bool    $timestamps
      *
      * @return static
      */
@@ -98,8 +97,8 @@ class Cascade
     /**
      * 设置 - Schema
      *
-     * @param Closure $up
-     * @param Closure $down
+     * @param  Closure  $up
+     * @param  Closure  $down
      *
      * @return static
      */
@@ -175,23 +174,28 @@ class Cascade
     private function boot(): void
     {
         // 提供公共依赖
-        App::when(array_keys($this->builders()->all()))
-            ->needs('$tableParams')
-            ->needs('$schemaParams')
-            ->give([
-                App::make(Params\Builder\Table::class),
-                App::make(Params\Schema::class),
-            ]);
+        collect([
+            Params\Schema::class,
+            Params\Builder\Table::class,
+        ])->map(function (string $abstract) {
+            App::when(array_keys($this->builders()->all()))
+                ->needs($abstract)
+                ->give(function () use ($abstract) {
+                    return App::make($abstract);
+                });
+        });
 
         // 动态注册依赖
-        $this->builders()->map(function (array $dependency, string $builder) {
-            foreach ($dependency as $key => $value) {
-                if (!App::bound($value)) {
-                    warning("[Debug]: $builder - 缺少 [$value] 依赖- 跳过注入");
+        $this->builders()->map(function (array $dependencies, string $builder) {
+            foreach ($dependencies as $dependency) {
+                if (!App::bound($dependency)) {
+                    warning("[Debug]: $builder - 缺少 [$dependency] 依赖- 跳过注入");
                     return;
                 }
 
-                App::when($builder)->needs($key)->give($value);
+                App::when($builder)->needs($dependency)->give(function () use ($dependency) {
+                    return App::make($dependency);
+                });
             }
 
             app($builder)->boot();
@@ -208,10 +212,10 @@ class Cascade
         return collect([
             SummaryBuilder::class => [],
             MigrationBuilder::class => [
-                '$migrationParams' => Params\Builder\Migration::class,
+                Params\Builder\Migration::class,
             ],
             ModelBuilder::class => [
-                '$modelParams' => Params\Builder\Model::class,
+                Params\Builder\Model::class,
             ],
         ]);
     }

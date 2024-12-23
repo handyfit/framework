@@ -2,11 +2,11 @@
 
 namespace Handyfit\Framework\Cascade;
 
-use Handyfit\Framework\Cascade\Params\Builder\Table;
-use Handyfit\Framework\Cascade\Params\Configure;
-use Handyfit\Framework\Cascade\Params\Manger;
-use Handyfit\Framework\Cascade\Params\Schema;
 use Illuminate\Support\Str;
+use Handyfit\Framework\Cascade\Params\Schema;
+use Handyfit\Framework\Cascade\Params\Manger;
+use Handyfit\Framework\Cascade\Params\Configure;
+use Handyfit\Framework\Cascade\Params\Builder\Table;
 
 /**
  * Summary builder
@@ -54,10 +54,10 @@ class SummaryBuilder extends Builder
     /**
      * 构建一个 Eloquent Trace Builder 实例
      *
-     * @param Configure $configureParams
-     * @param Table     $tableParams
-     * @param Manger    $mangerParams
-     * @param Schema    $schemaParams
+     * @param  Configure  $configureParams
+     * @param  Table      $tableParams
+     * @param  Manger     $mangerParams
+     * @param  Schema     $schemaParams
      */
     public function __construct(
         Params\Configure $configureParams,
@@ -78,7 +78,7 @@ class SummaryBuilder extends Builder
         // 命名空间
         $this->namespace = $this->getCascadeNamespace([
             $this->builderParams->getNamespace(),
-            $tableParams->getNamespace(),
+            ...$tableParams->getNamespace(),
         ]);
 
         $this->schemaParams = $schemaParams;
@@ -102,7 +102,7 @@ class SummaryBuilder extends Builder
         // 文件夹路径
         $folderPath = $this->getCascadeFilepath([
             $this->builderParams->getFilepath(),
-            $this->tableParams->getNamespace(),
+            ...$this->tableParams->getNamespace(),
         ]);
 
         // 设置参数到存根
@@ -125,19 +125,6 @@ class SummaryBuilder extends Builder
     }
 
     /**
-     * 对外提供的引入包名称
-     *
-     * @return string
-     */
-    public function getPackage(): string
-    {
-        return implode('\\', [
-            $this->namespace,
-            $this->classname,
-        ]);
-    }
-
-    /**
      * 构建所有列信息
      *
      * @return string
@@ -157,7 +144,7 @@ class SummaryBuilder extends Builder
     /**
      * 构建列参数
      *
-     * @param Params\Column $column
+     * @param  Params\Column  $column
      *
      * @return string
      */
@@ -186,7 +173,7 @@ class SummaryBuilder extends Builder
     /**
      * 构建所有常量值
      *
-     * @param array $values
+     * @param  array  $values
      *
      * @return string
      */
@@ -197,6 +184,19 @@ class SummaryBuilder extends Builder
         })->all();
 
         return implode(', ', $values);
+    }
+
+    /**
+     * 对外提供的引入包名称
+     *
+     * @return string
+     */
+    public function getPackage(): string
+    {
+        return implode('\\', [
+            $this->namespace,
+            $this->classname,
+        ]);
     }
 
 }

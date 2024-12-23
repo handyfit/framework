@@ -2,15 +2,14 @@
 
 namespace Handyfit\Framework\Cascade;
 
-use Handyfit\Framework\Cascade\Params\Manger;
-use Handyfit\Framework\Cascade\Params\Stub;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-
-use function Laravel\Prompts\error;
+use Illuminate\Filesystem\Filesystem;
+use Handyfit\Framework\Cascade\Params\Stub;
+use Handyfit\Framework\Cascade\Params\Manger;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use function Laravel\Prompts\info;
+use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 
 /**
@@ -31,7 +30,7 @@ class Distribute
     /**
      * 创建一个 Cascade 实例
      *
-     * @param array $files
+     * @param  array  $files
      */
     public function __construct(array $files)
     {
@@ -49,13 +48,31 @@ class Distribute
         App::instance(Params\Manger::class, new Params\Manger());
 
         // 提供公共依赖
-        App::when($this->builders()->all())
-            ->needs('$configureParams')
-            ->needs('$mangerParams')
-            ->give([
-                App::make(Params\Configure::class),
-                App::make(Params\Manger::class),
-            ]);
+        collect([
+            Params\Configure::class,
+            Params\Manger::class,
+        ])->map(function (string $abstract) {
+            App::when($this->builders()->all())
+                ->needs($abstract)
+                ->give(function () use ($abstract) {
+                    return App::make($abstract);
+                });
+        });
+    }
+
+    /**
+     * 构建器实例与依赖
+     *
+     * @return Collection
+     */
+    private function builders(): Collection
+    {
+        return collect([
+            SummaryBuilder::class,
+            MigrationBuilder::class,
+            ModelBuilder::class,
+            MangerBuilder::class,
+        ]);
     }
 
     /**
@@ -94,21 +111,6 @@ class Distribute
     public function write(): void
     {
         $this->writeStub();
-    }
-
-    /**
-     * 构建器实例与依赖
-     *
-     * @return Collection
-     */
-    private function builders(): Collection
-    {
-        return collect([
-            SummaryBuilder::class,
-            MigrationBuilder::class,
-            ModelBuilder::class,
-            MangerBuilder::class,
-        ]);
     }
 
     /**
