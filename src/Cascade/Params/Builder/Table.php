@@ -36,8 +36,8 @@ class Table
     /**
      * 构建一个 Table Builder 参数实例
      *
-     * @param  string  $table
-     * @param  string  $comment
+     * @param string $table
+     * @param string $comment
      *
      * @return void
      */
@@ -47,28 +47,6 @@ class Table
         $this->comment = $comment;
 
         $this->setClassname();
-    }
-
-    /**
-     * 设置类名称
-     *
-     * @return void
-     */
-    private function setClassname(): void
-    {
-        // 取最后一个名称作为最终的类名
-        $table = explode('_', $this->table);
-        $table = collect($table)->only([
-            count($table) - 1,
-            count($table) - 2,
-        ]);
-
-        $classname = $table->implode('_');
-
-        $this->classname = Str::of($classname)
-            ->headline()
-            ->replace(' ', '')
-            ->toString();
     }
 
     /**
@@ -115,6 +93,28 @@ class Table
     public function getClassname(): string
     {
         return $this->classname;
+    }
+
+    /**
+     * 设置类名称
+     *
+     * @return void
+     */
+    private function setClassname(): void
+    {
+        // 取最后一个名称作为最终的类名
+        $table = explode('_', $this->table);
+        $table = collect($table)->only([
+            count($table) - 1,
+            count($table) - 2,
+        ]);
+
+        $classname = $table->implode('_');
+
+        $this->classname = Str::of($classname)
+            ->headline()
+            ->replace(' ', '')
+            ->toString();
     }
 
 }

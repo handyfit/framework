@@ -2,14 +2,15 @@
 
 namespace Handyfit\Framework\Cascade;
 
+use Handyfit\Framework\Cascade\Params\Manger;
+use Handyfit\Framework\Cascade\Params\Stub;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-use Illuminate\Filesystem\Filesystem;
-use Handyfit\Framework\Cascade\Params\Stub;
-use Handyfit\Framework\Cascade\Params\Manger;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use function Laravel\Prompts\info;
+
 use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\warning;
 
 /**
@@ -30,7 +31,7 @@ class Distribute
     /**
      * 创建一个 Cascade 实例
      *
-     * @param  array  $files
+     * @param array $files
      */
     public function __construct(array $files)
     {
@@ -58,21 +59,6 @@ class Distribute
                     return App::make($abstract);
                 });
         });
-    }
-
-    /**
-     * 构建器实例与依赖
-     *
-     * @return Collection
-     */
-    private function builders(): Collection
-    {
-        return collect([
-            SummaryBuilder::class,
-            MigrationBuilder::class,
-            ModelBuilder::class,
-            MangerBuilder::class,
-        ]);
     }
 
     /**
@@ -111,6 +97,21 @@ class Distribute
     public function write(): void
     {
         $this->writeStub();
+    }
+
+    /**
+     * 构建器实例与依赖
+     *
+     * @return Collection
+     */
+    private function builders(): Collection
+    {
+        return collect([
+            SummaryBuilder::class,
+            MigrationBuilder::class,
+            ModelBuilder::class,
+            MangerBuilder::class,
+        ]);
     }
 
     /**
